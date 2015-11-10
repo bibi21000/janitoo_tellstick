@@ -1,0 +1,6 @@
+[janitoo.components]
+tellstick.duo = janitoo_tellstick.bus:make_duo
+
+[janitoo.threads]
+tellstick = janitoo_tellstick.thread:make_thread
+
