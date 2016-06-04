@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The Roomba Janitoo helper
-It handle all communications to the Roomba vacuum
-
-
-
+"""The tellstick bus and components
 """
 
 __license__ = """
@@ -31,7 +27,6 @@ __copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi2100
 import logging
 logger = logging.getLogger(__name__)
 
-from subprocess import PIPE
 from janitoo.utils import json_dumps, json_loads, HADD_SEP
 from janitoo.component import JNTComponent
 
