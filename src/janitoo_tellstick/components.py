@@ -101,24 +101,8 @@ class TellstickDevice(JNTComponent):
             name=name,
             product_name=product_name,
             product_type=product_type,
-            product_manufacturer=product_manufacturer
-        )
-
-class TellstickSensor(TellstickDevice):
-    """ Provides the interface for a Tellstick device. """
-
-    def __init__(self, bus=None, addr=None, **kwargs):
-        """ Constructor.
-        """
-        oid = kwargs.pop('oid', '%s.sensor'%OID)
-        product_name = kwargs.pop('product_name', "Tellstick sensor")
-        name = kwargs.pop('name', "Tellstick sensor")
-        TellstickDevice.__init__(self,
-            oid=oid,
-            bus=bus,
-            addr=addr,
-            name=name,
-            product_name=product_name,
+            product_manufacturer=product_manufacturer,
+            **kwargs
         )
 
 class TellstickRemote(TellstickDevice):
@@ -136,7 +120,29 @@ class TellstickRemote(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
+
+        uuid="button"
+        self.values[uuid] = self.value_factory['action_button_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['on', 'off'],
+            default='off',
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid="groupe"
+        self.values[uuid] = self.value_factory['sensor_integer'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            label="groupe",
+            default='off',
+            set_data_cb=self.set_button,
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
 
 class TellstickSwitch(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -153,6 +159,7 @@ class TellstickSwitch(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
         uuid="switch"
@@ -194,6 +201,7 @@ class TellstickDimmer(TellstickSwitch):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
         uuid="dim"
@@ -233,6 +241,7 @@ class TellstickShutter(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
         uuid="shutter"
@@ -276,6 +285,7 @@ class TellstickBell(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
 class TellstickDaylight(TellstickDevice):
@@ -293,6 +303,7 @@ class TellstickDaylight(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
 class TellstickMagnetic(TellstickDevice):
@@ -310,6 +321,7 @@ class TellstickMagnetic(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
 
 class TellstickPir(TellstickDevice):
@@ -327,4 +339,5 @@ class TellstickPir(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
+            **kwargs
         )
