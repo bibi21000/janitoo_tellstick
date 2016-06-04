@@ -72,6 +72,15 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../using_doc.html"> Using documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../using_doc.html#the-header">The header</a></li>
 </ul>
@@ -111,11 +120,7 @@
       
   <h1>Source code for janitoo_tellstick.components</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;The Roomba Janitoo helper</span>
-<span class="sd">It handle all communications to the Roomba vacuum</span>
-
-
-
+<span class="sd">&quot;&quot;&quot;The tellstick bus and components</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
@@ -142,23 +147,9 @@
 <span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">socket</span>
-<span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">JNTThread</span>
-<span class="kn">from</span> <span class="nn">janitoo.options</span> <span class="kn">import</span> <span class="n">get_option_autostart</span>
-<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span><span class="p">,</span> <span class="n">HADD_SEP</span><span class="p">,</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span>
-<span class="kn">from</span> <span class="nn">janitoo.node</span> <span class="kn">import</span> <span class="n">JNTNode</span>
-<span class="kn">from</span> <span class="nn">janitoo.value</span> <span class="kn">import</span> <span class="n">JNTValue</span>
+
+<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span><span class="p">,</span> <span class="n">HADD_SEP</span>
 <span class="kn">from</span> <span class="nn">janitoo.component</span> <span class="kn">import</span> <span class="n">JNTComponent</span>
-<span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="kn">import</span> <span class="n">JNTBus</span>
-<span class="kn">from</span> <span class="nn">janitoo.classes</span> <span class="kn">import</span> <span class="n">COMMAND_DESC</span>
 
 <span class="kn">from</span> <span class="nn">janitoo_tellstick</span> <span class="kn">import</span> <span class="n">OID</span>
 
@@ -196,125 +187,293 @@
 <div class="viewcode-block" id="make_bell"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.make_bell">[docs]</a><span class="k">def</span> <span class="nf">make_bell</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">TellstickBell</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
+<div class="viewcode-block" id="make_daylight"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.make_daylight">[docs]</a><span class="k">def</span> <span class="nf">make_daylight</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">TellstickDaylight</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="make_magnetic"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.make_magnetic">[docs]</a><span class="k">def</span> <span class="nf">make_magnetic</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">TellstickMagnetic</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="make_pir"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.make_pir">[docs]</a><span class="k">def</span> <span class="nf">make_pir</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">TellstickPir</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="make_remote"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.make_remote">[docs]</a><span class="k">def</span> <span class="nf">make_remote</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">TellstickRemote</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
 <div class="viewcode-block" id="TellstickDevice"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickDevice">[docs]</a><span class="k">class</span> <span class="nc">TellstickDevice</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.device&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus device&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus device&quot;</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Unknown device&quot;</span><span class="p">)</span>
+        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick device&quot;</span><span class="p">)</span>
         <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus device&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span>
+        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span>
+            <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
 </div>
-<div class="viewcode-block" id="TellstickSensor"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickSensor">[docs]</a><span class="k">class</span> <span class="nc">TellstickSensor</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TellstickRemote"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickRemote">[docs]</a><span class="k">class</span> <span class="nc">TellstickRemote</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.sensor&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus sensor&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus sensor&quot;</span><span class="p">)</span>
-        <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus sensor&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.remote&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick sensor&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick sensor&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;button&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_button_binary&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">list_items</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;off&#39;</span><span class="p">],</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&#39;off&#39;</span><span class="p">,</span>
+            <span class="n">genre</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;groupe&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_integer&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&quot;groupe&quot;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&#39;off&#39;</span><span class="p">,</span>
+            <span class="n">genre</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
 </div>
-<div class="viewcode-block" id="TellstickSwitch"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickSwitch">[docs]</a><span class="k">class</span> <span class="nc">TellstickSwitch</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="TellstickSwitch"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickSwitch">[docs]</a><span class="k">class</span> <span class="nc">TellstickSwitch</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.switch&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus switch&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus switch&quot;</span><span class="p">)</span>
-        <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus switch&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="TellstickDimmer"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickDimmer">[docs]</a><span class="k">class</span> <span class="nc">TellstickDimmer</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick switch&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick switch&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;switch&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_switch_binary&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">list_items</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;off&#39;</span><span class="p">],</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&#39;off&#39;</span><span class="p">,</span>
+            <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_switch</span><span class="p">,</span>
+            <span class="n">genre</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+<div class="viewcode-block" id="TellstickSwitch.set_switch"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickSwitch.set_switch">[docs]</a>    <span class="k">def</span> <span class="nf">set_switch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Switch On/Off a dimmer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">add_ctrl</span><span class="p">,</span> <span class="n">add_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">split_hadd</span><span class="p">()</span>
+        <span class="n">tdev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">get_tdev_from_hadd</span><span class="p">(</span><span class="n">add_node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&#39;on&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_turnon</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&#39;off&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_turnoff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_switch unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="TellstickDimmer"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickDimmer">[docs]</a><span class="k">class</span> <span class="nc">TellstickDimmer</span><span class="p">(</span><span class="n">TellstickSwitch</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.dimmer&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus dimmer&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus dimmer&quot;</span><span class="p">)</span>
-        <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus dimmer&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="TellstickShutter"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickShutter">[docs]</a><span class="k">class</span> <span class="nc">TellstickShutter</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick dimmer&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick dimmer&quot;</span><span class="p">)</span>
+        <span class="n">TellstickSwitch</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;dim&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_switch_multilevel&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Dim a dimmer. A byte from 0 to 100&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Level&#39;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_dim</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+<div class="viewcode-block" id="TellstickDimmer.set_dim"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickDimmer.set_dim">[docs]</a>    <span class="k">def</span> <span class="nf">set_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dim a dimmer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">add_ctrl</span><span class="p">,</span> <span class="n">add_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">split_hadd</span><span class="p">()</span>
+        <span class="n">tdev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">get_tdev_from_hadd</span><span class="p">(</span><span class="n">add_node</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_dim</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="TellstickShutter"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickShutter">[docs]</a><span class="k">class</span> <span class="nc">TellstickShutter</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.shutter&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus shutter&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus shutter&quot;</span><span class="p">)</span>
-        <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus shutter&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="TellstickBell"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickBell">[docs]</a><span class="k">class</span> <span class="nc">TellstickBell</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Provides the interface for a DS18B20 device. &quot;&quot;&quot;</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick shutter&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick shutter&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;shutter&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_shutter_binary&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">list_items</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;up&#39;</span><span class="p">,</span> <span class="s">&#39;down&#39;</span><span class="p">,</span> <span class="s">&#39;stop&#39;</span><span class="p">],</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&#39;up&#39;</span><span class="p">,</span>
+            <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_shutter</span><span class="p">,</span>
+            <span class="n">genre</span><span class="o">=</span><span class="mh">0x01</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+<div class="viewcode-block" id="TellstickShutter.set_shutter"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickShutter.set_shutter">[docs]</a>    <span class="k">def</span> <span class="nf">set_shutter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Shutter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">add_ctrl</span><span class="p">,</span> <span class="n">add_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">node</span><span class="o">.</span><span class="n">split_hadd</span><span class="p">()</span>
+        <span class="n">tdev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">get_tdev_from_hadd</span><span class="p">(</span><span class="n">add_node</span><span class="p">)</span>
+        <span class="c">#We should add the up, down and stop command too</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&#39;up&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_up</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&#39;down&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_down</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&#39;stop&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_stop</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_shutter unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="TellstickBell"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickBell">[docs]</a><span class="k">class</span> <span class="nc">TellstickBell</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Constructor.</span>
-
-<span class="sd">        Arguments:</span>
-<span class="sd">            bus:</span>
-<span class="sd">                a 1-Wire instance representing the bus this device is</span>
-<span class="sd">                connected to</span>
-<span class="sd">            addr:</span>
-<span class="sd">                the 1-Wire device address (in 7 bits format)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.bell&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
-        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus bell&quot;</span><span class="p">)</span>
-        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus bell&quot;</span><span class="p">)</span>
-        <span class="n">product_manufacturer</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_manufacturer&#39;</span><span class="p">,</span> <span class="s">&quot;Janitoo&quot;</span><span class="p">)</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Telldus bell&quot;</span><span class="p">)</span>
-        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="n">product_manufacturer</span><span class="o">=</span><span class="n">product_manufacturer</span><span class="p">)</span></div>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick bell&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick bell&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TellstickSensor"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickSensor">[docs]</a><span class="k">class</span> <span class="nc">TellstickSensor</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.sensor&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick sensor&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick sensor&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TellstickDaylight"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickDaylight">[docs]</a><span class="k">class</span> <span class="nc">TellstickDaylight</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.daylight&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick daylight&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick daylight&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TellstickMagnetic"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickMagnetic">[docs]</a><span class="k">class</span> <span class="nc">TellstickMagnetic</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.magnetic&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick magnetic&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick magnetic&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TellstickPir"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.components.TellstickPir">[docs]</a><span class="k">class</span> <span class="nc">TellstickPir</span><span class="p">(</span><span class="n">TellstickDevice</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Provides the interface for a Tellstick device. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.pir&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick pir&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Tellstick pir&quot;</span><span class="p">)</span>
+        <span class="n">TellstickDevice</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">oid</span><span class="o">=</span><span class="n">oid</span><span class="p">,</span>
+            <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span>
+            <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
 </pre></div>
 
     </div>

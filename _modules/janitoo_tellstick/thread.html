@@ -72,6 +72,15 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../using_doc.html"> Using documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../using_doc.html#the-header">The header</a></li>
 </ul>
@@ -111,11 +120,7 @@
       
   <h1>Source code for janitoo_tellstick.thread</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;The Roomba Janitoo helper</span>
-<span class="sd">It handle all communications to the Roomba vacuum</span>
-
-
-
+<span class="sd">&quot;&quot;&quot;The Tellstik Janitoo</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
@@ -142,15 +147,9 @@
 <span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">JNTBusThread</span>
 <span class="kn">from</span> <span class="nn">janitoo.options</span> <span class="kn">import</span> <span class="n">get_option_autostart</span>
-<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span><span class="p">,</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span>
-<span class="kn">from</span> <span class="nn">janitoo.node</span> <span class="kn">import</span> <span class="n">JNTNode</span>
-<span class="kn">from</span> <span class="nn">janitoo.value</span> <span class="kn">import</span> <span class="n">JNTValue</span>
 
 <span class="kn">from</span> <span class="nn">janitoo_tellstick</span> <span class="kn">import</span> <span class="n">OID</span>
 

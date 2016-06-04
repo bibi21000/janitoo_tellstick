@@ -72,6 +72,15 @@
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../../using_doc.html"> Using documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../using_doc.html#the-header">The header</a></li>
 </ul>
@@ -111,7 +120,9 @@
       
   <h1>Source code for janitoo_tellstick.bus</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
-<span class="sd">&quot;&quot;&quot;The Raspberry i2c bus</span>
+<span class="sd">&quot;&quot;&quot;The Raspberry tellstick bus</span>
+<span class="sd">Not sure that this bus can be extended by aggregation (callbacks and constants : TELLSTICK_TEMPERATURE).</span>
+<span class="sd">Need to be tested.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -139,17 +150,11 @@
 <span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">datetime</span>
-<span class="kn">import</span> <span class="nn">socket</span>
 
-<span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">JNTBusThread</span>
 <span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="kn">import</span> <span class="n">JNTBus</span>
-<span class="kn">from</span> <span class="nn">janitoo.component</span> <span class="kn">import</span> <span class="n">JNTComponent</span>
-<span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">BaseThread</span>
-<span class="kn">from</span> <span class="nn">janitoo.options</span> <span class="kn">import</span> <span class="n">get_option_autostart</span>
 <span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span>
 
 <span class="c">##############################################################</span>
@@ -183,6 +188,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_extensions</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
 
+        <span class="c"># Commands</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_BELL</span> <span class="o">=</span> <span class="mi">4</span>
@@ -193,7 +199,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span> <span class="o">=</span> <span class="mi">128</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span> <span class="o">=</span> <span class="mi">256</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span> <span class="o">=</span> <span class="mi">512</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_BELL</span> <span class="o">|</span> \
+                           <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span> <span class="o">|</span> \
+                           <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span>
 
+        <span class="c">#Sensors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TEMPERATURE</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_HUMIDITY</span> <span class="o">=</span> <span class="mi">2</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_RAINRATE</span> <span class="o">=</span> <span class="mi">4</span>
@@ -202,7 +212,39 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_WINDAVERAGE</span> <span class="o">=</span> <span class="mi">32</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_WINDGUST</span> <span class="o">=</span> <span class="mi">64</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_BELL</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span>
+        <span class="c"># Error codes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_SUCCESS</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_NOT_FOUND</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_PERMISSION_DENIED</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_DEVICE_NOT_FOUND</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_METHOD_NOT_SUPPORTED</span> <span class="o">=</span> <span class="o">-</span><span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_COMMUNICATION</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_CONNECTING_SERVICE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_UNKNOWN_RESPONSE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_SYNTAX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">8</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_BROKEN_PIPE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">9</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_COMMUNICATING_SERVICE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_CONFIG_SYNTAX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">11</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_ERROR_UNKNOWN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
+
+        <span class="c"># Controller typedef</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CONTROLLER_TELLSTICK</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CONTROLLER_TELLSTICK_DUO</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CONTROLLER_TELLSTICK_NET</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="c"># Device changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DEVICE_ADDED</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DEVICE_CHANGED</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DEVICE_REMOVED</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DEVICE_STATE_CHANGED</span> <span class="o">=</span> <span class="mi">4</span>
+
+        <span class="c"># Change types</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_NAME</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_PROTOCOL</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_MODEL</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_METHOD</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_AVAILABLE</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_CHANGE_FIRMWARE</span> <span class="o">=</span> <span class="mi">6</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span> <span class="o">=</span> <span class="mf">0.5</span>
 
@@ -254,6 +296,10 @@
         <span class="sd">&quot;&quot;&quot;Stop a telldus device.&quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
+<div class="viewcode-block" id="TellstickBus.tellstick_resend"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_resend">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_resend</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resend last command to a telldus device.&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
 <div class="viewcode-block" id="TellstickBus.tellstick_acquire"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_acquire">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a lock on the bus&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">blocking</span><span class="p">):</span>
@@ -270,6 +316,37 @@
 </div></div>
 <div class="viewcode-block" id="extend_duo"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.extend_duo">[docs]</a><span class="k">def</span> <span class="nf">extend_duo</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
     <span class="kn">import</span> <span class="nn">telldus</span>
+    <span class="n">telldus</span><span class="o">.</span><span class="n">tdInit</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">set_tellstickduo_discover</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_discover_new_devices</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_discover</span> <span class="o">=</span> <span class="n">set_tellstickduo_discover</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_discover&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_boolean&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+        <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+        <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_discover</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_tellstickduo_updatetype</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_bus</span><span class="o">.</span><span class="n">tellstick_update_device_component</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_updatetype</span> <span class="o">=</span> <span class="n">set_tellstickduo_updatetype</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_updatetype&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_string&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+        <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+        <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_updatetype</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_hadd_from_tdev</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -280,8 +357,19 @@
     <span class="k">def</span> <span class="nf">get_tdev_from_hadd</span><span class="p">(</span><span class="n">hadd</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hadd</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">hadd</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">hadd</span><span class="o">-</span><span class="mi">1</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_tdev_from_hadd</span> <span class="o">=</span> <span class="n">get_tdev_from_hadd</span>
+
+    <span class="k">def</span> <span class="nf">event_device_change_callback</span><span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">change_event</span><span class="p">,</span> <span class="n">change_type</span><span class="p">,</span> <span class="n">callback_id</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive change </span><span class="si">%s</span><span class="s"> callback for </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span><span class="n">change_event</span> <span class="p">,</span> <span class="n">device_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">event_device_change_callback</span> <span class="o">=</span> <span class="n">event_device_change_callback</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterDeviceChangeEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device_change_callback</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">export_attrs</span><span class="p">(</span><span class="s">&#39;event_change_device&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span><span class="p">)</span>
+
 
     <span class="k">def</span> <span class="nf">event_device_callback</span><span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">callback_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -289,29 +377,27 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive callback from </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">device_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">True</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_device_callback</span> <span class="o">=</span> <span class="n">event_device_callback</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterDeviceEvent</span><span class="p">(</span><span class="n">event_device_callback</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterDeviceEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device_callback</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">export_attrs</span><span class="p">(</span><span class="s">&#39;event_device&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span><span class="p">)</span>
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span>
-    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="n">mqttc</span><span class="p">,</span> <span class="n">trigger_thread_reload_cb</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Start the bus&quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Start the bus </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span> <span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">telldus</span><span class="o">.</span><span class="n">tdInit</span><span class="p">()</span>
-        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when starting bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_start</span><span class="p">(</span><span class="n">mqttc</span><span class="p">,</span> <span class="n">trigger_thread_reload_cb</span><span class="o">=</span><span class="n">trigger_thread_reload_cb</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">start</span>
-
-    <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_stop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span>
-    <span class="k">def</span> <span class="nf">stop</span><span class="p">():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_del__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__del__</span>
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;stop the bus&quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Stop the bus </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span> <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - __del__ the bus </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span> <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">telldus</span><span class="o">.</span><span class="n">tdUnregisterCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">export_attrs</span><span class="p">(</span><span class="s">&#39;event_change_device&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">telldus</span><span class="o">.</span><span class="n">tdUnregisterCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">export_attrs</span><span class="p">(</span><span class="s">&#39;event_device&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span><span class="p">)</span>
             <span class="n">telldus</span><span class="o">.</span><span class="n">tdClose</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when stopping bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_stop</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="o">=</span> <span class="n">stop</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_del__</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__del__</span> <span class="o">=</span> <span class="n">__del__</span>
 
     <span class="k">def</span> <span class="nf">tellstick_turnon</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Turn on a telldus device&quot;&quot;&quot;</span>
@@ -342,7 +428,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_turnoff</span> <span class="o">=</span> <span class="n">tellstick_turnoff</span>
 
     <span class="k">def</span> <span class="nf">tellstick_dim</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Dim a telldus device. Level from 0 to 255.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Dim a telldus device. Level from 0 to 100.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdMethods</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
@@ -356,7 +442,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_dim</span> <span class="o">=</span> <span class="n">tellstick_dim</span>
 
     <span class="k">def</span> <span class="nf">tellstick_execute</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;execute a telldus device. Level from 0 to 255.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;execute a telldus device.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdMethods</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
@@ -369,6 +455,25 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_execute</span> <span class="o">=</span> <span class="n">tellstick_execute</span>
 
+    <span class="k">def</span> <span class="nf">tellstick_resend</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Resend last command to a telldus device.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_acquire</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdLastSentCommand</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
+                <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOn</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">:</span>
+                <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Unknown resend method </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_up&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_resend</span> <span class="o">=</span> <span class="n">tellstick_resend</span>
+
     <span class="k">def</span> <span class="nf">tellstick_up</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;up a telldus device.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_acquire</span><span class="p">()</span>
@@ -376,6 +481,10 @@
             <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdMethods</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdUp</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
+                <span class="c">#Emulate up by turnon</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_turnon</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_up&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
@@ -391,19 +500,27 @@
             <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdDown</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">:</span>
+                <span class="c">#Emulate down by turnoff</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_turnoff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_down&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_down</span> <span class="o">=</span> <span class="n">tellstick_down</span>
 
-    <span class="k">def</span> <span class="nf">tellstick_stop</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tellstick_stop</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;stop a telldus device. Level from 0 to 255.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_acquire</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdMethods</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdStop</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span> <span class="ow">or</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
+                <span class="c">#Emulate stop by resending</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_resend</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_stop&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
@@ -479,12 +596,13 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found components </span><span class="si">%s</span><span class="s"> after discover&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_discover_new_devices</span> <span class="o">=</span> <span class="n">tellstick_discover_new_devices</span>
 
-    <span class="k">def</span> <span class="nf">tellstick_update_device_component</span><span class="p">(</span><span class="n">node_hadd</span><span class="p">,</span> <span class="n">component_uuid</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tellstick_update_device_component</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">component_uuid</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;We can&#39;t make a distinction between a switch, a remote controler, a door sensors or a light sensor.</span>
 <span class="sd">        So we need to update it after discovering.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_node_by_hadd</span><span class="p">(</span><span class="n">node_hadd</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found node </span><span class="si">%s</span><span class="s"> with uid </span><span class="si">%s</span><span class="s"> in </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_hadd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span> <span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_node</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">)</span>
+        <span class="c">#~ node = self.nodeman.find_node_by_hadd(node_hadd)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found node </span><span class="si">%s</span><span class="s"> with uid </span><span class="si">%s</span><span class="s"> in </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span> <span class="p">)</span>
         <span class="n">add_ctrl</span><span class="p">,</span> <span class="n">add_node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">split_hadd</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">mqtt_heartbeat</span><span class="o">.</span><span class="n">publish_heartbeat</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">add_ctrl</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">add_node</span><span class="p">),</span> <span class="s">&#39;OFFLINE&#39;</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
