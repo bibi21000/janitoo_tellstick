@@ -104,29 +104,6 @@ class TellstickDevice(JNTComponent):
             product_manufacturer=product_manufacturer
         )
 
-    def set_switch(self, node_uuid, index, data):
-        """Switch On/Off a dimmer
-        """
-        add_ctrl, add_node = self.node.split_hadd()
-        tdev = self._bus.get_tdev_from_hadd(add_node)
-        if data == 'on':
-            self._bus.tellstick_turnon(tdev)
-        elif data == 'off':
-            self._bus.tellstick_turnoff(tdev)
-        else:
-            logger.warning("[%s] - set_switch unknown data : %s", self.__class__.__name__, data)
-
-    def set_dim(self, node_uuid, index, data):
-        """Dim a dimmer
-        """
-        add_ctrl, add_node = self.node.split_hadd()
-        tdev = self._bus.get_tdev_from_hadd(add_node)
-        if data > 100:
-            data = 100
-        elif data < 0:
-            data = 0
-        self._bus.tellstick_dim(tdev)
-
 class TellstickSensor(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
 
@@ -134,6 +111,23 @@ class TellstickSensor(TellstickDevice):
         """ Constructor.
         """
         oid = kwargs.pop('oid', '%s.sensor'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick sensor")
+        name = kwargs.pop('name', "Tellstick sensor")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+        )
+
+class TellstickRemote(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.remote'%OID)
         product_name = kwargs.pop('product_name', "Tellstick sensor")
         name = kwargs.pop('name', "Tellstick sensor")
         TellstickDevice.__init__(self,
@@ -172,7 +166,20 @@ class TellstickSwitch(TellstickDevice):
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
 
-class TellstickDimmer(TellstickDevice):
+    def set_switch(self, node_uuid, index, data):
+        """Switch On/Off a dimmer
+        """
+        add_ctrl, add_node = self.node.split_hadd()
+        tdev = self._bus.get_tdev_from_hadd(add_node)
+        if data == 'on':
+            self._bus.tellstick_turnon(tdev)
+        elif data == 'off':
+            self._bus.tellstick_turnoff(tdev)
+        else:
+            logger.warning("[%s] - set_switch unknown data : %s", self.__class__.__name__, data)
+
+
+class TellstickDimmer(TellstickSwitch):
     """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
@@ -181,24 +188,13 @@ class TellstickDimmer(TellstickDevice):
         oid = kwargs.pop('oid', '%s.dimmer'%OID)
         product_name = kwargs.pop('product_name', "Tellstick dimmer")
         name = kwargs.pop('name', "Tellstick dimmer")
-        TellstickDevice.__init__(self,
+        TellstickSwitch.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
             name=name,
             product_name=product_name,
         )
-
-        uuid="switch"
-        self.values[uuid] = self.value_factory['action_switch_binary'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            list_items=['on', 'off'],
-            default='off',
-            set_data_cb=self.set_switch,
-            genre=0x01,
-        )
-        poll_value = self.values[uuid].create_poll_value(default=300)
-        self.values[poll_value.uuid] = poll_value
 
         uuid="dim"
         self.values[uuid] = self.value_factory['action_switch_multilevel'](options=self.options, uuid=uuid,
@@ -210,6 +206,17 @@ class TellstickDimmer(TellstickDevice):
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
+
+    def set_dim(self, node_uuid, index, data):
+        """Dim a dimmer
+        """
+        add_ctrl, add_node = self.node.split_hadd()
+        tdev = self._bus.get_tdev_from_hadd(add_node)
+        if data > 100:
+            data = 100
+        elif data < 0:
+            data = 0
+        self._bus.tellstick_dim(tdev)
 
 class TellstickShutter(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -244,12 +251,13 @@ class TellstickShutter(TellstickDevice):
         """
         add_ctrl, add_node = self.node.split_hadd()
         tdev = self._bus.get_tdev_from_hadd(add_node)
+        #We should add the up, down and stop command too
         if data == 'up':
-            self._bus.tellstick_turnon(tdev)
+            self._bus.tellstick_up(tdev)
         elif data == 'down':
-            self._bus.tellstick_turnoff(tdev)
+            self._bus.tellstick_down(tdev)
         elif data == 'stop':
-            self._bus.tellstick_resend(tdev)
+            self._bus.tellstick_stop(tdev)
         else:
             logger.warning("[%s] - set_shutter unknown data : %s", self.__class__.__name__, data)
 

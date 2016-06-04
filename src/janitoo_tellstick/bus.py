@@ -363,6 +363,10 @@ def extend_duo( self ):
             if methods & self.TELLSTICK_UP:
                 telldus.tdUp(tdev)
                 time.sleep(self._lock_delay)
+            elif methods & self.TELLSTICK_TURNON:
+                #Emulate up by turnon
+                self.tellstick_turnon(tdev)
+                time.sleep(self._lock_delay)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
         finally:
@@ -377,19 +381,27 @@ def extend_duo( self ):
             if methods & self.TELLSTICK_DOWN:
                 telldus.tdDown(tdev)
                 time.sleep(self._lock_delay)
+            elif methods & self.TELLSTICK_TURNOFF:
+                #Emulate down by turnoff
+                self.tellstick_turnoff(tdev)
+                time.sleep(self._lock_delay)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_down', self.__class__.__name__)
         finally:
             self.tellstick_release()
     self.tellstick_down = tellstick_down
 
-    def tellstick_stop(tdev, level):
+    def tellstick_stop(tdev):
         """stop a telldus device. Level from 0 to 255."""
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)
             if methods & self.TELLSTICK_STOP:
                 telldus.tdStop(tdev)
+                time.sleep(self._lock_delay)
+            elif methods & self.TELLSTICK_TURNOFF or methods & self.TELLSTICK_TURNON:
+                #Emulate stop by resending
+                self.tellstick_resend(tdev)
                 time.sleep(self._lock_delay)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_stop', self.__class__.__name__)
