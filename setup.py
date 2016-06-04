@@ -106,6 +106,10 @@ setup(
             "tellstick.dimmer = janitoo_tellstick.components:make_dimmer",
             "tellstick.shutter = janitoo_tellstick.components:make_shutter",
             "tellstick.bell = janitoo_tellstick.components:make_bell",
+            "tellstick.magnetic = janitoo_tellstick.components:make_magnetic",
+            "tellstick.pir = janitoo_tellstick.components:make_pir",
+            "tellstick.daylight = janitoo_tellstick.components:make_daylight",
+            "tellstick.remote = janitoo_tellstick.components:make_remote",
         ],
         "tellstick.extensions": [
             "duo = janitoo_tellstick.bus:extend_duo",

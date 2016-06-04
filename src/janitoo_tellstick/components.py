@@ -32,7 +32,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from subprocess import PIPE
-from janitoo.utils import json_dumps, json_loads
+from janitoo.utils import json_dumps, json_loads, HADD_SEP
 from janitoo.component import JNTComponent
 
 from janitoo_tellstick import OID
@@ -71,22 +71,27 @@ def make_shutter(**kwargs):
 def make_bell(**kwargs):
     return TellstickBell(**kwargs)
 
+def make_daylight(**kwargs):
+    return TellstickDaylight(**kwargs)
+
+def make_magnetic(**kwargs):
+    return TellstickMagnetic(**kwargs)
+
+def make_pir(**kwargs):
+    return TellstickPir(**kwargs)
+
+def make_remote(**kwargs):
+    return TellstickMagnetic(**kwargs)
+
 class TellstickDevice(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.device'%OID)
-        product_name = kwargs.pop('product_name', "Telldus device")
-        product_type = kwargs.pop('product_type', "Telldus device")
+        product_name = kwargs.pop('product_name', "Unknown device")
+        product_type = kwargs.pop('product_type', "Tellstick device")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus device")
         JNTComponent.__init__(self,
@@ -99,81 +104,84 @@ class TellstickDevice(JNTComponent):
             product_manufacturer=product_manufacturer
         )
 
-class TellstickSensor(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+    def set_switch(self, node_uuid, index, data):
+        """Switch On/Off a dimmer
+        """
+        add_ctrl, add_node = self.node.split_hadd()
+        tdev = self._bus.get_tdev_from_hadd(add_node)
+        if data == 'on':
+            self._bus.tellstick_turnon(tdev)
+        elif data == 'off':
+            self._bus.tellstick_turnoff(tdev)
+        else:
+            logger.warning("[%s] - set_switch unknown data : %s", self.__class__.__name__, data)
+
+    def set_dim(self, node_uuid, index, data):
+        """Dim a dimmer
+        """
+        add_ctrl, add_node = self.node.split_hadd()
+        tdev = self._bus.get_tdev_from_hadd(add_node)
+        if data > 100:
+            data = 100
+        elif data < 0:
+            data = 0
+        self._bus.tellstick_dim(tdev)
+
+class TellstickSensor(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.sensor'%OID)
-        product_name = kwargs.pop('product_name', "Telldus sensor")
-        product_type = kwargs.pop('product_type', "Telldus sensor")
-        product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
-        name = kwargs.pop('name', "Telldus sensor")
-        JNTComponent.__init__(self,
+        product_name = kwargs.pop('product_name', "Tellstick sensor")
+        name = kwargs.pop('name', "Tellstick sensor")
+        TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
             name=name,
             product_name=product_name,
-            product_type=product_type,
-            product_manufacturer=product_manufacturer
         )
 
-class TellstickSwitch(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+class TellstickSwitch(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.switch'%OID)
-        product_name = kwargs.pop('product_name', "Telldus switch")
-        product_type = kwargs.pop('product_type', "Telldus switch")
-        product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
-        name = kwargs.pop('name', "Telldus switch")
-        JNTComponent.__init__(self,
+        product_name = kwargs.pop('product_name', "Tellstick switch")
+        name = kwargs.pop('name', "Tellstick switch")
+        TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
             name=name,
             product_name=product_name,
-            product_type=product_type,
-            product_manufacturer=product_manufacturer
         )
 
-class TellstickDimmer(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+        uuid="switch"
+        self.values[uuid] = self.value_factory['action_switch_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['on', 'off'],
+            default='off',
+            set_data_cb=self.set_switch,
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+class TellstickDimmer(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.dimmer'%OID)
-        product_name = kwargs.pop('product_name', "Telldus dimmer")
-        product_type = kwargs.pop('product_type', "Telldus dimmer")
-        product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
-        name = kwargs.pop('name', "Telldus dimmer")
-        JNTComponent.__init__(self,
+        product_name = kwargs.pop('product_name', "Tellstick dimmer")
+        name = kwargs.pop('name', "Tellstick dimmer")
+        TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
@@ -183,58 +191,92 @@ class TellstickDimmer(JNTComponent):
             product_manufacturer=product_manufacturer
         )
 
-class TellstickShutter(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+        uuid="switch"
+        self.values[uuid] = self.value_factory['action_switch_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['on', 'off'],
+            default='off',
+            set_data_cb=self.set_switch,
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid="dim"
+        self.values[uuid] = self.value_factory['action_switch_multilevel'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='Dim a dimmer. A byte from 0 to 100',
+            label='Level',
+            default=0,
+            set_data_cb=self.set_dim,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+class TellstickShutter(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.shutter'%OID)
-        product_name = kwargs.pop('product_name', "Telldus shutter")
-        product_type = kwargs.pop('product_type', "Telldus shutter")
-        product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
-        name = kwargs.pop('name', "Telldus shutter")
-        JNTComponent.__init__(self,
+        product_name = kwargs.pop('product_name', "Tellstick shutter")
+        name = kwargs.pop('name', "Tellstick shutter")
+        TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
             name=name,
             product_name=product_name,
-            product_type=product_type,
-            product_manufacturer=product_manufacturer
         )
 
-class TellstickBell(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+class TellstickBell(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
         """ Constructor.
-
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
         """
         oid = kwargs.pop('oid', '%s.bell'%OID)
-        product_name = kwargs.pop('product_name', "Telldus bell")
-        product_type = kwargs.pop('product_type', "Telldus bell")
-        product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
-        name = kwargs.pop('name', "Telldus bell")
-        JNTComponent.__init__(self,
+        product_name = kwargs.pop('product_name', "Tellstick bell")
+        name = kwargs.pop('name', "Tellstick bell")
+        TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
             name=name,
             product_name=product_name,
-            product_type=product_type,
-            product_manufacturer=product_manufacturer
+        )
+
+class TellstickDaylight(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.daylight'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick daylight")
+        name = kwargs.pop('name', "Tellstick daylight")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+        )
+
+class TellstickMagnetic(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.magnetic'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick magnetic")
+        name = kwargs.pop('name', "Tellstick magnetic")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
         )

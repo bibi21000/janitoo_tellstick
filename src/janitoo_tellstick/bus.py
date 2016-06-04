@@ -175,6 +175,10 @@ class TellstickBus(JNTBus):
         """Stop a telldus device."""
         pass
 
+    def tellstick_resend(tdev):
+        """Resend last command to a telldus device."""
+        pass
+
     def tellstick_acquire(self, blocking=True):
         """Get a lock on the bus"""
         if self._tellstick_lock.acquire(blocking):
@@ -202,6 +206,7 @@ def extend_duo( self ):
     def get_tdev_from_hadd(hadd):
         """
         """
+        hadd = int(hadd)
         return hadd-1
     self.get_tdev_from_hadd = get_tdev_from_hadd
 
@@ -304,7 +309,7 @@ def extend_duo( self ):
     self.tellstick_turnoff = tellstick_turnoff
 
     def tellstick_dim(tdev, level):
-        """Dim a telldus device. Level from 0 to 255."""
+        """Dim a telldus device. Level from 0 to 100."""
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)
@@ -318,7 +323,7 @@ def extend_duo( self ):
     self.tellstick_dim = tellstick_dim
 
     def tellstick_execute(tdev, level):
-        """execute a telldus device. Level from 0 to 255."""
+        """execute a telldus device."""
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)
@@ -330,6 +335,20 @@ def extend_duo( self ):
         finally:
             self.tellstick_release()
     self.tellstick_execute = tellstick_execute
+
+    def tellstick_resend(tdev, level):
+        """Resend last command to a telldus device."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_UP:
+                telldus.tdUp(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_resend = tellstick_resend
 
     def tellstick_up(tdev, level):
         """up a telldus device."""

@@ -83,3 +83,23 @@ class TestComponentBell(JNTTComponent, JNTTComponentCommon):
     """Test the component
     """
     component_name = "tellstick.bell"
+
+class TestComponentPir(JNTTComponent, JNTTComponentCommon):
+    """Test the component
+    """
+    component_name = "tellstick.pir"
+
+class TestComponentDaylight(JNTTComponent, JNTTComponentCommon):
+    """Test the component
+    """
+    component_name = "tellstick.daylight"
+
+class TestComponentMagnetic(JNTTComponent, JNTTComponentCommon):
+    """Test the component
+    """
+    component_name = "tellstick.magnetic"
+
+class TestComponentRemote(JNTTComponent, JNTTComponentCommon):
+    """Test the component
+    """
+    component_name = "tellstick.remote"
