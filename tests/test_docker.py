@@ -41,12 +41,38 @@ from janitoo.runner import Runner, jnt_parse_args
 from janitoo.server import JNTServer
 from janitoo.utils import HADD_SEP, HADD
 
-import test_server
+class TestTellstickDuoSerser(JNTTDockerServerCommon, JNTTDockerServer):
+    """Test the server
+    """
+    loglevel = logging.DEBUG
+    path = '/tmp/janitoo_test'
+    broker_user = 'toto'
+    broker_password = 'toto'
+    server_class = JNTServer
+    server_conf = "tests/data/janitoo_tellstick.conf"
+    server_section = "tellstick"
+    hadds = [HADD%(163,0)]
 
-class TestTellstickSerser(test_server.TestTellstickSerser):
-    pass
+class TestTellstickDuoSerser(JNTTDockerServerCommon, JNTTDockerServer):
+    """Test the server
+    """
+    loglevel = logging.DEBUG
+    path = '/tmp/janitoo_test'
+    broker_user = 'toto'
+    broker_password = 'toto'
+    server_class = JNTServer
+    server_conf = "tests/data/janitoo_tellstick_duo.conf"
+    server_section = "tellstick"
+    hadds = [HADD%(163,0)]
 
-class TestTellstickDuoSerser(test_server.TestTellstickDuoSerser):
-    pass
-
-
+    def test_100_discover_devices(self):
+        self.start()
+        time.sleep(10)
+        thread = self.server.find_thread(self.server_section)
+        self.assertNotEqual(thread, None)
+        self.assertIsInstance(thread, JNTBusThread)
+        bus = thread.bus
+        self.assertNotEqual(bus, None)
+        self.waitHeartbeatNodes(hadds=self.hadds)
+        bus.tellstick_discover_new_devices()
+        time.sleep(30)
