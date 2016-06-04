@@ -30,9 +30,9 @@ __copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi2100
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
 logger = logging.getLogger(__name__)
-import os
-from subprocess import Popen, PIPE
-from janitoo.utils import HADD_SEP, json_dumps, json_loads
+
+from subprocess import PIPE
+from janitoo.utils import json_dumps, json_loads
 from janitoo.component import JNTComponent
 
 from janitoo_tellstick import OID
@@ -89,7 +89,15 @@ class TellstickDevice(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus device")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus device")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
 
 class TellstickSensor(JNTComponent):
     """ Provides the interface for a DS18B20 device. """
@@ -109,7 +117,15 @@ class TellstickSensor(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus sensor")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus sensor")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
 
 class TellstickSwitch(JNTComponent):
     """ Provides the interface for a DS18B20 device. """
@@ -129,7 +145,15 @@ class TellstickSwitch(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus switch")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus switch")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
 
 class TellstickDimmer(JNTComponent):
     """ Provides the interface for a DS18B20 device. """
@@ -149,7 +173,15 @@ class TellstickDimmer(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus dimmer")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus dimmer")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
 
 class TellstickShutter(JNTComponent):
     """ Provides the interface for a DS18B20 device. """
@@ -169,7 +201,15 @@ class TellstickShutter(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus shutter")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus shutter")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
 
 class TellstickBell(JNTComponent):
     """ Provides the interface for a DS18B20 device. """
@@ -189,4 +229,12 @@ class TellstickBell(JNTComponent):
         product_type = kwargs.pop('product_type', "Telldus bell")
         product_manufacturer = kwargs.pop('product_manufacturer', "Janitoo")
         name = kwargs.pop('name', "Telldus bell")
-        JNTComponent.__init__(self, oid=oid, bus=bus, addr=addr, name=name, product_name=product_name, product_type=product_type, product_manufacturer=product_manufacturer)
+        JNTComponent.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            product_type=product_type,
+            product_manufacturer=product_manufacturer
+        )
