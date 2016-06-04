@@ -133,7 +133,6 @@ class TellstickRemote(TellstickDevice):
             node_uuid=self.uuid,
             label="groupe",
             default='off',
-            set_data_cb=self.set_button,
             genre=0x01,
         )
         poll_value = self.values[uuid].create_poll_value(default=300)

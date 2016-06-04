@@ -1,14 +1,8 @@
 README.rst
 setup.py
 src/janitoo_tellstick/__init__.py
-src/janitoo_tellstick/agotellstick.py
 src/janitoo_tellstick/bus.py
 src/janitoo_tellstick/components.py
-src/janitoo_tellstick/server.py
-src/janitoo_tellstick/tellstickbase.py
-src/janitoo_tellstick/tellstickduo.py
-src/janitoo_tellstick/tellsticknet.py
-src/janitoo_tellstick/tellsticktoken.py
 src/janitoo_tellstick/thread.py
 src/janitoo_tellstick.egg-info/PKG-INFO
 src/janitoo_tellstick.egg-info/SOURCES.txt

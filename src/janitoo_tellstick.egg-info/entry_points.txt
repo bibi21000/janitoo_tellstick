@@ -1,7 +1,11 @@
 [janitoo.components]
 tellstick.bell = janitoo_tellstick.components:make_bell
+tellstick.daylight = janitoo_tellstick.components:make_daylight
 tellstick.device = janitoo_tellstick.components:make_device
 tellstick.dimmer = janitoo_tellstick.components:make_dimmer
+tellstick.magnetic = janitoo_tellstick.components:make_magnetic
+tellstick.pir = janitoo_tellstick.components:make_pir
+tellstick.remote = janitoo_tellstick.components:make_remote
 tellstick.sensor = janitoo_tellstick.components:make_sensor
 tellstick.shutter = janitoo_tellstick.components:make_shutter
 tellstick.switch = janitoo_tellstick.components:make_switch
