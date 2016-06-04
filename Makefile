@@ -95,7 +95,7 @@ endif
 	@echo "Dependencies for ${MODULENAME} finished."
 
 /etc/apt/sources.list.d/telldus.list:
-	echo "deb http://download.telldus.com/debian/ stable main" > /etc/apt/sources.list.d/telldus.list
+	echo "deb http://download.telldus.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/telldus.list
 	@echo "Install telldus for $(distro):$(codename)."
 ifeq ($(distro),Debian)
 	wget -qO - http://download.telldus.se/debian/telldus-public.key | sudo apt-key add -
