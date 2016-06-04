@@ -187,8 +187,6 @@ class TellstickDimmer(TellstickDevice):
             addr=addr,
             name=name,
             product_name=product_name,
-            product_type=product_type,
-            product_manufacturer=product_manufacturer
         )
 
         uuid="switch"
@@ -229,6 +227,31 @@ class TellstickShutter(TellstickDevice):
             name=name,
             product_name=product_name,
         )
+
+        uuid="shutter"
+        self.values[uuid] = self.value_factory['action_shutter_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['up', 'down', 'stop'],
+            default='up',
+            set_data_cb=self.set_shutter,
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+    def set_shutter(self, node_uuid, index, data):
+        """Shutter
+        """
+        add_ctrl, add_node = self.node.split_hadd()
+        tdev = self._bus.get_tdev_from_hadd(add_node)
+        if data == 'up':
+            self._bus.tellstick_turnon(tdev)
+        elif data == 'down':
+            self._bus.tellstick_turnoff(tdev)
+        elif data == 'stop':
+            self._bus.tellstick_resend(tdev)
+        else:
+            logger.warning("[%s] - set_shutter unknown data : %s", self.__class__.__name__, data)
 
 class TellstickBell(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -273,6 +296,23 @@ class TellstickMagnetic(TellstickDevice):
         oid = kwargs.pop('oid', '%s.magnetic'%OID)
         product_name = kwargs.pop('product_name', "Tellstick magnetic")
         name = kwargs.pop('name', "Tellstick magnetic")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+        )
+
+class TellstickPir(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.pir'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick pir")
+        name = kwargs.pop('name', "Tellstick pir")
         TellstickDevice.__init__(self,
             oid=oid,
             bus=bus,

@@ -336,14 +336,19 @@ def extend_duo( self ):
             self.tellstick_release()
     self.tellstick_execute = tellstick_execute
 
-    def tellstick_resend(tdev, level):
+    def tellstick_resend(tdev):
         """Resend last command to a telldus device."""
         self.tellstick_acquire()
         try:
-            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
-            if methods & self.TELLSTICK_UP:
-                telldus.tdUp(tdev)
+            methods = telldus.tdLastSentCommand(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_TURNON:
+                telldus.tdTurnOn(tdev)
                 time.sleep(self._lock_delay)
+            elif methods & self.TELLSTICK_TURNOFF:
+                telldus.tdTurnOff(tdev)
+                time.sleep(self._lock_delay)
+            else:
+                logger.warning('[%s] - Unknown resend method %s', self.__class__.__name__, methods)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
         finally:
