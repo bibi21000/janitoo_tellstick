@@ -41,3 +41,12 @@ from janitoo.runner import Runner, jnt_parse_args
 from janitoo.server import JNTServer
 from janitoo.utils import HADD_SEP, HADD
 
+import test_server
+
+class TestTellstickSerser(test_server.TestTellstickSerser):
+    pass
+
+class TestTellstickDuoSerser(test_server.TestTellstickDuoSerser):
+    pass
+
+

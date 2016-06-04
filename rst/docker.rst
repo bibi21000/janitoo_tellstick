@@ -25,13 +25,13 @@ Create a 'store' container  :
 
 .. code:: bash
 
-    $ docker create -v /root/.ssh/ -v /opt/janitoo/etc/ --name tellstick_store bibi21000/janitoo_tellstick /bin/true
+    $ docker create -v /root/.ssh/ --privileged -v /dev/bus/usb:/dev/bus/usb -v /opt/janitoo/etc/ --name tellstick_store bibi21000/janitoo_tellstick /bin/true
 
 Create a 'running' container :
 
 .. code:: bash
 
-    $ docker create --volumes-from tellstick_store -p 8884:22 --name tellstick_running bibi21000/janitoo_tellstick
+    $ docker create --volumes-from tellstick_store --privileged -p 8884:22 --name tellstick_running bibi21000/janitoo_tellstick
 
 Yous should now have 2 created containers :
 
