@@ -250,7 +250,6 @@ def extend_duo( self ):
                 telldus.tdUnregisterCallback(self.event_device)
                 self.event_device = None
                 self.export_attrs('event_device', self.event_device)
-            telldus.tdClose()
         except Exception:
             logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
         return self._telldusduo_stop()
