@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+"""Unittests for Janitoo-common.
+"""
 __license__ = """
     This file is part of Janitoo.
 
@@ -20,10 +23,21 @@ __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
 __copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
-try:                                                        # pragma: no cover
-    __import__('pkg_resources').declare_namespace(__name__) # pragma: no cover
-except Exception:                                                     # pragma: no cover
-    # bootstrapping                                         # pragma: no cover
-    pass                                                    # pragma: no cover
+import warnings
+warnings.filterwarnings("ignore")
 
-OID = 'tellstick'
+import sys, os
+import time
+import unittest
+import logging
+import threading
+import mock
+import logging
+
+from janitoo_nosetests import JNTTBase
+from janitoo_nosetests.server import JNTTDockerServerCommon, JNTTDockerServer
+
+from janitoo.runner import Runner, jnt_parse_args
+from janitoo.server import JNTServer
+from janitoo.utils import HADD_SEP, HADD
+

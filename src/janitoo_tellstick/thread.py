@@ -25,63 +25,37 @@ __license__ = """
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-__copyright__ = "Copyright © 2013-2014-2015 Sébastien GALLET aka bibi21000"
+__copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
-try:  # Python 2.7+                                   # pragma: no cover
-    from logging import NullHandler                   # pragma: no cover
-except ImportError:                                   # pragma: no cover
-    class NullHandler(logging.Handler):               # pragma: no cover
-        """NullHandler logger for python 2.6"""       # pragma: no cover
-        def emit(self, record):                       # pragma: no cover
-            pass                                      # pragma: no cover
-logger = logging.getLogger('janitoo.roomba')
+logger = logging.getLogger(__name__)
 import os, sys
 import threading
 import requests
 from datetime import datetime, timedelta
-from janitoo.thread import JNTThread
+from janitoo.thread import JNTBusThread
 from janitoo.options import get_option_autostart
 from janitoo.utils import HADD, json_dumps, json_loads
 from janitoo.node import JNTNode
 from janitoo.value import JNTValue
-from bus import TellstickBus
 
-def make_thread(options):
-    if get_option_autostart(options, 'samsung') == True:
+from janitoo_tellstick import OID
+
+def make_thread(options, force=False):
+    if get_option_autostart(options, OID) or force:
         return TellstickThread(options)
     else:
         return None
 
-class TellstickThread(JNTThread):
-    """The Tellstick thread
+class TellstickThread(JNTBusThread):
+    """The thermal thread
 
     """
-    def boot(self):
-        """configure the HADD address
+    def init_bus(self):
+        """Build the bus
         """
-        self.add_ctrl = 56
-        self.hadds = { 0 : HADD%(self.add_ctrl,0),
-                       'tv1' : HADD%(self.add_ctrl,1),
-                       'tv2' : HADD%(self.add_ctrl,2),
-                     }
-
-    def pre_loop(self):
-        """Pre-Run the loop
-        """
-        self._tellstick_bus = TellstickBus(options=self.options)
-        settings = self.get_settings('samsung')
-        self.apply_settings(self._tellstick_bus, settings)
-        self._tellstick_bus.start(self.mqtt_nodes, self.trigger_reload)
-        components = self.get_components('samsung')
-        self.build_bus_components('samsung', components, self._tellstick_bus)
-        logger.info('Load %s component(s)', len(components))
-
-    def post_loop(self):
-        """Post-Run the loop
-        """
-        if self._tellstick_bus != None:
-            self._tellstick_bus.stop()
-        self._tellstick_bus = None
+        from janitoo_tellstick.bus import TellstickBus
+        self.section = OID
+        self.bus = TellstickBus(options=self.options, oid=self.section, product_name="Tellstick bus controller")
 

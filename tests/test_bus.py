@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Unittests for Datalog Server.
+"""Unittests for Janitoo-Roomba Server.
 """
 __license__ = """
     This file is part of Janitoo.
@@ -23,6 +23,9 @@ __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
 __copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
+import warnings
+warnings.filterwarnings("ignore")
+
 import sys, os
 import time, datetime
 import unittest
@@ -31,8 +34,8 @@ import logging
 from pkg_resources import iter_entry_points
 
 from janitoo_nosetests.server import JNTTServer, JNTTServerCommon
-from janitoo_nosetests.thread import JNTTThread, JNTTThreadCommon
-from janitoo_nosetests.packaging import JNTTPackaging, JNTTPackagingCommon
+from janitoo_nosetests.bus import JNTTBus, JNTTBusCommon
+from janitoo_nosetests.component import JNTTComponent, JNTTComponentCommon
 
 from janitoo.utils import json_dumps, json_loads
 from janitoo.utils import HADD_SEP, HADD
@@ -41,17 +44,10 @@ from janitoo.utils import TOPIC_NODES, TOPIC_NODES_REPLY, TOPIC_NODES_REQUEST
 from janitoo.utils import TOPIC_BROADCAST_REPLY, TOPIC_BROADCAST_REQUEST
 from janitoo.utils import TOPIC_VALUES_USER, TOPIC_VALUES_CONFIG, TOPIC_VALUES_SYSTEM, TOPIC_VALUES_BASIC
 
-##############################################################
-#Check that we are in sync with the official command classes
-#Must be implemented for non-regression
-from janitoo.classes import COMMAND_DESC
+from janitoo_tellstick.bus import TellstickBus
 
-COMMAND_DISCOVERY = 0x5000
-
-assert(COMMAND_DESC[COMMAND_DISCOVERY] == 'COMMAND_DISCOVERY')
-##############################################################
-
-class TestPackage(JNTTPackaging, JNTTPackagingCommon):
-    """Test the DatalogServer server
+class TestTellstickBus(JNTTBus, JNTTBusCommon):
+    """Test the bus
     """
-    pass
+    oid = 'tellstick'
+    bus = TellstickBus

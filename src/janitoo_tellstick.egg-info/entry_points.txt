@@ -1,6 +1,15 @@
 [janitoo.components]
-tellstick.duo = janitoo_tellstick.bus:make_duo
+tellstick.bell = janitoo_tellstick.components:make_bell
+tellstick.device = janitoo_tellstick.components:make_device
+tellstick.dimmer = janitoo_tellstick.components:make_dimmer
+tellstick.sensor = janitoo_tellstick.components:make_sensor
+tellstick.shutter = janitoo_tellstick.components:make_shutter
+tellstick.switch = janitoo_tellstick.components:make_switch
 
 [janitoo.threads]
 tellstick = janitoo_tellstick.thread:make_thread
+
+[tellstick.extensions]
+duo = janitoo_tellstick.bus:extend_duo
+net = janitoo_tellstick.bus:extend_net
 

@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The Roomba Janitoo helper
-It handle all communications to the Roomba vacuum
-
-
+"""The Raspberry i2c bus
 
 """
 
@@ -25,217 +22,367 @@ __license__ = """
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-__copyright__ = "Copyright © 2013-2014-2015 Sébastien GALLET aka bibi21000"
+__copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
-try:  # Python 2.7+                                   # pragma: no cover
-    from logging import NullHandler                   # pragma: no cover
-except ImportError:                                   # pragma: no cover
-    class NullHandler(logging.Handler):               # pragma: no cover
-        """NullHandler logger for python 2.6"""       # pragma: no cover
-        def emit(self, record):                       # pragma: no cover
-            pass                                      # pragma: no cover
-logger = logging.getLogger('janitoo.roomba')
+logger = logging.getLogger(__name__)
 import os, sys
 import threading
 import time
-from datetime import datetime, timedelta
-from subprocess import Popen, PIPE
-import base64
-from subprocess import Popen, PIPE
-import re
+import datetime
 import socket
-from janitoo.thread import JNTThread
-from janitoo.options import get_option_autostart
-from janitoo.utils import HADD, HADD_SEP, json_dumps, json_loads
-from janitoo.node import JNTNode
-from janitoo.value import JNTValue
-from janitoo.component import JNTComponent
+
+from janitoo.thread import JNTBusThread
 from janitoo.bus import JNTBus
-from janitoo.classes import COMMAND_DESC
+from janitoo.component import JNTComponent
+from janitoo.thread import BaseThread
+from janitoo.options import get_option_autostart
+from janitoo.utils import HADD
 
 ##############################################################
 #Check that we are in sync with the official command classes
 #Must be implemented for non-regression
 from janitoo.classes import COMMAND_DESC
 
-COMMAND_DISPLAY = 0x0061
-COMMAND_AV_CHANNEL = 0x2100
-COMMAND_AV_VOLUME = 0x2101
-COMMAND_NOTIFY = 0x3010
+COMMAND_CAMERA_PREVIEW = 0x2200
+COMMAND_CAMERA_PHOTO = 0x2201
+COMMAND_CAMERA_VIDEO = 0x2202
+COMMAND_CAMERA_STREAM = 0x2203
 
-assert(COMMAND_DESC[COMMAND_DISPLAY] == 'COMMAND_DISPLAY')
-assert(COMMAND_DESC[COMMAND_AV_CHANNEL] == 'COMMAND_AV_CHANNEL')
-assert(COMMAND_DESC[COMMAND_AV_VOLUME] == 'COMMAND_AV_VOLUME')
-assert(COMMAND_DESC[COMMAND_NOTIFY] == 'COMMAND_NOTIFY')
+assert(COMMAND_DESC[COMMAND_CAMERA_PREVIEW] == 'COMMAND_CAMERA_PREVIEW')
+assert(COMMAND_DESC[COMMAND_CAMERA_PHOTO] == 'COMMAND_CAMERA_PHOTO')
+assert(COMMAND_DESC[COMMAND_CAMERA_VIDEO] == 'COMMAND_CAMERA_VIDEO')
+assert(COMMAND_DESC[COMMAND_CAMERA_STREAM] == 'COMMAND_CAMERA_STREAM')
 ##############################################################
 
-def make_duo(**kwargs):
-    return TellstickDevice(**kwargs)
-
-def make_device(**kwargs):
-    return TellstickDevice(**kwargs)
-
-def make_sensor(**kwargs):
-    return TellstickSensor(**kwargs)
+from janitoo_tellstick import OID
 
 class TellstickBus(JNTBus):
-    """A pseudo-bus to manage all TVs
+    """A pseudo-bus to handle the tellstick
     """
-    def __init__(self, name='Samsung bus', **kwargs):
+
+    def __init__(self, **kwargs):
         """
         :param int bus_id: the SMBus id (see Raspberry Pi documentation)
         :param kwargs: parameters transmitted to :py:class:`smbus.SMBus` initializer
         """
-        JNTBus.__init__(self, 'samsung', name=name, **kwargs)
+        JNTBus.__init__(self, **kwargs)
+        self._tellstick_lock = threading.Lock()
+        self.load_extensions(OID)
 
-    @property
-    def uuid(self):
-        """Return an uuid for the bus
+        self.TELLSTICK_TURNON = 1
+        self.TELLSTICK_TURNOFF = 2
+        self.TELLSTICK_BELL = 4
+        self.TELLSTICK_TOGGLE = 8
+        self.TELLSTICK_DIM = 16
+        self.TELLSTICK_LEARN = 32
+        self.TELLSTICK_EXECUTE = 64
+        self.TELLSTICK_UP = 128
+        self.TELLSTICK_DOWN = 256
+        self.TELLSTICK_STOP = 512
 
-        """
-        return "samsung"
+        self.TELLSTICK_TEMPERATURE = 1
+        self.TELLSTICK_HUMIDITY = 2
+        self.TELLSTICK_RAINRATE = 4
+        self.TELLSTICK_RAINTOTAL = 8
+        self.TELLSTICK_WINDDIRECTION = 16
+        self.TELLSTICK_WINDAVERAGE = 32
+        self.TELLSTICK_WINDGUST = 64
 
-class TellstickDevice(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+        self.ALL_METHODS = self.TELLSTICK_TURNON | self.TELLSTICK_TURNOFF | self.TELLSTICK_BELL | self.TELLSTICK_DIM | self.TELLSTICK_UP | self.TELLSTICK_DOWN | self.TELLSTICK_STOP
 
-    def __init__(self, bus=None, addr=None, **kwargs):
-        """ Constructor.
+        self._lock_delay = 0.5
 
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
-        """
-        JNTComponent.__init__(self, 'samsung.ue46', bus=bus, addr=addr, name="UE46xxxs Samsung TVs")
-        self.ip = kwargs.get('ip', '192.168.14.50')
-        """The IP address of the tv"""
-        self.port_cmd = int(kwargs.get('port_cmd', 55000))
-        """The port command of the tv"""
-        self.port_notif = int(kwargs.get('port_cmd', 52235))
-        """The port notification of the tv"""
-        self.mac_address = kwargs.get('mac_address', "e4:e0:c5:b3:52:a2")
-        """The mac_address of the tv"""
-        self.remote_name = kwargs.get('remote_name', "Janitoo Remote Control")
-        """The remote_name for the tv"""
-        self.ip_source = kwargs.get('ip_source', None)
-        """The ip of the remote"""
-        self._delay_sleep = 0.05
-        """The delay betwenn two commands to the tv"""
+        self.export_attrs('tellstick_acquire', self.tellstick_acquire)
+        self.export_attrs('tellstick_release', self.tellstick_release)
+        self.export_attrs('tellstick_locked', self.tellstick_locked)
+        self.export_attrs('tellstick_turnon', self.tellstick_turnon)
+        self.export_attrs('tellstick_turnoff', self.tellstick_turnoff)
+        self.export_attrs('tellstick_dim', self.tellstick_dim)
+        self.export_attrs('tellstick_bell', self.tellstick_bell)
+        self.export_attrs('tellstick_execute', self.tellstick_execute)
+        self.export_attrs('tellstick_up', self.tellstick_up)
+        self.export_attrs('tellstick_down', self.tellstick_down)
+        self.export_attrs('tellstick_stop', self.tellstick_stop)
 
-        uuid = '%s__%s'%(self.uuid,'channel_change')
-        value = JNTValue( uuid=uuid,
-                help='Channel change (up=true, down=false)',
-                index=0,
-                cmd_class=COMMAND_AV_CHANNEL,
-                genre=0x02,
-                type=0x01,
-                set_data_cb=self.channel_change,
-                is_writeonly=True,
-                )
-        self.values[uuid] = value
-        uuid = '%s__%s'%(self.uuid,'channel_set')
-        value = JNTValue( uuid=uuid,
-                help='Channel set',
-                index=0,
-                cmd_class=COMMAND_AV_CHANNEL,
-                genre=0x02,
-                type=0x02,
-                set_data_cb=self.channel_set,
-                is_writeonly=True,
-                )
-        self.values[uuid] = value
-        self.cmd_classes.append(COMMAND_AV_CHANNEL)
+    def tellstick_turnon(tdev):
+        """Turn on a telldus device"""
+        pass
 
-    @property
-    def uuid(self):
-        """Return an uuid for the component
+    def tellstick_turnoff(tdev):
+        """Turn off a telldus device"""
+        pass
 
-        """
-        return "samsung__%s" % (self.ip.replace(HADD_SEP,'').replace(':','').replace('/',''))
+    def tellstick_dim(tdev, level):
+        """Dim a telldus device. Level from 0 to 255."""
+        pass
 
-    def check_heartbeat(self):
-        """Check that the component is 'available'
+    def tellstick_learn(tdev):
+        """Learn a telldus device."""
+        pass
 
-        """
-        try:
-            if os.system('ping -c 2 ' + self.ip):
-                return False
+    def tellstick_bell(tdev):
+        """Bell a telldus device."""
+        pass
+
+    def tellstick_execute(tdev):
+        """Execute a scene action."""
+        pass
+
+    def tellstick_up(tdev):
+        """Up a telldus device."""
+        pass
+
+    def tellstick_down(tdev):
+        """Down a telldus device."""
+        pass
+
+    def tellstick_stop(tdev):
+        """Stop a telldus device."""
+        pass
+
+    def tellstick_acquire(self, blocking=True):
+        """Get a lock on the bus"""
+        if self._tellstick_lock.acquire(blocking):
             return True
-        except :
-            logger.exception('[%s] - Exception when checking heartbeat of the tv (%s)', self.__class__.__name__, self.ip)
+        return False
 
-class TellstickSensor(JNTComponent):
-    """ Provides the interface for a DS18B20 device. """
+    def tellstick_release(self):
+        """Release a lock on the bus"""
+        self._tellstick_lock.release()
 
-    def __init__(self, bus=None, addr=None, **kwargs):
-        """ Constructor.
+    def tellstick_locked(self):
+        """Get status of the lock"""
+        return self._tellstick_lock.locked()
 
-        Arguments:
-            bus:
-                a 1-Wire instance representing the bus this device is
-                connected to
-            addr:
-                the 1-Wire device address (in 7 bits format)
+def extend_duo( self ):
+    import telldus
+
+    def get_hadd_from_tdev(tdev):
         """
-        JNTComponent.__init__(self, 'samsung.ue46', bus=bus, addr=addr, name="UE46xxxs Samsung TVs")
-        self.ip = kwargs.get('ip', '192.168.14.50')
-        """The IP address of the tv"""
-        self.port_cmd = int(kwargs.get('port_cmd', 55000))
-        """The port command of the tv"""
-        self.port_notif = int(kwargs.get('port_cmd', 52235))
-        """The port notification of the tv"""
-        self.mac_address = kwargs.get('mac_address', "e4:e0:c5:b3:52:a2")
-        """The mac_address of the tv"""
-        self.remote_name = kwargs.get('remote_name', "Janitoo Remote Control")
-        """The remote_name for the tv"""
-        self.ip_source = kwargs.get('ip_source', None)
-        """The ip of the remote"""
-        self._delay_sleep = 0.05
-        """The delay betwenn two commands to the tv"""
-
-        uuid = '%s__%s'%(self.uuid,'channel_change')
-        value = JNTValue( uuid=uuid,
-                help='Channel change (up=true, down=false)',
-                index=0,
-                cmd_class=COMMAND_AV_CHANNEL,
-                genre=0x02,
-                type=0x01,
-                set_data_cb=self.channel_change,
-                is_writeonly=True,
-                )
-        self.values[uuid] = value
-        uuid = '%s__%s'%(self.uuid,'channel_set')
-        value = JNTValue( uuid=uuid,
-                help='Channel set',
-                index=0,
-                cmd_class=COMMAND_AV_CHANNEL,
-                genre=0x02,
-                type=0x02,
-                set_data_cb=self.channel_set,
-                is_writeonly=True,
-                )
-        self.values[uuid] = value
-        self.cmd_classes.append(COMMAND_AV_CHANNEL)
-
-    @property
-    def uuid(self):
-        """Return an uuid for the component
-
         """
-        return "samsung__%s" % (self.ip.replace(HADD_SEP,'').replace(':','').replace('/',''))
+        return tdev+1
+    self.get_hadd_from_tdev = get_hadd_from_tdev
 
-    def check_heartbeat(self):
-        """Check that the component is 'available'
-
+    def get_tdev_from_hadd(hadd):
         """
+        """
+        return hadd-1
+    self.get_tdev_from_hadd = get_tdev_from_hadd
+
+    def event_device_callback(device_id, method, value, callback_id):
+        """
+        """
+        logger.debug("[%s] - Receive callback from %s", self.__class__.__name__, device_id)
+        return True
+    self.event_device_callback = event_device_callback
+    self.event_device = telldus.tdRegisterDeviceEvent(event_device_callback)
+
+    self._telldusduo_start = self.start
+    def start(mqttc, trigger_thread_reload_cb=None):
+        """Start the bus"""
+        logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
         try:
-            if os.system('ping -c 2 ' + self.ip):
-                return False
-            return True
-        except :
-            logger.exception('[%s] - Exception when checking heartbeat of the tv (%s)', self.__class__.__name__, self.ip)
+            telldus.tdInit()
+        except Exception:
+            logger.exception('[%s] - Exception when starting bus %s', self.__class__.__name__, self.oid)
+        return self._telldusduo_start(mqttc, trigger_thread_reload_cb=trigger_thread_reload_cb)
+    self.start = start
 
+    self._telldusduo_stop = self.stop
+    def stop():
+        """stop the bus"""
+        logger.debug("[%s] - Stop the bus %s", self.__class__.__name__, self.oid )
+        try:
+            telldus.tdClose()
+        except Exception:
+            logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
+        return self._telldusduo_stop()
+    self.stop = stop
+
+    def tellstick_turnon(tdev):
+        """Turn on a telldus device"""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_TURNON:
+                telldus.tdTurnOn(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_turnon', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_turnon = tellstick_turnon
+
+    def tellstick_turnoff(tdev):
+        """Turn off a telldus device"""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_TURNOFF:
+                telldus.tdTurnOff(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_turnoff', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_turnoff = tellstick_turnoff
+
+    def tellstick_dim(tdev, level):
+        """Dim a telldus device. Level from 0 to 255."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_TURNDIM:
+                telldus.tdDim(tdev, int(level*2.55))
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_dim', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_dim = tellstick_dim
+
+    def tellstick_execute(tdev, level):
+        """execute a telldus device. Level from 0 to 255."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_EXECUTE:
+                telldus.tdExecute(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_execute', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_execute = tellstick_execute
+
+    def tellstick_up(tdev, level):
+        """up a telldus device."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_UP:
+                telldus.tdUp(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_up = tellstick_up
+
+    def tellstick_down(tdev, level):
+        """down a telldus device. Level from 0 to 255."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_DOWN:
+                telldus.tdDown(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_down', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_down = tellstick_down
+
+    def tellstick_stop(tdev, level):
+        """stop a telldus device. Level from 0 to 255."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_STOP:
+                telldus.tdStop(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_stop', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_stop = tellstick_stop
+
+    def tellstick_bell(tdev, level):
+        """bell a telldus device."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_BELL:
+                telldus.tdBell(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_bell', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_bell = tellstick_bell
+
+    def tellstick_learn(tdev, level):
+        """learn a telldus device."""
+        self.tellstick_acquire()
+        try:
+            methods = telldus.tdMethods(tdev, self.ALL_METHODS)
+            if methods & self.TELLSTICK_LEARN:
+                telldus.tdLearn(tdev)
+                time.sleep(self._lock_delay)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_learn', self.__class__.__name__)
+        finally:
+            self.tellstick_release()
+    self.tellstick_learn = tellstick_learn
+
+    def tellstick_discover_new_devices():
+        """Discover new devices."""
+        devices = telldus.tdGetNumberOfDevices()
+        logger.debug('[%s] - Found %s devices in telldus-core', self.__class__.__name__, devices)
+        add_ctrl = self.nodeman.get_add_ctrl()
+        for i in xrange(devices):
+            deviceid = telldus.tdGetDeviceId(i)
+            if deviceid:
+                name = telldus.tdGetName(deviceid)
+                methods = telldus.tdMethods(deviceid, self.ALL_METHODS)
+                logger.debug('[%s] - Found device id %s (%s) of type %s with methods : (%s : %s) (%s : %s) (%s : %s) (%s : %s) (%s : %s) (%s : %s) (%s : %s) (%s : %s)',
+                    self.__class__.__name__,
+                    deviceid, name, telldus.tdGetDeviceType(deviceid),
+                    'TELLSTICK_TURNON', methods & self.TELLSTICK_TURNON,
+                    'TELLSTICK_TURNOFF', methods & self.TELLSTICK_TURNOFF,
+                    'TELLSTICK_DIM', methods & self.TELLSTICK_DIM,
+                    'TELLSTICK_BELL', methods & self.TELLSTICK_BELL,
+                    'TELLSTICK_EXECUTE', methods & self.TELLSTICK_EXECUTE,
+                    'TELLSTICK_UP', methods & self.TELLSTICK_UP,
+                    'TELLSTICK_DOWN', methods & self.TELLSTICK_DOWN,
+                    'TELLSTICK_STOP', methods & self.TELLSTICK_STOP,
+                )
+                add_comp = '%s__%s' % (self.uuid, self.get_hadd_from_tdev(deviceid))
+                #~ logger.debug('[%s] - Check node %s in %s', self.__class__.__name__, add_comp, self.nodeman.nodes)
+                if add_comp not in self.nodeman.nodes:
+                    #add_comp = key
+                    hadd = HADD%(add_ctrl,self.get_hadd_from_tdev(deviceid))
+                    compo_oid = '%s.device'%self.oid
+                    if methods & self.TELLSTICK_DIM:
+                        compo_oid = '%s.dimmer'%self.oid
+                    if methods & self.TELLSTICK_UP and methods & self.TELLSTICK_UP:
+                        compo_oid = '%s.shutter'%self.oid
+                    compo = self.add_component(compo_oid, add_comp, options=self.options)
+                    node = self.nodeman.create_node(add_comp, hadd, name=name)
+                    node.create_options(compo_oid)
+                    time.sleep(self.nodeman.slow_start)
+                    logger.debug('[%s] - Discover new component %s / node %s', self.__class__.__name__, compo, node)
+        logger.debug('[%s] - Found components %s after discover', self.__class__.__name__, self.components)
+    self.tellstick_discover_new_devices = tellstick_discover_new_devices
+
+    def tellstick_update_device_component(node_hadd, component_uuid):
+        """We can't make a distinction between a switch, a remote controler, a door sensors or a light sensor.
+        So we need to update it after discovering.
+        """
+        node = self.nodeman.find_node_by_hadd(node_hadd)
+        logger.debug('[%s] - Found node %s with uid %s in %s', self.__class__.__name__, node, node_hadd, self.nodeman.nodes )
+        add_ctrl, add_node = node.split_hadd()
+        self.nodeman.mqtt_heartbeat.publish_heartbeat(int(add_ctrl), int(add_node), 'OFFLINE')
+        del self.nodeman.nodes[node.uuid]
+        self.components[node.uuid].stop()
+        del self.components[node.uuid]
+        compo = self.add_component(component_uuid, node.uuid, options=self.options)
+        node = self.nodeman.create_node(node.uuid, node.hadd)
+        node.update_bus_options(component_uuid)
+        logger.debug('[%s] - Update component for node %s to %s', self.__class__.__name__, node, component_uuid )
+    self.tellstick_update_device_component = tellstick_update_device_component
+
+def extend_net( self ):
+    pass
