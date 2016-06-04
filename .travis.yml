@@ -12,6 +12,7 @@ before_install:
   - make directories
 install:
   - make travis-deps
+  - make telldus-python/setup.py
   - python setup.py install
 # command to run tests
 script:
