@@ -211,8 +211,9 @@ def extend_duo( self ):
         logger.debug("[%s] - Receive change %s callback for %s", self.__class__.__name__,change_event , device_id)
         return True
     self.event_device_change_callback = event_device_change_callback
-    self.event_change_device = None
+    self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
     self.export_attrs('event_change_device', self.event_change_device)
+
 
     def event_device_callback(device_id, method, value, callback_id):
         """
@@ -220,27 +221,45 @@ def extend_duo( self ):
         logger.debug("[%s] - Receive callback from %s", self.__class__.__name__, device_id)
         return True
     self.event_device_callback = event_device_callback
-    self.event_device = None
+    self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
     self.export_attrs('event_device', self.event_device)
 
-    self._telldusduo_start = self.start
-    def start(mqttc, trigger_thread_reload_cb=None):
-        """Start the bus"""
-        logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
-        try:
-            self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
-            self.export_attrs('event_change_device', self.event_change_device)
-            self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
-            self.export_attrs('event_device', self.event_device)
-        except Exception:
-            logger.exception('[%s] - Exception when starting bus %s', self.__class__.__name__, self.oid)
-        return self._telldusduo_start(mqttc, trigger_thread_reload_cb=trigger_thread_reload_cb)
-    self.start = start
+    #~ self._telldusduo_start = self.start
+    #~ def start(mqttc, trigger_thread_reload_cb=None):
+        #~ """Start the bus"""
+        #~ logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
+        #~ try:
+            #~ self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
+            #~ self.export_attrs('event_change_device', self.event_change_device)
+            #~ self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
+            #~ self.export_attrs('event_device', self.event_device)
+        #~ except Exception:
+            #~ logger.exception('[%s] - Exception when starting bus %s', self.__class__.__name__, self.oid)
+        #~ return self._telldusduo_start(mqttc, trigger_thread_reload_cb=trigger_thread_reload_cb)
+    #~ self.start = start
+#~
+    #~ self._telldusduo_stop = self.stop
+    #~ def stop():
+        #~ """stop the bus"""
+        #~ logger.debug("[%s] - Stop the bus %s", self.__class__.__name__, self.oid )
+        #~ try:
+            #~ if self.event_change_device is not None:
+                #~ telldus.tdUnregisterCallback(self.event_change_device)
+                #~ self.event_change_device = None
+                #~ self.export_attrs('event_change_device', self.event_change_device)
+            #~ if self.event_device is not None:
+                #~ telldus.tdUnregisterCallback(self.event_device)
+                #~ self.event_device = None
+                #~ self.export_attrs('event_device', self.event_device)
+        #~ except Exception:
+            #~ logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
+        #~ return self._telldusduo_stop()
+    #~ self.stop = stop
 
-    self._telldusduo_stop = self.stop
-    def stop():
+    self._telldusduo_del__ = self.__del__
+    def __del__():
         """stop the bus"""
-        logger.debug("[%s] - Stop the bus %s", self.__class__.__name__, self.oid )
+        logger.debug("[%s] - __del__ the bus %s", self.__class__.__name__, self.oid )
         try:
             if self.event_change_device is not None:
                 telldus.tdUnregisterCallback(self.event_change_device)
@@ -250,16 +269,6 @@ def extend_duo( self ):
                 telldus.tdUnregisterCallback(self.event_device)
                 self.event_device = None
                 self.export_attrs('event_device', self.event_device)
-        except Exception:
-            logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
-        return self._telldusduo_stop()
-    self.stop = stop
-
-    self._telldusduo_del__ = self.__del__
-    def __del__():
-        """stop the bus"""
-        logger.debug("[%s] - __del__ the bus %s", self.__class__.__name__, self.oid )
-        try:
             telldus.tdClose()
         except Exception:
             logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
