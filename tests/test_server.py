@@ -46,17 +46,17 @@ from janitoo.thread import JNTBusThread
 
 from janitoo.server import JNTServer
 
-class TestTellstickSerser(JNTTServer, JNTTServerCommon):
-    """Test the server
-    """
-    loglevel = logging.DEBUG
-    path = '/tmp/janitoo_test'
-    broker_user = 'toto'
-    broker_password = 'toto'
-    server_class = JNTServer
-    server_conf = "tests/data/janitoo_tellstick.conf"
-    server_section = "tellstick"
-    hadds = [HADD%(163,0)]
+#~ class TestTellstickSerser(JNTTServer, JNTTServerCommon):
+    #~ """Test the server
+    #~ """
+    #~ loglevel = logging.DEBUG
+    #~ path = '/tmp/janitoo_test'
+    #~ broker_user = 'toto'
+    #~ broker_password = 'toto'
+    #~ server_class = JNTServer
+    #~ server_conf = "tests/data/janitoo_tellstick.conf"
+    #~ server_section = "tellstick"
+    #~ hadds = [HADD%(163,0)]
 
 class TestTellstickDuoSerser(JNTTServer, JNTTServerCommon):
     """Test the server
@@ -95,14 +95,14 @@ class TestTellstickDuoSerser(JNTTServer, JNTTServerCommon):
         bus.tellstick_update_device_component('0163/0007', 'tellstick.switch')
         bus.tellstick_update_device_component('0163/0005', 'tellstick.shutter')
 
-class TestTellstickNetSerser(JNTTServer, JNTTServerCommon):
-    """Test the server
-    """
-    loglevel = logging.DEBUG
-    path = '/tmp/janitoo_test'
-    broker_user = 'toto'
-    broker_password = 'toto'
-    server_class = JNTServer
-    server_conf = "tests/data/janitoo_tellstick_net.conf"
-    server_section = "tellstick"
-    hadds = [HADD%(163,0)]
+#~ class TestTellstickNetSerser(JNTTServer, JNTTServerCommon):
+    #~ """Test the server
+    #~ """
+    #~ loglevel = logging.DEBUG
+    #~ path = '/tmp/janitoo_test'
+    #~ broker_user = 'toto'
+    #~ broker_password = 'toto'
+    #~ server_class = JNTServer
+    #~ server_conf = "tests/data/janitoo_tellstick_net.conf"
+    #~ server_section = "tellstick"
+    #~ hadds = [HADD%(163,0)]
