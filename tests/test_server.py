@@ -83,6 +83,7 @@ class TestTellstickDuoSerser(JNTTServer, JNTTServerCommon):
         time.sleep(30)
 
     def test_101_update_device_components(self):
+        self.skipManualTest("Only on my installation")
         self.start()
         time.sleep(10)
         thread = self.server.find_thread(self.server_section)

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""The Raspberry i2c bus
+"""The Raspberry tellstick bus
+Not sure that this bus can be extended by aggregation (callbacks and constants : TELLSTICK_TEMPERATURE).
+Need to be tested.
 
 """
 
@@ -202,13 +204,23 @@ def extend_duo( self ):
         return hadd-1
     self.get_tdev_from_hadd = get_tdev_from_hadd
 
+    def event_device_change_callback(device_id, change_event, change_type, callback_id, context):
+        """
+        """
+        logger.debug("[%s] - Receive change %s callback for %s", self.__class__.__name__,change_event , device_id)
+        return True
+    self.event_device_change_callback = event_device_change_callback
+    self.event_change_device = None
+    self.export_attrs('event_change_device', self.event_change_device)
+
     def event_device_callback(device_id, method, value, callback_id):
         """
         """
         logger.debug("[%s] - Receive callback from %s", self.__class__.__name__, device_id)
         return True
     self.event_device_callback = event_device_callback
-    self.event_device = telldus.tdRegisterDeviceEvent(event_device_callback)
+    self.event_device = None
+    self.export_attrs('event_device', self.event_device)
 
     self._telldusduo_start = self.start
     def start(mqttc, trigger_thread_reload_cb=None):
@@ -216,6 +228,10 @@ def extend_duo( self ):
         logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
         try:
             telldus.tdInit()
+            self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
+            self.export_attrs('event_change_device', self.event_change_device)
+            self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
+            self.export_attrs('event_device', self.event_device)
         except Exception:
             logger.exception('[%s] - Exception when starting bus %s', self.__class__.__name__, self.oid)
         return self._telldusduo_start(mqttc, trigger_thread_reload_cb=trigger_thread_reload_cb)
@@ -226,6 +242,14 @@ def extend_duo( self ):
         """stop the bus"""
         logger.debug("[%s] - Stop the bus %s", self.__class__.__name__, self.oid )
         try:
+            if self.event_change_device is not None:
+                telldus.tdUnregisterCallback(self.event_change_device)
+                self.event_change_device = None
+                self.export_attrs('event_change_device', self.event_change_device)
+            if self.event_device is not None:
+                telldus.tdUnregisterCallback(self.event_device)
+                self.event_device = None
+                self.export_attrs('event_device', self.event_device)
             telldus.tdClose()
         except Exception:
             logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
