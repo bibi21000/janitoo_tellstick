@@ -191,6 +191,7 @@ class TellstickBus(JNTBus):
 
 def extend_duo( self ):
     import telldus
+    telldus.tdInit()
 
     def get_hadd_from_tdev(tdev):
         """
@@ -227,7 +228,6 @@ def extend_duo( self ):
         """Start the bus"""
         logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
         try:
-            telldus.tdInit()
             self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
             self.export_attrs('event_change_device', self.event_change_device)
             self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
@@ -255,6 +255,17 @@ def extend_duo( self ):
             logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
         return self._telldusduo_stop()
     self.stop = stop
+
+    self._telldusduo_del__ = self.__del__
+    def __del__():
+        """stop the bus"""
+        logger.debug("[%s] - __del__ the bus %s", self.__class__.__name__, self.oid )
+        try:
+            telldus.tdClose()
+        except Exception:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
+        return self._telldusduo_del__()
+    self.__del__ = __del__
 
     def tellstick_turnon(tdev):
         """Turn on a telldus device"""
