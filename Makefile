@@ -172,13 +172,13 @@ pylint:
 	-mkdir -p ${BUILDDIR}/docs/html/tools/pylint
 	$(PYLINT) --output-format=html $(PYLINTOPTS) src/${MODULENAME} >${BUILDDIR}/docs/html/tools/pylint/index.html
 
-install:
+install: telldus-python/setup.py
 	cd telldus-python && ${PYTHON_EXEC} setup.py install
 	${PYTHON_EXEC} setup.py install
 	@echo
 	@echo "Installation of ${MODULENAME} finished."
 
-develop:
+develop: telldus-python/setup.py
 	cd telldus-python && ${PYTHON_EXEC} setup.py install
 	${PYTHON_EXEC} setup.py develop
 	@echo
