@@ -288,6 +288,24 @@ class TellstickBell(TellstickDevice):
             **kwargs
         )
 
+class TellstickSensor(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.sensor'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick sensor")
+        name = kwargs.pop('name', "Tellstick sensor")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            **kwargs
+        )
+
 class TellstickDaylight(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
 

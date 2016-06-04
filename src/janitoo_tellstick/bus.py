@@ -197,6 +197,37 @@ def extend_duo( self ):
     import telldus
     telldus.tdInit()
 
+    uuid="{:s}_updatetype".format(self.oid)
+    self.values[uuid] = self.value_factory['action_string'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        set_data_cb=self.set_tellstickduo_updatetype,
+    )
+    uuid="{:s}_discover".format(self.oid)
+    self.values[uuid] = self.value_factory['action_boolean'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        set_data_cb=self.set_tellstickduo_discover,
+    )
+
+    def set_tellstickduo_discover(node_uuid, index, data):
+        """
+        """
+        if data:
+            self._bus.tellstick_discover_new_devices()
+        else:
+            logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
+        return True
+    self.set_tellstickduo_command = set_tellstickduo_command
+
+    def set_tellstickduo_updatetype(node_uuid, index, data):
+        """
+        """
+        if data:
+            self._bus.tellstick_update_device_component(node_uuid, data)
+        else:
+            logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
+        return True
+    self.set_tellstickduo_updatetype = set_tellstickduo_updatetype
+
     def get_hadd_from_tdev(tdev):
         """
         """
@@ -228,38 +259,6 @@ def extend_duo( self ):
     self.event_device_callback = event_device_callback
     self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
     self.export_attrs('event_device', self.event_device)
-
-    #~ self._telldusduo_start = self.start
-    #~ def start(mqttc, trigger_thread_reload_cb=None):
-        #~ """Start the bus"""
-        #~ logger.debug("[%s] - Start the bus %s", self.__class__.__name__, self.oid )
-        #~ try:
-            #~ self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
-            #~ self.export_attrs('event_change_device', self.event_change_device)
-            #~ self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
-            #~ self.export_attrs('event_device', self.event_device)
-        #~ except Exception:
-            #~ logger.exception('[%s] - Exception when starting bus %s', self.__class__.__name__, self.oid)
-        #~ return self._telldusduo_start(mqttc, trigger_thread_reload_cb=trigger_thread_reload_cb)
-    #~ self.start = start
-#~
-    #~ self._telldusduo_stop = self.stop
-    #~ def stop():
-        #~ """stop the bus"""
-        #~ logger.debug("[%s] - Stop the bus %s", self.__class__.__name__, self.oid )
-        #~ try:
-            #~ if self.event_change_device is not None:
-                #~ telldus.tdUnregisterCallback(self.event_change_device)
-                #~ self.event_change_device = None
-                #~ self.export_attrs('event_change_device', self.event_change_device)
-            #~ if self.event_device is not None:
-                #~ telldus.tdUnregisterCallback(self.event_device)
-                #~ self.event_device = None
-                #~ self.export_attrs('event_device', self.event_device)
-        #~ except Exception:
-            #~ logger.exception('[%s] - Exception when stopping bus %s', self.__class__.__name__, self.oid)
-        #~ return self._telldusduo_stop()
-    #~ self.stop = stop
 
     self._telldusduo_del__ = self.__del__
     def __del__():
@@ -477,12 +476,13 @@ def extend_duo( self ):
         logger.debug('[%s] - Found components %s after discover', self.__class__.__name__, self.components)
     self.tellstick_discover_new_devices = tellstick_discover_new_devices
 
-    def tellstick_update_device_component(node_hadd, component_uuid):
+    def tellstick_update_device_component(node_uuid, component_uuid):
         """We can't make a distinction between a switch, a remote controler, a door sensors or a light sensor.
         So we need to update it after discovering.
         """
-        node = self.nodeman.find_node_by_hadd(node_hadd)
-        logger.debug('[%s] - Found node %s with uid %s in %s', self.__class__.__name__, node, node_hadd, self.nodeman.nodes )
+        node = self.nodeman.find_node(node_uuid)
+        #~ node = self.nodeman.find_node_by_hadd(node_hadd)
+        logger.debug('[%s] - Found node %s with uid %s in %s', self.__class__.__name__, node, node_uuid, self.nodeman.nodes )
         add_ctrl, add_node = node.split_hadd()
         self.nodeman.mqtt_heartbeat.publish_heartbeat(int(add_ctrl), int(add_node), 'OFFLINE')
         del self.nodeman.nodes[node.uuid]
