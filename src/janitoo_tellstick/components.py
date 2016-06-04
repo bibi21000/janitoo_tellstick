@@ -81,7 +81,7 @@ def make_pir(**kwargs):
     return TellstickPir(**kwargs)
 
 def make_remote(**kwargs):
-    return TellstickMagnetic(**kwargs)
+    return TellstickRemote(**kwargs)
 
 class TellstickDevice(JNTComponent):
     """ Provides the interface for a Tellstick device. """
