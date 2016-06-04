@@ -197,17 +197,6 @@ def extend_duo( self ):
     import telldus
     telldus.tdInit()
 
-    uuid="{:s}_updatetype".format(self.oid)
-    self.values[uuid] = self.value_factory['action_string'](options=self.options, uuid=uuid,
-        node_uuid=self.uuid,
-        set_data_cb=self.set_tellstickduo_updatetype,
-    )
-    uuid="{:s}_discover".format(self.oid)
-    self.values[uuid] = self.value_factory['action_boolean'](options=self.options, uuid=uuid,
-        node_uuid=self.uuid,
-        set_data_cb=self.set_tellstickduo_discover,
-    )
-
     def set_tellstickduo_discover(node_uuid, index, data):
         """
         """
@@ -216,7 +205,12 @@ def extend_duo( self ):
         else:
             logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
         return True
-    self.set_tellstickduo_command = set_tellstickduo_command
+    self.set_tellstickduo_discover = set_tellstickduo_discover
+    uuid="{:s}_discover".format(self.oid)
+    self.values[uuid] = self.value_factory['action_boolean'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        set_data_cb=self.set_tellstickduo_discover,
+    )
 
     def set_tellstickduo_updatetype(node_uuid, index, data):
         """
@@ -227,6 +221,11 @@ def extend_duo( self ):
             logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
         return True
     self.set_tellstickduo_updatetype = set_tellstickduo_updatetype
+    uuid="{:s}_updatetype".format(self.oid)
+    self.values[uuid] = self.value_factory['action_string'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        set_data_cb=self.set_tellstickduo_updatetype,
+    )
 
     def get_hadd_from_tdev(tdev):
         """
