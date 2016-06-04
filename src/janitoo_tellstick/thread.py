@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""The Roomba Janitoo helper
-It handle all communications to the Roomba vacuum
-
-
-
+"""The Tellstik Janitoo
 """
 
 __license__ = """

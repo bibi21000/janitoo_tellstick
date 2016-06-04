@@ -71,6 +71,7 @@ class TellstickBus(JNTBus):
         self._tellstick_lock = threading.Lock()
         self.load_extensions(OID)
 
+        # Commands
         self.TELLSTICK_TURNON = 1
         self.TELLSTICK_TURNOFF = 2
         self.TELLSTICK_BELL = 4
@@ -81,7 +82,11 @@ class TellstickBus(JNTBus):
         self.TELLSTICK_UP = 128
         self.TELLSTICK_DOWN = 256
         self.TELLSTICK_STOP = 512
+        self.ALL_METHODS = self.TELLSTICK_TURNON | self.TELLSTICK_TURNOFF | self.TELLSTICK_BELL | \
+                           self.TELLSTICK_DIM | self.TELLSTICK_UP | self.TELLSTICK_DOWN | \
+                           self.TELLSTICK_STOP
 
+        #Sensors
         self.TELLSTICK_TEMPERATURE = 1
         self.TELLSTICK_HUMIDITY = 2
         self.TELLSTICK_RAINRATE = 4
@@ -90,7 +95,39 @@ class TellstickBus(JNTBus):
         self.TELLSTICK_WINDAVERAGE = 32
         self.TELLSTICK_WINDGUST = 64
 
-        self.ALL_METHODS = self.TELLSTICK_TURNON | self.TELLSTICK_TURNOFF | self.TELLSTICK_BELL | self.TELLSTICK_DIM | self.TELLSTICK_UP | self.TELLSTICK_DOWN | self.TELLSTICK_STOP
+        # Error codes
+        self.TELLSTICK_SUCCESS = 0
+        self.TELLSTICK_ERROR_NOT_FOUND = -1
+        self.TELLSTICK_ERROR_PERMISSION_DENIED = -2
+        self.TELLSTICK_ERROR_DEVICE_NOT_FOUND = -3
+        self.TELLSTICK_ERROR_METHOD_NOT_SUPPORTED = -4
+        self.TELLSTICK_ERROR_COMMUNICATION = -5
+        self.TELLSTICK_ERROR_CONNECTING_SERVICE = -6
+        self.TELLSTICK_ERROR_UNKNOWN_RESPONSE = -7
+        self.TELLSTICK_ERROR_SYNTAX = -8
+        self.TELLSTICK_ERROR_BROKEN_PIPE = -9
+        self.TELLSTICK_ERROR_COMMUNICATING_SERVICE = -10
+        self.TELLSTICK_ERROR_CONFIG_SYNTAX = -11
+        self.TELLSTICK_ERROR_UNKNOWN = -99
+
+        # Controller typedef
+        self.TELLSTICK_CONTROLLER_TELLSTICK = 1
+        self.TELLSTICK_CONTROLLER_TELLSTICK_DUO = 2
+        self.TELLSTICK_CONTROLLER_TELLSTICK_NET = 3
+
+        # Device changes
+        self.TELLSTICK_DEVICE_ADDED = 1
+        self.TELLSTICK_DEVICE_CHANGED = 2
+        self.TELLSTICK_DEVICE_REMOVED = 3
+        self.TELLSTICK_DEVICE_STATE_CHANGED = 4
+
+        # Change types
+        self.TELLSTICK_CHANGE_NAME = 1
+        self.TELLSTICK_CHANGE_PROTOCOL = 2
+        self.TELLSTICK_CHANGE_MODEL = 3
+        self.TELLSTICK_CHANGE_METHOD = 4
+        self.TELLSTICK_CHANGE_AVAILABLE = 5
+        self.TELLSTICK_CHANGE_FIRMWARE = 6
 
         self._lock_delay = 0.5
 
