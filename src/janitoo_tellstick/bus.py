@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """The Raspberry tellstick bus
+Warning : this bus can't be aggregate/ Need to run in its own thread.
 Not sure that this bus can be extended by aggregation (callbacks and constants : TELLSTICK_TEMPERATURE).
 Need to be tested.
 
@@ -58,6 +59,64 @@ class TellstickBus(JNTBus):
     """A pseudo-bus to handle the tellstick
     """
 
+    # Commands
+    TELLSTICK_TURNON = 1
+    TELLSTICK_TURNOFF = 2
+    TELLSTICK_BELL = 4
+    TELLSTICK_TOGGLE = 8
+    TELLSTICK_DIM = 16
+    TELLSTICK_LEARN = 32
+    TELLSTICK_EXECUTE = 64
+    TELLSTICK_UP = 128
+    TELLSTICK_DOWN = 256
+    TELLSTICK_STOP = 512
+    ALL_METHODS = TELLSTICK_TURNON | TELLSTICK_TURNOFF | TELLSTICK_BELL | \
+                       TELLSTICK_DIM | TELLSTICK_UP | TELLSTICK_DOWN | \
+                       TELLSTICK_STOP
+
+    #Sensors
+    TELLSTICK_TEMPERATURE = 1
+    TELLSTICK_HUMIDITY = 2
+    TELLSTICK_RAINRATE = 4
+    TELLSTICK_RAINTOTAL = 8
+    TELLSTICK_WINDDIRECTION = 16
+    TELLSTICK_WINDAVERAGE = 32
+    TELLSTICK_WINDGUST = 64
+
+    # Error codes
+    TELLSTICK_SUCCESS = 0
+    TELLSTICK_ERROR_NOT_FOUND = -1
+    TELLSTICK_ERROR_PERMISSION_DENIED = -2
+    TELLSTICK_ERROR_DEVICE_NOT_FOUND = -3
+    TELLSTICK_ERROR_METHOD_NOT_SUPPORTED = -4
+    TELLSTICK_ERROR_COMMUNICATION = -5
+    TELLSTICK_ERROR_CONNECTING_SERVICE = -6
+    TELLSTICK_ERROR_UNKNOWN_RESPONSE = -7
+    TELLSTICK_ERROR_SYNTAX = -8
+    TELLSTICK_ERROR_BROKEN_PIPE = -9
+    TELLSTICK_ERROR_COMMUNICATING_SERVICE = -10
+    TELLSTICK_ERROR_CONFIG_SYNTAX = -11
+    TELLSTICK_ERROR_UNKNOWN = -99
+
+    # Controller typedef
+    TELLSTICK_CONTROLLER_TELLSTICK = 1
+    TELLSTICK_CONTROLLER_TELLSTICK_DUO = 2
+    TELLSTICK_CONTROLLER_TELLSTICK_NET = 3
+
+    # Device changes
+    TELLSTICK_DEVICE_ADDED = 1
+    TELLSTICK_DEVICE_CHANGED = 2
+    TELLSTICK_DEVICE_REMOVED = 3
+    TELLSTICK_DEVICE_STATE_CHANGED = 4
+
+    # Change types
+    TELLSTICK_CHANGE_NAME = 1
+    TELLSTICK_CHANGE_PROTOCOL = 2
+    TELLSTICK_CHANGE_MODEL = 3
+    TELLSTICK_CHANGE_METHOD = 4
+    TELLSTICK_CHANGE_AVAILABLE = 5
+    TELLSTICK_CHANGE_FIRMWARE = 6
+
     def __init__(self, **kwargs):
         """
         :param int bus_id: the SMBus id (see Raspberry Pi documentation)
@@ -65,79 +124,21 @@ class TellstickBus(JNTBus):
         """
         JNTBus.__init__(self, **kwargs)
         self._tellstick_lock = threading.Lock()
-        self.load_extensions(OID)
-
-        # Commands
-        self.TELLSTICK_TURNON = 1
-        self.TELLSTICK_TURNOFF = 2
-        self.TELLSTICK_BELL = 4
-        self.TELLSTICK_TOGGLE = 8
-        self.TELLSTICK_DIM = 16
-        self.TELLSTICK_LEARN = 32
-        self.TELLSTICK_EXECUTE = 64
-        self.TELLSTICK_UP = 128
-        self.TELLSTICK_DOWN = 256
-        self.TELLSTICK_STOP = 512
-        self.ALL_METHODS = self.TELLSTICK_TURNON | self.TELLSTICK_TURNOFF | self.TELLSTICK_BELL | \
-                           self.TELLSTICK_DIM | self.TELLSTICK_UP | self.TELLSTICK_DOWN | \
-                           self.TELLSTICK_STOP
-
-        #Sensors
-        self.TELLSTICK_TEMPERATURE = 1
-        self.TELLSTICK_HUMIDITY = 2
-        self.TELLSTICK_RAINRATE = 4
-        self.TELLSTICK_RAINTOTAL = 8
-        self.TELLSTICK_WINDDIRECTION = 16
-        self.TELLSTICK_WINDAVERAGE = 32
-        self.TELLSTICK_WINDGUST = 64
-
-        # Error codes
-        self.TELLSTICK_SUCCESS = 0
-        self.TELLSTICK_ERROR_NOT_FOUND = -1
-        self.TELLSTICK_ERROR_PERMISSION_DENIED = -2
-        self.TELLSTICK_ERROR_DEVICE_NOT_FOUND = -3
-        self.TELLSTICK_ERROR_METHOD_NOT_SUPPORTED = -4
-        self.TELLSTICK_ERROR_COMMUNICATION = -5
-        self.TELLSTICK_ERROR_CONNECTING_SERVICE = -6
-        self.TELLSTICK_ERROR_UNKNOWN_RESPONSE = -7
-        self.TELLSTICK_ERROR_SYNTAX = -8
-        self.TELLSTICK_ERROR_BROKEN_PIPE = -9
-        self.TELLSTICK_ERROR_COMMUNICATING_SERVICE = -10
-        self.TELLSTICK_ERROR_CONFIG_SYNTAX = -11
-        self.TELLSTICK_ERROR_UNKNOWN = -99
-
-        # Controller typedef
-        self.TELLSTICK_CONTROLLER_TELLSTICK = 1
-        self.TELLSTICK_CONTROLLER_TELLSTICK_DUO = 2
-        self.TELLSTICK_CONTROLLER_TELLSTICK_NET = 3
-
-        # Device changes
-        self.TELLSTICK_DEVICE_ADDED = 1
-        self.TELLSTICK_DEVICE_CHANGED = 2
-        self.TELLSTICK_DEVICE_REMOVED = 3
-        self.TELLSTICK_DEVICE_STATE_CHANGED = 4
-
-        # Change types
-        self.TELLSTICK_CHANGE_NAME = 1
-        self.TELLSTICK_CHANGE_PROTOCOL = 2
-        self.TELLSTICK_CHANGE_MODEL = 3
-        self.TELLSTICK_CHANGE_METHOD = 4
-        self.TELLSTICK_CHANGE_AVAILABLE = 5
-        self.TELLSTICK_CHANGE_FIRMWARE = 6
-
         self._lock_delay = 0.5
 
-        self.export_attrs('tellstick_acquire', self.tellstick_acquire)
-        self.export_attrs('tellstick_release', self.tellstick_release)
-        self.export_attrs('tellstick_locked', self.tellstick_locked)
-        self.export_attrs('tellstick_turnon', self.tellstick_turnon)
-        self.export_attrs('tellstick_turnoff', self.tellstick_turnoff)
-        self.export_attrs('tellstick_dim', self.tellstick_dim)
-        self.export_attrs('tellstick_bell', self.tellstick_bell)
-        self.export_attrs('tellstick_execute', self.tellstick_execute)
-        self.export_attrs('tellstick_up', self.tellstick_up)
-        self.export_attrs('tellstick_down', self.tellstick_down)
-        self.export_attrs('tellstick_stop', self.tellstick_stop)
+        self.load_extensions(OID)
+        self.cant_aggregate(OID)
+        #~ self.export_attrs('tellstick_acquire', self.tellstick_acquire)
+        #~ self.export_attrs('tellstick_release', self.tellstick_release)
+        #~ self.export_attrs('tellstick_locked', self.tellstick_locked)
+        #~ self.export_attrs('tellstick_turnon', self.tellstick_turnon)
+        #~ self.export_attrs('tellstick_turnoff', self.tellstick_turnoff)
+        #~ self.export_attrs('tellstick_dim', self.tellstick_dim)
+        #~ self.export_attrs('tellstick_bell', self.tellstick_bell)
+        #~ self.export_attrs('tellstick_execute', self.tellstick_execute)
+        #~ self.export_attrs('tellstick_up', self.tellstick_up)
+        #~ self.export_attrs('tellstick_down', self.tellstick_down)
+        #~ self.export_attrs('tellstick_stop', self.tellstick_stop)
 
     def tellstick_turnon(tdev):
         """Turn on a telldus device"""
@@ -247,8 +248,16 @@ def extend_duo( self ):
         return True
     self.event_device_change_callback = event_device_change_callback
     self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
-    self.export_attrs('event_change_device', self.event_change_device)
+    #~ self.export_attrs('event_change_device', self.event_change_device)
 
+    def event_sensor_callback(protocol, model, sensor_id, dtype, value, timestamp, callback_id, context):
+        """
+        """
+        logger.info("[%s] - Receive sensor event from %s", self.__class__.__name__, sensor_id)
+        return True
+    self.event_sensor_callback = event_sensor_callback
+    self.event_sensor = telldus.tdRegisterSensorEvent(self.event_sensor_callback)
+    #~ self.export_attrs('event_sensor', self.event_sensor)
 
     def event_device_callback(device_id, method, value, callback_id):
         """
@@ -257,21 +266,36 @@ def extend_duo( self ):
         return True
     self.event_device_callback = event_device_callback
     self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
-    self.export_attrs('event_device', self.event_device)
+    #~ self.export_attrs('event_device', self.event_device)
 
     self._telldusduo_del__ = self.__del__
     def __del__():
         """stop the bus"""
         logger.debug("[%s] - __del__ the bus %s", self.__class__.__name__, self.oid )
         try:
+            if self.event_sensor is not None:
+                telldus.tdUnregisterCallback(self.event_sensor)
+                self.event_sensor = None
+                #~ self.export_attrs('event_sensor', self.event_sensor)
+        except Exception:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
+        try:
             if self.event_change_device is not None:
                 telldus.tdUnregisterCallback(self.event_change_device)
                 self.event_change_device = None
-                self.export_attrs('event_change_device', self.event_change_device)
+                #~ self.export_attrs('event_change_device', self.event_change_device)
+        except Exception:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
+        try:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
             if self.event_device is not None:
                 telldus.tdUnregisterCallback(self.event_device)
                 self.event_device = None
-                self.export_attrs('event_device', self.event_device)
+                #~ self.export_attrs('event_device', self.event_device)
+        except Exception:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
+        try:
+            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
             telldus.tdClose()
         except Exception:
             logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
