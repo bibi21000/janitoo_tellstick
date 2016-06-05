@@ -128,6 +128,8 @@ class TellstickBus(JNTBus):
 
         self.load_extensions(OID)
         self.cant_aggregate(OID)
+
+        self.sensors = {}
         #~ self.export_attrs('tellstick_acquire', self.tellstick_acquire)
         #~ self.export_attrs('tellstick_release', self.tellstick_release)
         #~ self.export_attrs('tellstick_locked', self.tellstick_locked)
@@ -198,6 +200,7 @@ def extend_duo( self ):
     import telldus
     telldus.tdInit()
 
+
     def set_tellstickduo_discover(node_uuid, index, data):
         """
         """
@@ -212,6 +215,7 @@ def extend_duo( self ):
         node_uuid=self.uuid,
         set_data_cb=self.set_tellstickduo_discover,
     )
+
 
     def set_tellstickduo_updatetype(node_uuid, index, data):
         """
@@ -228,6 +232,7 @@ def extend_duo( self ):
         set_data_cb=self.set_tellstickduo_updatetype,
     )
 
+
     def get_hadd_from_tdev(tdev):
         """
         """
@@ -241,6 +246,7 @@ def extend_duo( self ):
         return hadd-1
     self.get_tdev_from_hadd = get_tdev_from_hadd
 
+
     def event_device_change_callback(device_id, change_event, change_type, callback_id, context):
         """
         """
@@ -250,15 +256,6 @@ def extend_duo( self ):
     self.event_change_device = telldus.tdRegisterDeviceChangeEvent(self.event_device_change_callback)
     #~ self.export_attrs('event_change_device', self.event_change_device)
 
-    def event_sensor_callback(protocol, model, sensor_id, dtype, value, timestamp, callback_id, context):
-        """
-        """
-        logger.info("[%s] - Receive sensor event from %s", self.__class__.__name__, sensor_id)
-        return True
-    self.event_sensor_callback = event_sensor_callback
-    self.event_sensor = telldus.tdRegisterSensorEvent(self.event_sensor_callback)
-    #~ self.export_attrs('event_sensor', self.event_sensor)
-
     def event_device_callback(device_id, method, value, callback_id):
         """
         """
@@ -267,6 +264,182 @@ def extend_duo( self ):
     self.event_device_callback = event_device_callback
     self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
     #~ self.export_attrs('event_device', self.event_device)
+
+
+    def get_temperature(node_uuid, index):
+        """Get the temperature sensors
+        """
+        return 0
+    self.get_temperature = get_temperature
+
+    uuid="{:s}_temperature".format(OID)
+    self.values[uuid] = self.value_factory['sensor_temperature'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_temperature,
+        help='The temperature sensors.',
+        label='Temp',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_humidity(node_uuid, index):
+        """Get the humidity sensors
+        """
+        return 0
+    self.get_humidity = get_humidity
+
+    uuid="{:s}_humidity".format(OID)
+    self.values[uuid] = self.value_factory['sensor_humidity'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_humidity,
+        help='The humidity sensors.',
+        label='Hum',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_rain_rate(node_uuid, index):
+        """Get the rain rate sensors
+        """
+        return 0
+    self.get_rain_rate = get_rain_rate
+
+    uuid="{:s}_rain_rate".format(OID)
+    self.values[uuid] = self.value_factory['sensor_rain_rate'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_rain_rate,
+        help='The rain rate sensors.',
+        label='Rain rate',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_rain_total(node_uuid, index):
+        """Get the rain total sensors
+        """
+        return 0
+    self.get_rain_total = get_rain_total
+
+    uuid="{:s}_rain_total".format(OID)
+    self.values[uuid] = self.value_factory['sensor_rain_total'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_rain_total,
+        help='The rain total sensors.',
+        label='Rain total',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_wind_direction(node_uuid, index):
+        """Get the wind direction sensors
+        """
+        return 0
+    self.get_wind_direction = get_wind_direction
+
+    uuid="{:s}_wind_direction".format(OID)
+    self.values[uuid] = self.value_factory['sensor_wind_direction'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_wind_direction,
+        help='The wind direction sensors.',
+        label='Wind dir',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_wind_average(node_uuid, index):
+        """Get the wind average sensors
+        """
+        return 0
+    self.get_wind_average = get_wind_average
+
+    uuid="{:s}_wind_average".format(OID)
+    self.values[uuid] = self.value_factory['sensor_wind_average'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_wind_average,
+        help='The wind average sensors.',
+        label='Wind avg',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+
+    def get_wind_gust(node_uuid, index):
+        """Get the wind gust sensors
+        """
+        return 0
+    self.get_wind_gust = get_wind_gust
+
+    uuid="{:s}_wind_gust".format(OID)
+    self.values[uuid] = self.value_factory['sensor_wind_gust'](options=self.options, uuid=uuid,
+        node_uuid=self.uuid,
+        get_data_cb=self.get_wind_gust,
+        help='The wind gust sensors.',
+        label='Wind gust',
+    )
+    poll_value = self.values[uuid].create_poll_value(default=300)
+    self.values[poll_value.uuid] = poll_value
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    self.values[config_value.uuid] = config_value
+
+    def event_sensor_callback(protocol, model, sensor_id, dtype, value, timestamp, callback_id, context):
+        """
+        """
+
+        def update_config(which='temperature'):
+            conf = self.get_bus_value("%s_config"%which)
+            sensors = conf.data
+            if sensor_id not in sensors:
+                conf.data = sensors + [sensor_id]
+
+        if protocol not in self.sensors:
+            self.sensors[protocol] = {}
+        if sensor_id not in self.sensors[protocol]:
+            self.sensors[protocol][sensor_id] = {'model':model}
+        if dtype & self.TELLSTICK_TEMPERATURE:
+            self.sensors[protocol][sensor_id]['temperature'] = {'value':value, 'timestamp':timestamp}
+            update_config('temperature')
+        elif dtype & self.TELLSTICK_HUMIDITY:
+            self.sensors[protocol][sensor_id]['humidity'] = {'value':value, 'timestamp':timestamp}
+            update_config('humidity')
+        elif dtype & self.TELLSTICK_RAINRATE:
+            self.sensors[protocol][sensor_id]['rain_rate'] = {'value':value, 'timestamp':timestamp}
+            update_config('rain_rate')
+        elif dtype & self.TELLSTICK_RAINTOTAL:
+            self.sensors[protocol][sensor_id]['rain_total'] = {'value':value, 'timestamp':timestamp}
+            update_config('rain_total')
+        elif dtype & self.TELLSTICK_WINDDIRECTION:
+            self.sensors[protocol][sensor_id]['wind_direction'] = {'value':value, 'timestamp':timestamp}
+            update_config('wind_direction')
+        elif dtype & self.TELLSTICK_WINDAVERAGE:
+            self.sensors[protocol][sensor_id]['wind_average'] = {'value':value, 'timestamp':timestamp}
+            update_config('wind_average')
+        elif dtype & self.TELLSTICK_WINDGUST:
+            self.sensors[protocol][sensor_id]['wind_gust'] = {'value':value, 'timestamp':timestamp}
+            update_config('wind_gust')
+        else:
+            logger.warning("[%s] - Receive unknown sensor event from %s on protocol %s of type %s", self.__class__.__name__, sensor_id, protocol, dtype)
+        return True
+    self.event_sensor_callback = event_sensor_callback
+    self.event_sensor = telldus.tdRegisterSensorEvent(self.event_sensor_callback)
+    #~ self.export_attrs('event_sensor', self.event_sensor)
+
 
     self._telldusduo_del__ = self.__del__
     def __del__():

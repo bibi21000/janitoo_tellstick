@@ -44,6 +44,8 @@ from janitoo.utils import TOPIC_NODES, TOPIC_NODES_REPLY, TOPIC_NODES_REQUEST
 from janitoo.utils import TOPIC_BROADCAST_REPLY, TOPIC_BROADCAST_REQUEST
 from janitoo.utils import TOPIC_VALUES_USER, TOPIC_VALUES_CONFIG, TOPIC_VALUES_SYSTEM, TOPIC_VALUES_BASIC
 
+import telldus
+
 class TestTellstickDuoThread(JNTTThreadRun, JNTTThreadRunCommon):
     """Test the thread
     """
@@ -54,3 +56,8 @@ class TestTellstickDuoThread(JNTTThreadRun, JNTTThreadRunCommon):
         self.wait_for_nodeman()
         time.sleep(5)
         self.thread.bus.tellstick_discover_new_devices()
+
+    def test_101_event_sensor_callback(self):
+        self.wait_for_nodeman()
+        time.sleep(5)
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 12, telldus.TELLSTICK_TEMPERATURE, 10, datetime.datetime.now(), 0, None)
