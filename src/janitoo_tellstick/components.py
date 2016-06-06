@@ -100,43 +100,18 @@ class TellstickDevice(JNTComponent):
             **kwargs
         )
 
-class TellstickRemote(TellstickDevice):
-    """ Provides the interface for a Tellstick device. """
+    def check_heartbeat(self):
+        """Check that the component is 'available'
 
-    def __init__(self, bus=None, addr=None, **kwargs):
-        """ Constructor.
         """
-        oid = kwargs.pop('oid', '%s.remote'%OID)
-        product_name = kwargs.pop('product_name', "Tellstick sensor")
-        name = kwargs.pop('name', "Tellstick sensor")
-        TellstickDevice.__init__(self,
-            oid=oid,
-            bus=bus,
-            addr=addr,
-            name=name,
-            product_name=product_name,
-            **kwargs
-        )
-
-        uuid="button"
-        self.values[uuid] = self.value_factory['action_button_binary'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            list_items=['on', 'off'],
-            default='off',
-            genre=0x01,
-        )
-        poll_value = self.values[uuid].create_poll_value(default=300)
-        self.values[poll_value.uuid] = poll_value
-
-        uuid="groupe"
-        self.values[uuid] = self.value_factory['sensor_integer'](options=self.options, uuid=uuid,
-            node_uuid=self.uuid,
-            label="groupe",
-            default='off',
-            genre=0x01,
-        )
-        poll_value = self.values[uuid].create_poll_value(default=300)
-        self.values[poll_value.uuid] = poll_value
+        node_uuid = self.node.uuid if self.node else None
+        logger.debug("[%s] - Check heartbeat for %s (%s)", self.__class__.__name__, self.oid, node_uuid)
+        if node_uuid is None:
+            return False
+        #Bad way to do it but ...
+        node_uuid = node_uuid.replace('%s__'%OID,'')
+        tdev = self._bus.get_tdev_from_uuid(node_uuid)
+        return self._bus.tellstick_get_name(tdev) is not None
 
 class TellstickSwitch(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -264,6 +239,44 @@ class TellstickShutter(TellstickDevice):
         else:
             logger.warning("[%s] - set_shutter unknown data : %s", self.__class__.__name__, data)
 
+class TellstickRemote(TellstickDevice):
+    """ Provides the interface for a Tellstick device. """
+
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ Constructor.
+        """
+        oid = kwargs.pop('oid', '%s.remote'%OID)
+        product_name = kwargs.pop('product_name', "Tellstick sensor")
+        name = kwargs.pop('name', "Tellstick sensor")
+        TellstickDevice.__init__(self,
+            oid=oid,
+            bus=bus,
+            addr=addr,
+            name=name,
+            product_name=product_name,
+            **kwargs
+        )
+
+        uuid="button"
+        self.values[uuid] = self.value_factory['action_button_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['on', 'off'],
+            default='off',
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid="groupe"
+        self.values[uuid] = self.value_factory['sensor_integer'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            label="groupe",
+            default='off',
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
 class TellstickBell(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
 
@@ -281,6 +294,15 @@ class TellstickBell(TellstickDevice):
             product_name=product_name,
             **kwargs
         )
+        uuid="button"
+        self.values[uuid] = self.value_factory['action_button_binary'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            list_items=['on', 'off'],
+            default='off',
+            genre=0x01,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
 
 class TellstickSensor(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -299,8 +321,17 @@ class TellstickSensor(TellstickDevice):
             product_name=product_name,
             **kwargs
         )
+        uuid="status"
+        self.values[uuid] = self.value_factory['sensor_boolean'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The status of the sensor',
+            label='Status',
+        )
+        poll_value = self.values[uuid].create_poll_value(default=60)
+        self.values[poll_value.uuid] = poll_value
 
-class TellstickDaylight(TellstickDevice):
+
+class TellstickDaylight(TellstickSensor):
     """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
@@ -309,7 +340,7 @@ class TellstickDaylight(TellstickDevice):
         oid = kwargs.pop('oid', '%s.daylight'%OID)
         product_name = kwargs.pop('product_name', "Tellstick daylight")
         name = kwargs.pop('name', "Tellstick daylight")
-        TellstickDevice.__init__(self,
+        TellstickSensor.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
@@ -318,7 +349,7 @@ class TellstickDaylight(TellstickDevice):
             **kwargs
         )
 
-class TellstickMagnetic(TellstickDevice):
+class TellstickMagnetic(TellstickSensor):
     """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
@@ -327,7 +358,7 @@ class TellstickMagnetic(TellstickDevice):
         oid = kwargs.pop('oid', '%s.magnetic'%OID)
         product_name = kwargs.pop('product_name', "Tellstick magnetic")
         name = kwargs.pop('name', "Tellstick magnetic")
-        TellstickDevice.__init__(self,
+        TellstickSensor.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,
@@ -336,7 +367,7 @@ class TellstickMagnetic(TellstickDevice):
             **kwargs
         )
 
-class TellstickPir(TellstickDevice):
+class TellstickPir(TellstickSensor):
     """ Provides the interface for a Tellstick device. """
 
     def __init__(self, bus=None, addr=None, **kwargs):
@@ -345,7 +376,7 @@ class TellstickPir(TellstickDevice):
         oid = kwargs.pop('oid', '%s.pir'%OID)
         product_name = kwargs.pop('product_name', "Tellstick pir")
         name = kwargs.pop('name', "Tellstick pir")
-        TellstickDevice.__init__(self,
+        TellstickSensor.__init__(self,
             oid=oid,
             bus=bus,
             addr=addr,

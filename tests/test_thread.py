@@ -87,3 +87,37 @@ class TestTellstickDuoThread(JNTTThreadRun, JNTTThreadRunCommon):
         self.assertEqual(dt, self.thread.bus.sensors["testproto"][18]['rain_rate']['timestamp'])
 
         #~ self.assertTrue(False)
+
+    def test_102_event_device_callback(self):
+        self.wait_for_nodeman()
+        time.sleep(5)
+        #Pir
+        self.thread.bus.event_device_callback(12, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(12, telldus.TELLSTICK_TURNOFF, 0, 0)
+
+        #Daylight
+        self.thread.bus.event_device_callback(8, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(8, telldus.TELLSTICK_TURNOFF, 0, 0)
+
+        #Magnetic
+        self.thread.bus.event_device_callback(13, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(13, telldus.TELLSTICK_TURNOFF, 0, 0)
+
+        #Shutter
+        self.thread.bus.event_device_callback(4, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(4, telldus.TELLSTICK_TURNOFF, 0, 0)
+
+        #Dimmer
+        self.thread.bus.event_device_callback(6, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(6, telldus.TELLSTICK_TURNOFF, 0, 0)
+        self.thread.bus.event_device_callback(6, telldus.TELLSTICK_DIM, 0, 0)
+        self.thread.bus.event_device_callback(6, telldus.TELLSTICK_DIM, 120, 0)
+        self.thread.bus.event_device_callback(6, telldus.TELLSTICK_DIM, 255, 0)
+
+        #Switch
+        self.thread.bus.event_device_callback(22, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(22, telldus.TELLSTICK_TURNOFF, 0, 0)
+
+        #Remote
+        self.thread.bus.event_device_callback(23, telldus.TELLSTICK_TURNON, 0, 0)
+        self.thread.bus.event_device_callback(23, telldus.TELLSTICK_TURNOFF, 0, 0)

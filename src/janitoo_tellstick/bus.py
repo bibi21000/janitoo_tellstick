@@ -244,12 +244,25 @@ def extend_duo( self ):
         return tdev+1
     self.get_hadd_from_tdev = get_hadd_from_tdev
 
+    def get_uuid_from_tdev(tdev):
+        """
+        """
+        return tdev+1
+    self.get_uuid_from_tdev = get_uuid_from_tdev
+
     def get_tdev_from_hadd(hadd):
         """
         """
         hadd = int(hadd)
         return hadd-1
     self.get_tdev_from_hadd = get_tdev_from_hadd
+
+    def get_tdev_from_uuid(uuid):
+        """
+        """
+        hadd = int(uuid)
+        return hadd-1
+    self.get_tdev_from_uuid = get_tdev_from_uuid
 
 
     def event_device_change_callback(device_id, change_event, change_type, callback_id, context):
@@ -262,10 +275,81 @@ def extend_duo( self ):
     #~ self.export_attrs('event_change_device', self.event_change_device)
 
     def event_device_callback(device_id, method, value, callback_id):
+        """Get an event for a well known device
         """
-        """
-        logger.debug("[%s] - Receive callback from %s", self.__class__.__name__, device_id)
-        return True
+        uuid = self.get_hadd_from_tdev(device_id)
+        logger.debug("[%s] - Receive callback from %s for node %s", self.__class__.__name__, device_id, uuid)
+        status = self.nodeman.find_value(uuid, 'status')
+        if status is not None:
+            #It's a sensor
+            if method & self.TELLSTICK_TURNON:
+                status.data = True
+                self.nodeman.publish_value(status)
+                return True
+            elif method & self.TELLSTICK_TURNOFF:
+                status.data = False
+                self.nodeman.publish_value(status)
+                return True
+        else:
+            dim = self.nodeman.find_value(uuid, 'dim')
+            if dim is not None:
+                #It's a dimmer
+                switch = self.nodeman.find_value(uuid, 'switch')
+                dimval = 1.0*value/2.55
+                if method & self.TELLSTICK_TURNON:
+                    switch._data = True
+                    self.nodeman.publish_value(switch)
+                    return True
+                elif method & self.TELLSTICK_TURNOFF:
+                    switch._data = False
+                    self.nodeman.publish_value(switch)
+                    return True
+                elif method & self.TELLSTICK_DIM:
+                    dim._data = dimval
+                    self.nodeman.publish_value(dim)
+                    return True
+            else:
+                shutter = self.nodeman.find_value(uuid, 'shutter')
+                if shutter is not None:
+                    #It's a shutter
+                    if (method & self.TELLSTICK_TURNON) or (method & self.TELLSTICK_UP):
+                        shutter._data = 'up'
+                        self.nodeman.publish_value(shutter)
+                        return True
+                    elif (method & self.TELLSTICK_TURNOFF) or (method & self.TELLSTICK_DOWN):
+                        shutter._data = 'down'
+                        self.nodeman.publish_value(shutter)
+                        return True
+                    elif (method & self.TELLSTICK_STOP):
+                        shutter._data = 'stop'
+                        self.nodeman.publish_value(shutter)
+                        return True
+                else:
+                    button = self.nodeman.find_value(uuid, 'button')
+                    if button is not None:
+                        #It's a remote or a bell
+                        if (method & self.TELLSTICK_TURNON):
+                            button.data = 'on'
+                            self.nodeman.publish_value(button)
+                            return True
+                        elif (method & self.TELLSTICK_TURNOFF):
+                            button.data = 'off'
+                            self.nodeman.publish_value(button)
+                            return True
+                    else:
+                        switch = self.nodeman.find_value(uuid, 'switch')
+                        if switch is not None:
+                            #It's a switch
+                            if (method & self.TELLSTICK_TURNON):
+                                switch._data = 'on'
+                                self.nodeman.publish_value(switch)
+                                return True
+                            elif (method & self.TELLSTICK_TURNOFF):
+                                switch._data = 'off'
+                                self.nodeman.publish_value(switch)
+                                return True
+        logger.warning("[%s] - Receive callback from %s but node %s didn't process message %s (%s)", self.__class__.__name__, device_id, uuid, method, value)
+        return False
     self.event_device_callback = event_device_callback
     self.event_device = telldus.tdRegisterDeviceEvent(self.event_device_callback)
     #~ self.export_attrs('event_device', self.event_device)
@@ -557,7 +641,7 @@ def extend_duo( self ):
             self.tellstick_release()
     self.tellstick_resend = tellstick_resend
 
-    def tellstick_up(tdev, level):
+    def tellstick_up(tdev):
         """up a telldus device."""
         self.tellstick_acquire()
         try:
@@ -575,7 +659,7 @@ def extend_duo( self ):
             self.tellstick_release()
     self.tellstick_up = tellstick_up
 
-    def tellstick_down(tdev, level):
+    def tellstick_down(tdev):
         """down a telldus device. Level from 0 to 255."""
         self.tellstick_acquire()
         try:
@@ -611,7 +695,7 @@ def extend_duo( self ):
             self.tellstick_release()
     self.tellstick_stop = tellstick_stop
 
-    def tellstick_bell(tdev, level):
+    def tellstick_bell(tdev):
         """bell a telldus device."""
         self.tellstick_acquire()
         try:
@@ -625,7 +709,7 @@ def extend_duo( self ):
             self.tellstick_release()
     self.tellstick_bell = tellstick_bell
 
-    def tellstick_learn(tdev, level):
+    def tellstick_learn(tdev):
         """learn a telldus device."""
         self.tellstick_acquire()
         try:
@@ -638,6 +722,14 @@ def extend_duo( self ):
         finally:
             self.tellstick_release()
     self.tellstick_learn = tellstick_learn
+
+    def tellstick_get_name(tdev):
+        """Get the name of telldus device."""
+        try:
+            return telldus.tdGetName(tdev)
+        except Exception:
+            logger.exception('[%s] - Exception when tellstick_get_name', self.__class__.__name__)
+    self.tellstick_get_name = tellstick_get_name
 
     def tellstick_discover_new_devices():
         """Discover new devices."""
