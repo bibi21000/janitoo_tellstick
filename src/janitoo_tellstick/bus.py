@@ -443,6 +443,7 @@ def extend_duo( self ):
             update_config('wind_gust')
         else:
             logger.warning("[%s] - Receive unknown sensor event from %s on protocol %s of type %s", self.__class__.__name__, sensor_id, protocol, dtype)
+        logger.debug("[%s] - Sensors %s", self.__class__.__name__, self.sensors)
         return True
     self.event_sensor_callback = event_sensor_callback
     self.event_sensor = telldus.tdRegisterSensorEvent(self.event_sensor_callback)
