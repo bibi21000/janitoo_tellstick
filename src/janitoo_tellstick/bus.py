@@ -103,6 +103,11 @@ class TellstickBus(JNTBus):
     TELLSTICK_CONTROLLER_TELLSTICK_DUO = 2
     TELLSTICK_CONTROLLER_TELLSTICK_NET = 3
 
+    # Device typedef
+    TELLSTICK_TYPE_DEVICE = 1
+    TELLSTICK_TYPE_GROUP = 2
+    TELLSTICK_TYPE_SCENE = 3
+
     # Device changes
     TELLSTICK_DEVICE_ADDED = 1
     TELLSTICK_DEVICE_CHANGED = 2
@@ -281,7 +286,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -300,7 +305,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -319,7 +324,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -338,7 +343,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -357,7 +362,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -376,7 +381,7 @@ def extend_duo( self ):
     )
     poll_value = self.values[uuid].create_poll_value(default=300)
     self.values[poll_value.uuid] = poll_value
-    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
+    config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids', default="")
     self.values[config_value.uuid] = config_value
 
 
@@ -398,15 +403,18 @@ def extend_duo( self ):
     config_value = self.values[uuid].create_config_value(type=0x16, help='The sensor ids')
     self.values[config_value.uuid] = config_value
 
-    def event_sensor_callback(protocol, model, sensor_id, dtype, value, timestamp, callback_id, context):
+    def event_sensor_callback(protocol, model, sensor_id, dtype, value, timestamp, callback_id):
         """
         """
 
         def update_config(which='temperature'):
             conf = self.get_bus_value("%s_config"%which)
-            sensors = conf.data
-            if sensor_id not in sensors:
-                conf.data = sensors + [sensor_id]
+            sensors = [ s for s in conf.data.split('|') if s != '' ]
+            print "sensors", sensors
+            if '%s'%sensor_id not in sensors:
+                lsens = sensors + ['%s'%sensor_id]
+                print "lsens", lsens
+                conf.data = '|'.join(lsens) if len(lsens)>1 else '%s'%lsens[0]
 
         if protocol not in self.sensors:
             self.sensors[protocol] = {}
@@ -460,7 +468,6 @@ def extend_duo( self ):
         except Exception:
             logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
         try:
-            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
             if self.event_device is not None:
                 telldus.tdUnregisterCallback(self.event_device)
                 self.event_device = None
@@ -468,7 +475,6 @@ def extend_duo( self ):
         except Exception:
             logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
         try:
-            logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)
             telldus.tdClose()
         except Exception:
             logger.exception('[%s] - Exception when __del__ bus %s', self.__class__.__name__, self.oid)

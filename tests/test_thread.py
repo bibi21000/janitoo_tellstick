@@ -60,4 +60,30 @@ class TestTellstickDuoThread(JNTTThreadRun, JNTTThreadRunCommon):
     def test_101_event_sensor_callback(self):
         self.wait_for_nodeman()
         time.sleep(5)
-        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 12, telldus.TELLSTICK_TEMPERATURE, 10, datetime.datetime.now(), 0, None)
+        dt = datetime.datetime.now()
+        #~ print "values %s", self.thread.bus.values
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 12, telldus.TELLSTICK_TEMPERATURE, 10, dt, 0)
+        print "sensors %s", self.thread.bus.sensors
+        self.assertEqual(10, self.thread.bus.sensors["testproto"][12]['temperature']['value'])
+        self.assertEqual(dt, self.thread.bus.sensors["testproto"][12]['temperature']['timestamp'])
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 6, telldus.TELLSTICK_TEMPERATURE, 10, dt, 0)
+        print "sensors %s", self.thread.bus.sensors
+        self.assertEqual(10, self.thread.bus.sensors["testproto"][6]['temperature']['value'])
+        self.assertEqual(dt, self.thread.bus.sensors["testproto"][6]['temperature']['timestamp'])
+
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 14, telldus.TELLSTICK_HUMIDITY, 39, dt, 0)
+        print "sensors %s", self.thread.bus.sensors
+        self.assertEqual(39, self.thread.bus.sensors["testproto"][14]['humidity']['value'])
+        self.assertEqual(dt, self.thread.bus.sensors["testproto"][14]['humidity']['timestamp'])
+
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 7, telldus.TELLSTICK_RAINTOTAL, 41, dt, 0)
+        print "sensors %s", self.thread.bus.sensors
+        self.assertEqual(41, self.thread.bus.sensors["testproto"][7]['rain_total']['value'])
+        self.assertEqual(dt, self.thread.bus.sensors["testproto"][7]['rain_total']['timestamp'])
+
+        self.thread.bus.event_sensor_callback("testproto", 'testmodel', 18, telldus.TELLSTICK_RAINRATE, 3.2, dt, 0)
+        print "sensors %s", self.thread.bus.sensors
+        self.assertEqual(3.2, self.thread.bus.sensors["testproto"][18]['rain_rate']['value'])
+        self.assertEqual(dt, self.thread.bus.sensors["testproto"][18]['rain_rate']['timestamp'])
+
+        self.assertTrue(False)
