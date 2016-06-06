@@ -407,7 +407,7 @@ def extend_duo( self ):
         """
         """
 
-        def update_config(which='temperature'):
+        def update_config(which='temperature', protocol='fineoffset'):
             conf = self.get_bus_value("%s_config"%which)
             sensors = [ s for s in conf.data.split('|') if s != '' ]
             print "sensors", sensors
@@ -422,25 +422,25 @@ def extend_duo( self ):
             self.sensors[protocol][sensor_id] = {'model':model}
         if dtype & self.TELLSTICK_TEMPERATURE:
             self.sensors[protocol][sensor_id]['temperature'] = {'value':value, 'timestamp':timestamp}
-            update_config('temperature')
+            update_config(which='temperature', protocol=protocol)
         elif dtype & self.TELLSTICK_HUMIDITY:
             self.sensors[protocol][sensor_id]['humidity'] = {'value':value, 'timestamp':timestamp}
-            update_config('humidity')
+            update_config(which='humidity', protocol=protocol)
         elif dtype & self.TELLSTICK_RAINRATE:
             self.sensors[protocol][sensor_id]['rain_rate'] = {'value':value, 'timestamp':timestamp}
-            update_config('rain_rate')
+            update_config(which='rain_rate', protocol=protocol)
         elif dtype & self.TELLSTICK_RAINTOTAL:
             self.sensors[protocol][sensor_id]['rain_total'] = {'value':value, 'timestamp':timestamp}
-            update_config('rain_total')
+            update_config(which='rain_total', protocol=protocol)
         elif dtype & self.TELLSTICK_WINDDIRECTION:
             self.sensors[protocol][sensor_id]['wind_direction'] = {'value':value, 'timestamp':timestamp}
-            update_config('wind_direction')
+            update_config(which='wind_direction', protocol=protocol)
         elif dtype & self.TELLSTICK_WINDAVERAGE:
             self.sensors[protocol][sensor_id]['wind_average'] = {'value':value, 'timestamp':timestamp}
-            update_config('wind_average')
+            update_config(which='wind_average', protocol=protocol)
         elif dtype & self.TELLSTICK_WINDGUST:
             self.sensors[protocol][sensor_id]['wind_gust'] = {'value':value, 'timestamp':timestamp}
-            update_config('wind_gust')
+            update_config(which='wind_gust', protocol=protocol)
         else:
             logger.warning("[%s] - Receive unknown sensor event from %s on protocol %s of type %s", self.__class__.__name__, sensor_id, protocol, dtype)
         logger.debug("[%s] - Sensors %s", self.__class__.__name__, self.sensors)
