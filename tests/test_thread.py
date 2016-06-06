@@ -86,4 +86,4 @@ class TestTellstickDuoThread(JNTTThreadRun, JNTTThreadRunCommon):
         self.assertEqual(3.2, self.thread.bus.sensors["testproto"][18]['rain_rate']['value'])
         self.assertEqual(dt, self.thread.bus.sensors["testproto"][18]['rain_rate']['timestamp'])
 
-        self.assertTrue(False)
+        #~ self.assertTrue(False)
