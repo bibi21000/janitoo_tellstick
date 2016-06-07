@@ -125,6 +125,7 @@
 <div class="section" id="module-janitoo_tellstick.bus">
 <span id="janitoo-tellstick-bus-module"></span><h2>janitoo_tellstick.bus module<a class="headerlink" href="#module-janitoo_tellstick.bus" title="Permalink to this headline">¶</a></h2>
 <p>The Raspberry tellstick bus
+Warning : this bus can&#8217;t be aggregate/ Need to run in its own thread.
 Not sure that this bus can be extended by aggregation (callbacks and constants : TELLSTICK_TEMPERATURE).
 Need to be tested.</p>
 <dl class="class">
@@ -132,6 +133,241 @@ Need to be tested.</p>
 <em class="property">class </em><tt class="descclassname">janitoo_tellstick.bus.</tt><tt class="descname">TellstickBus</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/bus.html#TellstickBus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.bus.JNTBus</span></tt></p>
 <p>A pseudo-bus to handle the tellstick</p>
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.ALL_METHODS">
+<tt class="descname">ALL_METHODS</tt><em class="property"> = 919</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.ALL_METHODS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_BELL">
+<tt class="descname">TELLSTICK_BELL</tt><em class="property"> = 4</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_BELL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_AVAILABLE">
+<tt class="descname">TELLSTICK_CHANGE_AVAILABLE</tt><em class="property"> = 5</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_AVAILABLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_FIRMWARE">
+<tt class="descname">TELLSTICK_CHANGE_FIRMWARE</tt><em class="property"> = 6</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_FIRMWARE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_METHOD">
+<tt class="descname">TELLSTICK_CHANGE_METHOD</tt><em class="property"> = 4</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_METHOD" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_MODEL">
+<tt class="descname">TELLSTICK_CHANGE_MODEL</tt><em class="property"> = 3</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_MODEL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_NAME">
+<tt class="descname">TELLSTICK_CHANGE_NAME</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_NAME" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_PROTOCOL">
+<tt class="descname">TELLSTICK_CHANGE_PROTOCOL</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CHANGE_PROTOCOL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK">
+<tt class="descname">TELLSTICK_CONTROLLER_TELLSTICK</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK_DUO">
+<tt class="descname">TELLSTICK_CONTROLLER_TELLSTICK_DUO</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK_DUO" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK_NET">
+<tt class="descname">TELLSTICK_CONTROLLER_TELLSTICK_NET</tt><em class="property"> = 3</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_CONTROLLER_TELLSTICK_NET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_ADDED">
+<tt class="descname">TELLSTICK_DEVICE_ADDED</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_ADDED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_CHANGED">
+<tt class="descname">TELLSTICK_DEVICE_CHANGED</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_CHANGED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_REMOVED">
+<tt class="descname">TELLSTICK_DEVICE_REMOVED</tt><em class="property"> = 3</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_REMOVED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_STATE_CHANGED">
+<tt class="descname">TELLSTICK_DEVICE_STATE_CHANGED</tt><em class="property"> = 4</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DEVICE_STATE_CHANGED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DIM">
+<tt class="descname">TELLSTICK_DIM</tt><em class="property"> = 16</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DIM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_DOWN">
+<tt class="descname">TELLSTICK_DOWN</tt><em class="property"> = 256</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_DOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_BROKEN_PIPE">
+<tt class="descname">TELLSTICK_ERROR_BROKEN_PIPE</tt><em class="property"> = -9</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_BROKEN_PIPE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_COMMUNICATING_SERVICE">
+<tt class="descname">TELLSTICK_ERROR_COMMUNICATING_SERVICE</tt><em class="property"> = -10</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_COMMUNICATING_SERVICE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_COMMUNICATION">
+<tt class="descname">TELLSTICK_ERROR_COMMUNICATION</tt><em class="property"> = -5</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_COMMUNICATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_CONFIG_SYNTAX">
+<tt class="descname">TELLSTICK_ERROR_CONFIG_SYNTAX</tt><em class="property"> = -11</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_CONFIG_SYNTAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_CONNECTING_SERVICE">
+<tt class="descname">TELLSTICK_ERROR_CONNECTING_SERVICE</tt><em class="property"> = -6</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_CONNECTING_SERVICE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_DEVICE_NOT_FOUND">
+<tt class="descname">TELLSTICK_ERROR_DEVICE_NOT_FOUND</tt><em class="property"> = -3</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_DEVICE_NOT_FOUND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_METHOD_NOT_SUPPORTED">
+<tt class="descname">TELLSTICK_ERROR_METHOD_NOT_SUPPORTED</tt><em class="property"> = -4</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_METHOD_NOT_SUPPORTED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_NOT_FOUND">
+<tt class="descname">TELLSTICK_ERROR_NOT_FOUND</tt><em class="property"> = -1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_NOT_FOUND" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_PERMISSION_DENIED">
+<tt class="descname">TELLSTICK_ERROR_PERMISSION_DENIED</tt><em class="property"> = -2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_PERMISSION_DENIED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_SYNTAX">
+<tt class="descname">TELLSTICK_ERROR_SYNTAX</tt><em class="property"> = -8</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_SYNTAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_UNKNOWN">
+<tt class="descname">TELLSTICK_ERROR_UNKNOWN</tt><em class="property"> = -99</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_UNKNOWN_RESPONSE">
+<tt class="descname">TELLSTICK_ERROR_UNKNOWN_RESPONSE</tt><em class="property"> = -7</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_ERROR_UNKNOWN_RESPONSE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_EXECUTE">
+<tt class="descname">TELLSTICK_EXECUTE</tt><em class="property"> = 64</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_EXECUTE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_HUMIDITY">
+<tt class="descname">TELLSTICK_HUMIDITY</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_HUMIDITY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_LEARN">
+<tt class="descname">TELLSTICK_LEARN</tt><em class="property"> = 32</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_LEARN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_RAINRATE">
+<tt class="descname">TELLSTICK_RAINRATE</tt><em class="property"> = 4</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_RAINRATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_RAINTOTAL">
+<tt class="descname">TELLSTICK_RAINTOTAL</tt><em class="property"> = 8</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_RAINTOTAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_STOP">
+<tt class="descname">TELLSTICK_STOP</tt><em class="property"> = 512</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_STOP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_SUCCESS">
+<tt class="descname">TELLSTICK_SUCCESS</tt><em class="property"> = 0</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_SUCCESS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TEMPERATURE">
+<tt class="descname">TELLSTICK_TEMPERATURE</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TEMPERATURE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TOGGLE">
+<tt class="descname">TELLSTICK_TOGGLE</tt><em class="property"> = 8</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TOGGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TURNOFF">
+<tt class="descname">TELLSTICK_TURNOFF</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TURNOFF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TURNON">
+<tt class="descname">TELLSTICK_TURNON</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TURNON" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_DEVICE">
+<tt class="descname">TELLSTICK_TYPE_DEVICE</tt><em class="property"> = 1</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_DEVICE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_GROUP">
+<tt class="descname">TELLSTICK_TYPE_GROUP</tt><em class="property"> = 2</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_GROUP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_SCENE">
+<tt class="descname">TELLSTICK_TYPE_SCENE</tt><em class="property"> = 3</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_TYPE_SCENE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_UP">
+<tt class="descname">TELLSTICK_UP</tt><em class="property"> = 128</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_UP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDAVERAGE">
+<tt class="descname">TELLSTICK_WINDAVERAGE</tt><em class="property"> = 32</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDAVERAGE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDDIRECTION">
+<tt class="descname">TELLSTICK_WINDDIRECTION</tt><em class="property"> = 16</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDDIRECTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDGUST">
+<tt class="descname">TELLSTICK_WINDGUST</tt><em class="property"> = 64</em><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.TELLSTICK_WINDGUST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="janitoo_tellstick.bus.TellstickBus.tellstick_acquire">
 <tt class="descname">tellstick_acquire</tt><big>(</big><em>blocking=True</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/bus.html#TellstickBus.tellstick_acquire"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.bus.TellstickBus.tellstick_acquire" title="Permalink to this definition">¶</a></dt>
@@ -236,7 +472,7 @@ Need to be tested.</p>
 <dl class="class">
 <dt id="janitoo_tellstick.components.TellstickDaylight">
 <em class="property">class </em><tt class="descclassname">janitoo_tellstick.components.</tt><tt class="descname">TellstickDaylight</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/components.html#TellstickDaylight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.components.TellstickDaylight" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickDevice" title="janitoo_tellstick.components.TellstickDevice"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickDevice</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickSensor" title="janitoo_tellstick.components.TellstickSensor"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickSensor</span></tt></a></p>
 <p>Provides the interface for a Tellstick device.</p>
 </dd></dl>
 
@@ -245,6 +481,12 @@ Need to be tested.</p>
 <em class="property">class </em><tt class="descclassname">janitoo_tellstick.components.</tt><tt class="descname">TellstickDevice</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/components.html#TellstickDevice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.components.TellstickDevice" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.component.JNTComponent</span></tt></p>
 <p>Provides the interface for a Tellstick device.</p>
+<dl class="method">
+<dt id="janitoo_tellstick.components.TellstickDevice.check_heartbeat">
+<tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/components.html#TellstickDevice.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.components.TellstickDevice.check_heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the component is &#8216;available&#8217;</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -263,14 +505,14 @@ Need to be tested.</p>
 <dl class="class">
 <dt id="janitoo_tellstick.components.TellstickMagnetic">
 <em class="property">class </em><tt class="descclassname">janitoo_tellstick.components.</tt><tt class="descname">TellstickMagnetic</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/components.html#TellstickMagnetic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.components.TellstickMagnetic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickDevice" title="janitoo_tellstick.components.TellstickDevice"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickDevice</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickSensor" title="janitoo_tellstick.components.TellstickSensor"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickSensor</span></tt></a></p>
 <p>Provides the interface for a Tellstick device.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="janitoo_tellstick.components.TellstickPir">
 <em class="property">class </em><tt class="descclassname">janitoo_tellstick.components.</tt><tt class="descname">TellstickPir</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_tellstick/components.html#TellstickPir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_tellstick.components.TellstickPir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickDevice" title="janitoo_tellstick.components.TellstickDevice"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickDevice</span></tt></a></p>
+<dd><p>Bases: <a class="reference internal" href="#janitoo_tellstick.components.TellstickSensor" title="janitoo_tellstick.components.TellstickSensor"><tt class="xref py py-class docutils literal"><span class="pre">janitoo_tellstick.components.TellstickSensor</span></tt></a></p>
 <p>Provides the interface for a Tellstick device.</p>
 </dd></dl>
 
