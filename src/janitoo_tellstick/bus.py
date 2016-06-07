@@ -42,15 +42,9 @@ from janitoo.utils import HADD
 #Must be implemented for non-regression
 from janitoo.classes import COMMAND_DESC
 
-COMMAND_CAMERA_PREVIEW = 0x2200
-COMMAND_CAMERA_PHOTO = 0x2201
-COMMAND_CAMERA_VIDEO = 0x2202
-COMMAND_CAMERA_STREAM = 0x2203
+COMMAND_SENSOR_CONFIGURATION = 0x009E
 
-assert(COMMAND_DESC[COMMAND_CAMERA_PREVIEW] == 'COMMAND_CAMERA_PREVIEW')
-assert(COMMAND_DESC[COMMAND_CAMERA_PHOTO] == 'COMMAND_CAMERA_PHOTO')
-assert(COMMAND_DESC[COMMAND_CAMERA_VIDEO] == 'COMMAND_CAMERA_VIDEO')
-assert(COMMAND_DESC[COMMAND_CAMERA_STREAM] == 'COMMAND_CAMERA_STREAM')
+assert(COMMAND_DESC[COMMAND_SENSOR_CONFIGURATION] == 'COMMAND_SENSOR_CONFIGURATION')
 ##############################################################
 
 from janitoo_tellstick import OID
@@ -210,13 +204,15 @@ def extend_duo( self ):
         """
         """
         if data:
-            self._bus.tellstick_discover_new_devices()
+            self.tellstick_discover_new_devices()
         else:
             logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
         return True
     self.set_tellstickduo_discover = set_tellstickduo_discover
     uuid="{:s}_discover".format(self.oid)
     self.values[uuid] = self.value_factory['action_boolean'](options=self.options, uuid=uuid,
+        cmd_class=COMMAND_SENSOR_CONFIGURATION,
+        genre=0x05,
         node_uuid=self.uuid,
         set_data_cb=self.set_tellstickduo_discover,
     )
@@ -226,7 +222,7 @@ def extend_duo( self ):
         """
         """
         if data:
-            self._bus.tellstick_update_device_component(node_uuid, data)
+            self.tellstick_update_device_component(node_uuid, data)
         else:
             logger.warning("[%s] - set_tellstickduo_discover unknown data : %s", self.__class__.__name__, data)
         return True
@@ -234,6 +230,8 @@ def extend_duo( self ):
     uuid="{:s}_updatetype".format(self.oid)
     self.values[uuid] = self.value_factory['action_string'](options=self.options, uuid=uuid,
         node_uuid=self.uuid,
+        genre=0x05,
+        cmd_class=COMMAND_SENSOR_CONFIGURATION,
         set_data_cb=self.set_tellstickduo_updatetype,
     )
 
