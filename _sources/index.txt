@@ -17,6 +17,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+    Use<use>
     Docker appliance image<docker>
     Using documentation <using_doc>
 

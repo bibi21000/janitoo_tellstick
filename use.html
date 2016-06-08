@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using the tellstick &mdash; janitoo_tellstick 0.0.8 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootswatch-3.3.4/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.0.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+    <script type="text/javascript" src="_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="janitoo_tellstick 0.0.8 documentation" href="index.html" />
+    <link rel="next" title="Using the docker appliance" href="docker.html" />
+    <link rel="prev" title="Welcome to documentation!" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          janitoo_tellstick</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="tools/index.html">Tools</a></li>
+                <li><a href="api/index.html">Reference</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href=""> Use</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#discovering-devices">Discovering devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performances">Performances</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_doc.html"> Using documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using_doc.html#the-header">The header</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="index.html" title="Previous Chapter: Welcome to documentation!"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Welcome to do...</span>
+    </a>
+  </li>
+  <li>
+    <a href="docker.html" title="Next Chapter: Using the docker appliance"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using the doc... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="using-the-tellstick">
+<h1>Using the tellstick<a class="headerlink" href="#using-the-tellstick" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="discovering-devices">
+<h2>Discovering devices<a class="headerlink" href="#discovering-devices" title="Permalink to this headline">¶</a></h2>
+<p>On first run, you need to sync the devices with the one in telldusd :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query node --hadd 0163/0000 --vuuid request_info_nodes
+</pre></div>
+</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>request_info_nodes
+----------
+hadd       uuid                           name                      location             product_type
+0163/0000  tellstick                      testname                  testlocation         Default product type
+</pre></div>
+</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0163/0000 --genre command --uuid tellstick_discover --cmdclass 158 --writeonly True --data True
+</pre></div>
+</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query node --hadd 0163/0000 --vuuid request_info_nodes
+----------
+hadd       uuid                           name                      location             product_type
+0163/0035  tellstick__35                  Detecteur mouvement SAM   Default location     Tellstick device
+0163/0019  tellstick__19                  Dimmer 2                  Default location     Tellstick device
+0163/0018  tellstick__18                  Dimmer 1                  Default location     Tellstick device
+0163/0038  tellstick__38                  Lampe Aquarium            Default location     Tellstick device
+0163/0034  tellstick__34                  Home cinema Chambre       Default location     Tellstick device
+0163/0013  tellstick__13                  Detecteur Porte Entree    Default location     Tellstick device
+0163/0012  tellstick__12                  Detecteur mouvement Entree Default location     Tellstick device
+0163/0037  tellstick__37                  Home Cinema SAM           Default location     Tellstick device
+0163/0010  tellstick__10                  Inter 1G                  Default location     Tellstick device
+0163/0017  tellstick__17                  B3                        Default location     Tellstick device
+0163/0016  tellstick__16                  B2                        Default location     Tellstick device
+0163/0015  tellstick__15                  B1                        Default location     Tellstick device
+0163/0032  tellstick__32                  plafonnier chambre        Default location     Tellstick device
+0163/0036  tellstick__36                  Dimmer Salle 2            Default location     Tellstick device
+0163/0031  tellstick__31                  Ambiance                  Default location     Tellstick device
+0163/0030  tellstick__30                  Table cuisine             Default location     Tellstick device
+0163/0033  tellstick__33                  Lampe chambre             Default location     Tellstick device
+0163/0028  tellstick__28                  Evier                     Default location     Tellstick device
+0163/0029  tellstick__29                  Plan de travail           Default location     Tellstick device
+0163/0026  tellstick__26                  Hotte cuisine             Default location     Tellstick device
+0163/0027  tellstick__27                  Hotte cuisine ambiance    Default location     Tellstick device
+0163/0024  tellstick__24                  Douille dimmer            Default location     Tellstick device
+0163/0025  tellstick__25                  Plafonnier SaM            Default location     Tellstick device
+0163/0022  tellstick__22                  Eclairage Bar             Default location     Tellstick device
+0163/0023  tellstick__23                  Inter Gen VR              Default location     Tellstick device
+0163/0020  tellstick__20                  Dimmer Salle 1            Default location     Tellstick device
+0163/0021  tellstick__21                  Bouton mobile             Default location     Tellstick device
+0163/0009  tellstick__9                   inter 1D                  Default location     Tellstick device
+0163/0008  tellstick__8                   Detecteur crepusculaire   Default location     Tellstick device
+0163/0007  tellstick__7                   Prise mobile              Default location     Tellstick device
+0163/0006  tellstick__6                   Lampe de chevet Chambre   Default location     Tellstick device
+0163/0005  tellstick__5                   VR Salle a manger         Default location     Tellstick device
+0163/0004  tellstick__4                   VR Cuisine                Default location     Tellstick device
+0163/0003  tellstick__3                   Plafonnier Cuisine        Default location     Tellstick device
+0163/0011  tellstick__11                  Tel C4                    Default location     Tellstick device
+0163/0000  tellstick                      testname                  testlocation         Default product type
+</pre></div>
+</div>
+<p>All devices are discovered but in an unknown type. We should update them but it doesn&#8217;t work :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0163/0004 --genre command --uuid tellstick_updatetype --cmdclass 158 --writeonly True --data tellstick_shutter
+</pre></div>
+</div>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">fails</span>
+</pre></div>
+</div>
+<p>Stop the server and update your config file manually, matching device types depending on your installation :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>components.3 = tellstick.dimmer
+components.4 = tellstick.shutter
+components.5 = tellstick.shutter
+components.6 = tellstick.dimmer
+components.7 = tellstick.switch
+components.8 = tellstick.daylight
+components.9 = tellstick.remote
+components.10 = tellstick.remote
+components.11 = tellstick.remote
+components.12 = tellstick.pir
+components.13 = tellstick.magnetic
+components.15 = tellstick.remote
+components.16 = tellstick.remote
+components.17 = tellstick.remote
+components.18 = tellstick.dimmer
+components.19 = tellstick.dimmer
+components.20 = tellstick.dimmer
+components.21 = tellstick.remote
+components.22 = tellstick.switch
+components.23 = tellstick.remote
+components.24 = tellstick.dimmer
+components.25 = tellstick.switch
+components.26 = tellstick.switch
+components.27 = tellstick.switch
+components.28 = tellstick.switch
+components.29 = tellstick.switch
+components.30 = tellstick.switch
+components.31 = tellstick.switch
+components.32 = tellstick.switch
+components.33 = tellstick.dimmer
+components.34 = tellstick.switch
+components.35 = tellstick.pir
+components.36 = tellstick.dimmer
+components.37 = tellstick.switch
+components.38 = tellstick.switch
+</pre></div>
+</div>
+<p>Restart the server and query it :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query node --hadd 0163/0000 --vuuid request_info_nodes
+</pre></div>
+</div>
+<div class="code bash highlight-python"><div class="highlight"><pre>request_info_nodes
+----------
+hadd       uuid                           name                      location             product_name              product_type
+0163/0035  tellstick__35                  Detecteur mouvement SAM   Default location     Tellstick pir             Tellstick device
+0163/0019  tellstick__19                  Dimmer 2                  Default location     Tellstick dimmer          Tellstick device
+0163/0018  tellstick__18                  Dimmer 1                  Default location     Tellstick dimmer          Tellstick device
+0163/0038  tellstick__38                  Lampe Aquarium            Default location     Tellstick switch          Tellstick device
+0163/0034  tellstick__34                  Home cinema Chambre       Default location     Tellstick switch          Tellstick device
+0163/0013  tellstick__13                  Detecteur Porte Entree    Default location     Tellstick magnetic        Tellstick device
+0163/0012  tellstick__12                  Detecteur mouvement Entree Default location     Tellstick pir             Tellstick device
+0163/0037  tellstick__37                  Home Cinema SAM           Default location     Tellstick switch          Tellstick device
+0163/0036  tellstick__36                  Dimmer Salle 2            Default location     Tellstick dimmer          Tellstick device
+0163/0031  tellstick__31                  Ambiance                  Default location     Tellstick switch          Tellstick device
+0163/0030  tellstick__30                  Table cuisine             Default location     Tellstick switch          Tellstick device
+0163/0033  tellstick__33                  Lampe chambre             Default location     Tellstick dimmer          Tellstick device
+0163/0032  tellstick__32                  plafonnier chambre        Default location     Tellstick switch          Tellstick device
+0163/0010  tellstick__10                  Inter 1G                  Default location     Tellstick sensor          Tellstick device
+0163/0017  tellstick__17                  B3                        Default location     Tellstick sensor          Tellstick device
+0163/0016  tellstick__16                  B2                        Default location     Tellstick sensor          Tellstick device
+0163/0015  tellstick__15                  B1                        Default location     Tellstick sensor          Tellstick device
+0163/0028  tellstick__28                  Evier                     Default location     Tellstick switch          Tellstick device
+0163/0029  tellstick__29                  Plan de travail           Default location     Tellstick switch          Tellstick device
+0163/0026  tellstick__26                  Hotte cuisine             Default location     Tellstick switch          Tellstick device
+0163/0027  tellstick__27                  Hotte cuisine ambiance    Default location     Tellstick switch          Tellstick device
+0163/0024  tellstick__24                  Douille dimmer            Default location     Tellstick dimmer          Tellstick device
+0163/0025  tellstick__25                  Plafonnier SaM            Default location     Tellstick switch          Tellstick device
+0163/0022  tellstick__22                  Eclairage Bar             Default location     Tellstick switch          Tellstick device
+0163/0023  tellstick__23                  Inter Gen VR              Default location     Tellstick sensor          Tellstick device
+0163/0020  tellstick__20                  Dimmer Salle 1            Default location     Tellstick dimmer          Tellstick device
+0163/0021  tellstick__21                  Bouton mobile             Default location     Tellstick sensor          Tellstick device
+0163/0009  tellstick__9                   inter 1D                  Default location     Tellstick sensor          Tellstick device
+0163/0008  tellstick__8                   Detecteur crepusculaire   Default location     Tellstick daylight        Tellstick device
+0163/0007  tellstick__7                   Prise mobile              Default location     Tellstick switch          Tellstick device
+0163/0006  tellstick__6                   Lampe de chevet Chambre   Default location     Tellstick dimmer          Tellstick device
+0163/0005  tellstick__5                   VR Salle a manger         Default location     Tellstick shutter         Tellstick device
+0163/0004  tellstick__4                   VR Cuisine                Default location     Tellstick shutter         Tellstick device
+0163/0003  tellstick__3                   Plafonnier Cuisine        Default location     Tellstick dimmer          Tellstick device
+0163/0011  tellstick__11                  Tel C4                    Default location     Tellstick sensor          Tellstick device
+0163/0000  tellstick                      testname                  testlocation         Tellstick bus controller  Default product type
+</pre></div>
+</div>
+<p>Update a switch :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0163/0038 --genre user --uuid switch --cmdclass 37 --writeonly True --data on
+</pre></div>
+</div>
+<p>Or a dimmer :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0163/0003 --genre user --uuid switch --cmdclass 37 --writeonly True --data on
+
+$ jnt_query query --hadd 0163/0003 --genre user --uuid dim --cmdclass 38 --writeonly True --data 60
+
+$ jnt_query query --hadd 0163/0003 --genre user --uuid switch --cmdclass 37 --writeonly True --data off
+</pre></div>
+</div>
+<p>And for shutters :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0163/0005 --genre user --uuid shutter --cmdclass 12624 --writeonly True --data down
+
+$ jnt_query query --hadd 0163/0005 --genre user --uuid shutter --cmdclass 12624 --writeonly True --data stop
+
+$ jnt_query query --hadd 0163/0005 --genre user --uuid shutter --cmdclass 12624 --writeonly True --data up
+</pre></div>
+</div>
+</div>
+<div class="section" id="performances">
+<h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline">¶</a></h2>
+<p>On a raspberry pi 2:</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+  COMMAND
+752 root      20   0 96700  17m 5408 S   7,2  3,6   1:05.05 /usr/bin/python /usr/local/bin/jnt_tellstick -c /opt/janitoo/src/janitoo_tellstick/tests/data/ja
+</pre></div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014,2015,2016 Sébastien GALLET aka bibi2100 &lt;bibi21000@gmail.com&gt;.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
