@@ -123,7 +123,7 @@ class TellstickBus(JNTBus):
         """
         JNTBus.__init__(self, **kwargs)
         self._tellstick_lock = threading.Lock()
-        self._lock_delay = 0.5
+        self._lock_delay = 0.25
 
         self.load_extensions(OID)
         self.cant_aggregate(OID)
@@ -597,7 +597,7 @@ def extend_duo( self ):
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)
-            if methods & self.TELLSTICK_TURNDIM:
+            if methods & self.TELLSTICK_DIM:
                 telldus.tdDim(tdev, int(level*2.55))
                 time.sleep(self._lock_delay)
         except Exception:
@@ -621,22 +621,17 @@ def extend_duo( self ):
     self.tellstick_execute = tellstick_execute
 
     def tellstick_resend(tdev):
-        """Resend last command to a telldus device."""
-        self.tellstick_acquire()
-        try:
-            methods = telldus.tdLastSentCommand(tdev, self.ALL_METHODS)
-            if methods & self.TELLSTICK_TURNON:
-                telldus.tdTurnOn(tdev)
-                time.sleep(self._lock_delay)
-            elif methods & self.TELLSTICK_TURNOFF:
-                telldus.tdTurnOff(tdev)
-                time.sleep(self._lock_delay)
-            else:
-                logger.warning('[%s] - Unknown resend method %s', self.__class__.__name__, methods)
-        except Exception:
-            logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
-        finally:
-            self.tellstick_release()
+        """Resend last command to a telldus device.
+        Not protected by lock as it is in stop method"""
+        methods = telldus.tdLastSentCommand(tdev, self.ALL_METHODS)
+        if methods & self.TELLSTICK_TURNON:
+            telldus.tdTurnOn(tdev)
+            time.sleep(self._lock_delay)
+        elif methods & self.TELLSTICK_TURNOFF:
+            telldus.tdTurnOff(tdev)
+            time.sleep(self._lock_delay)
+        else:
+            logger.warning('[%s] - Unknown resend method %s', self.__class__.__name__, methods)
     self.tellstick_resend = tellstick_resend
 
     def tellstick_up(tdev):
@@ -649,7 +644,7 @@ def extend_duo( self ):
                 time.sleep(self._lock_delay)
             elif methods & self.TELLSTICK_TURNON:
                 #Emulate up by turnon
-                self.tellstick_turnon(tdev)
+                telldus.tdTurnOn(tdev)
                 time.sleep(self._lock_delay)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_up', self.__class__.__name__)
@@ -658,7 +653,7 @@ def extend_duo( self ):
     self.tellstick_up = tellstick_up
 
     def tellstick_down(tdev):
-        """down a telldus device. Level from 0 to 255."""
+        """down a telldus device."""
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)
@@ -667,7 +662,7 @@ def extend_duo( self ):
                 time.sleep(self._lock_delay)
             elif methods & self.TELLSTICK_TURNOFF:
                 #Emulate down by turnoff
-                self.tellstick_turnoff(tdev)
+                telldus.tdTurnOff(tdev)
                 time.sleep(self._lock_delay)
         except Exception:
             logger.exception('[%s] - Exception when tellstick_down', self.__class__.__name__)
@@ -676,7 +671,7 @@ def extend_duo( self ):
     self.tellstick_down = tellstick_down
 
     def tellstick_stop(tdev):
-        """stop a telldus device. Level from 0 to 255."""
+        """stop a telldus device"""
         self.tellstick_acquire()
         try:
             methods = telldus.tdMethods(tdev, self.ALL_METHODS)

@@ -85,6 +85,7 @@ setup(
     package_dir = { '': 'src' },
     include_package_data=True,
     data_files = data_files,
+    keywords = "hardware,telldus,chacon,tellstick",
     install_requires=[
                      'janitoo',
                      'janitoo_factory',

@@ -137,7 +137,6 @@ class TellstickSwitch(TellstickDevice):
             list_items=['on', 'off'],
             default='off',
             set_data_cb=self.set_switch,
-            genre=0x01,
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
@@ -193,7 +192,7 @@ class TellstickDimmer(TellstickSwitch):
             data = 100
         elif data < 0:
             data = 0
-        self._bus.tellstick_dim(tdev)
+        self._bus.tellstick_dim(tdev, data)
 
 class TellstickShutter(TellstickDevice):
     """ Provides the interface for a Tellstick device. """
@@ -219,7 +218,6 @@ class TellstickShutter(TellstickDevice):
             list_items=['up', 'down', 'stop'],
             default='up',
             set_data_cb=self.set_shutter,
-            genre=0x01,
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
@@ -262,7 +260,6 @@ class TellstickRemote(TellstickDevice):
             node_uuid=self.uuid,
             list_items=['on', 'off'],
             default='off',
-            genre=0x01,
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
@@ -299,7 +296,6 @@ class TellstickBell(TellstickDevice):
             node_uuid=self.uuid,
             list_items=['on', 'off'],
             default='off',
-            genre=0x01,
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
