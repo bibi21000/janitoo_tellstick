@@ -189,3 +189,12 @@ And for shutters :
 
     $ jnt_query query --hadd 0163/0005 --genre user --uuid shutter --cmdclass 12624 --writeonly True --data up
 
+Performances
+============
+
+On a raspberry pi 2:
+
+.. code:: bash
+
+  PID USER      PR  NI  VIRT  RES  SHR S  %CPU %MEM    TIME+  COMMAND
+  752 root      20   0 96700  17m 5408 S   7,2  3,6   1:05.05 /usr/bin/python /usr/local/bin/jnt_tellstick -c /opt/janitoo/src/janitoo_tellstick/tests/data/ja
