@@ -2,7 +2,7 @@ FROM bibi21000/janitoo_docker_appliance
 
 MAINTAINER bibi21000 <bibi21000@gmail.com>
 
-ENV JANITOO_NUT_VERSION 2
+ENV JANITOO_TELLSTICK_VERSION 2
 
 RUN date +'%Y/%m/%d %H:%M:%S'
 
