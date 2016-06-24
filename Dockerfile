@@ -16,6 +16,7 @@ RUN make clone module=janitoo_factory_exts && \
     rm -Rf /tmp/* 2>/dev/null||true
 
 RUN make clone module=janitoo_tellstick && \
+    make deps module=janitoo_tellstick && \
     make appliance-deps module=janitoo_tellstick && \
     apt-get clean && rm -Rf /tmp/*||true && \
     [ -d /root/.cache ] && rm -Rf /root/.cache/*
