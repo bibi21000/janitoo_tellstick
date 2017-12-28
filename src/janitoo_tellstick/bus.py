@@ -492,10 +492,10 @@ def extend_duo( self ):
         def update_config(which='temperature', protocol='fineoffset'):
             conf = self.get_bus_value("%s_config"%which)
             sensors = [ s for s in conf.data.split('|') if s != '' ]
-            print "sensors", sensors
+            print("sensors", sensors)
             if '%s'%sensor_id not in sensors:
                 lsens = sensors + ['%s'%sensor_id]
-                print "lsens", lsens
+                print("lsens", lsens)
                 conf.data = '|'.join(lsens) if len(lsens)>1 else '%s'%lsens[0]
 
         if protocol not in self.sensors:
@@ -729,7 +729,7 @@ def extend_duo( self ):
         devices = telldus.tdGetNumberOfDevices()
         logger.debug('[%s] - Found %s devices in telldus-core', self.__class__.__name__, devices)
         add_ctrl = self.nodeman.get_add_ctrl()
-        for i in xrange(devices):
+        for i in range(devices):
             deviceid = telldus.tdGetDeviceId(i)
             if deviceid:
                 name = telldus.tdGetName(deviceid)
