@@ -1,1 +1,1 @@
-telldus-core libtelldus-core-dev
+--allow-unauthenticated telldus-core libtelldus-core-dev
