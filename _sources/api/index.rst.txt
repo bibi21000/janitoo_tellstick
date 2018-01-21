@@ -1,0 +1,38 @@
+janitoo_tellstick package
+=========================
+
+Submodules
+----------
+
+janitoo_tellstick.bus module
+----------------------------
+
+.. automodule:: janitoo_tellstick.bus
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+janitoo_tellstick.components module
+-----------------------------------
+
+.. automodule:: janitoo_tellstick.components
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+janitoo_tellstick.thread module
+-------------------------------
+
+.. automodule:: janitoo_tellstick.thread
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: janitoo_tellstick
+    :members:
+    :undoc-members:
+    :show-inheritance:

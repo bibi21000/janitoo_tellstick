@@ -5,13 +5,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Using the docker appliance &mdash; janitoo_tellstick 0.0.8 documentation</title>
+    <title>Using the docker appliance &#8212; janitoo_tellstick 0.0.8 documentation</title>
     
-    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootswatch-3.3.4/united/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -19,7 +17,8 @@
         VERSION:     '0.0.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -30,9 +29,10 @@
     <script type="text/javascript" src="_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="janitoo_tellstick 0.0.8 documentation" href="index.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using documentation" href="using_doc.html" />
     <link rel="prev" title="Using the tellstick" href="use.html" />
 <meta charset='utf-8'>
@@ -41,7 +41,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
     <div class="container">
@@ -78,7 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="use.html#performances">Performances</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href=""> Docker appliance image</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#"> Docker appliance image</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installing-docker">Installing Docker</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#initial-installation">Initial installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-the-container">Start the container</a></li>
@@ -100,11 +100,11 @@
               
                 
   <li>
-    <a href="use.html" title="Previous Chapter: Using the tellstick"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Using the tel...</span>
+    <a href="use.html" title="Previous Chapter: Using the tellstick"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Using the tellstick</span>
     </a>
   </li>
   <li>
-    <a href="using_doc.html" title="Next Chapter: Using documentation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using documen... &raquo;</span>
+    <a href="using_doc.html" title="Next Chapter: Using documentation"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Using documentation &raquo;</span>
     </a>
   </li>
               
@@ -141,39 +141,39 @@
 <div class="section" id="initial-installation">
 <h2>Initial installation<a class="headerlink" href="#initial-installation" title="Permalink to this headline">¶</a></h2>
 <p>Create a &#8216;store&#8217; container  :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ make docker-local-store
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ make docker-local-store
 </pre></div>
 </div>
 <p>Create a &#8216;running&#8217; container :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ make docker-local-running
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ make docker-local-running
 </pre></div>
 </div>
 <p>Yous should now have 2 created containers :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker ps -a
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ docker ps -a
 </pre></div>
 </div>
-<div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS      PORTS       NAMES
-2f2496fbd885        bibi21000/janitoo_tellstick    &quot;/root/auto.sh&quot;     9 seconds ago       Created                                    tellstick_running
-1b6e0270e728        bibi21000/janitoo_tellstick    &quot;/bin/true&quot;         20 seconds ago      Created                                    tellstick_store
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                          <span class="n">COMMAND</span>             <span class="n">CREATED</span>             <span class="n">STATUS</span>      <span class="n">PORTS</span>       <span class="n">NAMES</span>
+<span class="mi">2</span><span class="n">f2496fbd885</span>        <span class="n">bibi21000</span><span class="o">/</span><span class="n">janitoo_tellstick</span>    <span class="s2">&quot;/root/auto.sh&quot;</span>     <span class="mi">9</span> <span class="n">seconds</span> <span class="n">ago</span>       <span class="n">Created</span>                                    <span class="n">tellstick_running</span>
+<span class="mi">1</span><span class="n">b6e0270e728</span>        <span class="n">bibi21000</span><span class="o">/</span><span class="n">janitoo_tellstick</span>    <span class="s2">&quot;/bin/true&quot;</span>         <span class="mi">20</span> <span class="n">seconds</span> <span class="n">ago</span>      <span class="n">Created</span>                                    <span class="n">tellstick_store</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="start-the-container">
 <h2>Start the container<a class="headerlink" href="#start-the-container" title="Permalink to this headline">¶</a></h2>
 <p>Start it :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker start tellstick_running
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ docker start tellstick_running
 </pre></div>
 </div>
 <p>Check that is running :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker ps
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ docker ps
 </pre></div>
 </div>
-<div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED              STATUS          PORTS                  NAMES
-cc1a58b59f7c        bibi21000/janitoo_tellstick   &quot;/root/auto.sh&quot;     About a minute ago   Up 8 seconds    0.0.0.0:8885-&gt;22/tcp   tellstick_running
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">CONTAINER</span> <span class="n">ID</span>        <span class="n">IMAGE</span>                          <span class="n">COMMAND</span>             <span class="n">CREATED</span>              <span class="n">STATUS</span>          <span class="n">PORTS</span>                  <span class="n">NAMES</span>
+<span class="n">cc1a58b59f7c</span>        <span class="n">bibi21000</span><span class="o">/</span><span class="n">janitoo_tellstick</span>   <span class="s2">&quot;/root/auto.sh&quot;</span>     <span class="n">About</span> <span class="n">a</span> <span class="n">minute</span> <span class="n">ago</span>   <span class="n">Up</span> <span class="mi">8</span> <span class="n">seconds</span>    <span class="mf">0.0</span><span class="o">.</span><span class="mf">0.0</span><span class="p">:</span><span class="mi">8885</span><span class="o">-&gt;</span><span class="mi">22</span><span class="o">/</span><span class="n">tcp</span>   <span class="n">tellstick_running</span>
 </pre></div>
 </div>
 <p>And stop it :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker stop tellstick_running
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ docker stop tellstick_running
 </pre></div>
 </div>
 </div>
@@ -184,36 +184,36 @@ cc1a58b59f7c        bibi21000/janitoo_tellstick   &quot;/root/auto.sh&quot;     
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>Update the nut configuration file :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ ssh root@127.0.0.1 -p 8885
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span>$ ssh root@127.0.0.1 -p 8885
 </pre></div>
 </div>
 <p>Default password is janitoo. You can change it but it will be restored on the next running container update. Prefer the key solutions.</p>
 <p>Open the configuration file. The docker image contains a nano or vim for editing files :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@8eafc45f6d09:~# vim /opt/janitoo/etc/janitoo_tellstick.conf
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@8eafc45f6d09</span><span class="p">:</span><span class="o">~</span><span class="c1"># vim /opt/janitoo/etc/janitoo_tellstick.conf</span>
 </pre></div>
 </div>
 <p>You must at least update the broker ip. It should match the ip address of your shared &#8220;mosquitto&#8221; :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>broker_ip = 192.168.1.14
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">broker_ip</span> <span class="o">=</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">1.14</span>
 </pre></div>
 </div>
 <p>If you plan to install more than one janitoo_tellstick image on your network, you must change the hadd of the bus and components :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0120</span><span class="o">/</span><span class="mo">0000</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">hadd</span> <span class="o">=</span> <span class="mi">0120</span><span class="o">/</span><span class="mi">0000</span>
 </pre></div>
 </div>
 <p>to</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0127</span><span class="o">/</span><span class="mo">0000</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">hadd</span> <span class="o">=</span> <span class="mi">0127</span><span class="o">/</span><span class="mi">0000</span>
 </pre></div>
 </div>
 <p>And so on for 0120/0001, 0120/0002, ... Keep in mind that hadd must be unique on your network.</p>
 <p>Save your updates and restart jnt_tellstick :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@8eafc45f6d09:~# killall jnt_tellstick
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@8eafc45f6d09</span><span class="p">:</span><span class="o">~</span><span class="c1"># killall jnt_tellstick</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="ups">
 <h3>Ups<a class="headerlink" href="#ups" title="Permalink to this headline">¶</a></h3>
 <p>Update the ip, upsname, username ans password matching your nut server installation :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">tellstick__3</span><span class="p">]</span>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">tellstick__3</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>Save and restart your server to apply.</p>
@@ -222,24 +222,24 @@ cc1a58b59f7c        bibi21000/janitoo_tellstick   &quot;/root/auto.sh&quot;     
 <div class="section" id="performances">
 <h2>Performances<a class="headerlink" href="#performances" title="Permalink to this headline">¶</a></h2>
 <p>The top result in the running appliance :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@7de7e4993b13:~# top
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@7de7e4993b13</span><span class="p">:</span><span class="o">~</span><span class="c1"># top</span>
 </pre></div>
 </div>
-<div class="code bash highlight-python"><div class="highlight"><pre>top - 19:15:46 up 10 days, 53 min,  1 user,  load average: 1.19, 0.85, 0.68
-Tasks:   8 total,   1 running,   7 sleeping,   0 stopped,   0 zombie
-%Cpu(s):  6.8 us,  1.5 sy,  0.1 ni, 91.4 id,  0.2 wa,  0.0 hi,  0.0 si,  0.0 st
-KiB Mem:  11661364 total, 11337104 used,   324260 free,   587492 buffers
-KiB Swap: 19530748 total,   301772 used, 19228976 free.  4396544 cached Mem
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">top</span> <span class="o">-</span> <span class="mi">19</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="mi">46</span> <span class="n">up</span> <span class="mi">10</span> <span class="n">days</span><span class="p">,</span> <span class="mi">53</span> <span class="nb">min</span><span class="p">,</span>  <span class="mi">1</span> <span class="n">user</span><span class="p">,</span>  <span class="n">load</span> <span class="n">average</span><span class="p">:</span> <span class="mf">1.19</span><span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.68</span>
+<span class="n">Tasks</span><span class="p">:</span>   <span class="mi">8</span> <span class="n">total</span><span class="p">,</span>   <span class="mi">1</span> <span class="n">running</span><span class="p">,</span>   <span class="mi">7</span> <span class="n">sleeping</span><span class="p">,</span>   <span class="mi">0</span> <span class="n">stopped</span><span class="p">,</span>   <span class="mi">0</span> <span class="n">zombie</span>
+<span class="o">%</span><span class="n">Cpu</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>  <span class="mf">6.8</span> <span class="n">us</span><span class="p">,</span>  <span class="mf">1.5</span> <span class="n">sy</span><span class="p">,</span>  <span class="mf">0.1</span> <span class="n">ni</span><span class="p">,</span> <span class="mf">91.4</span> <span class="nb">id</span><span class="p">,</span>  <span class="mf">0.2</span> <span class="n">wa</span><span class="p">,</span>  <span class="mf">0.0</span> <span class="n">hi</span><span class="p">,</span>  <span class="mf">0.0</span> <span class="n">si</span><span class="p">,</span>  <span class="mf">0.0</span> <span class="n">st</span>
+<span class="n">KiB</span> <span class="n">Mem</span><span class="p">:</span>  <span class="mi">11661364</span> <span class="n">total</span><span class="p">,</span> <span class="mi">11337104</span> <span class="n">used</span><span class="p">,</span>   <span class="mi">324260</span> <span class="n">free</span><span class="p">,</span>   <span class="mi">587492</span> <span class="n">buffers</span>
+<span class="n">KiB</span> <span class="n">Swap</span><span class="p">:</span> <span class="mi">19530748</span> <span class="n">total</span><span class="p">,</span>   <span class="mi">301772</span> <span class="n">used</span><span class="p">,</span> <span class="mi">19228976</span> <span class="n">free</span><span class="o">.</span>  <span class="mi">4396544</span> <span class="n">cached</span> <span class="n">Mem</span>
 
-  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
-   13 root      20   0  480680  22516   4384 S   2.0  0.2   0:39.28 /usr/local/bin/python /usr/local/bin/jnt_tellstick -c /etc/janitoo/janitoo_tellstick.conf front
-    1 root      20   0   21740   1604   1328 S   0.0  0.0   0:00.03 /bin/bash /root/auto.sh
-   10 root      20   0   55508  10064   1336 S   0.0  0.1   0:00.05 /usr/bin/python /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
-   11 root      39  19   23500   1492   1200 S   0.0  0.0   0:00.09 top -b
-   12 root      20   0   55176   3120   2444 S   0.0  0.0   0:00.02 /usr/sbin/sshd -D
-   44 root      20   0   82716   3932   3076 S   0.0  0.0   0:00.06 sshd: root@pts/0
-   46 root      20   0   20244   1904   1488 S   0.0  0.0   0:00.02 -bash
-   50 root      20   0   21940   1424   1048 R   0.0  0.0   0:00.04 top
+  <span class="n">PID</span> <span class="n">USER</span>      <span class="n">PR</span>  <span class="n">NI</span>    <span class="n">VIRT</span>    <span class="n">RES</span>    <span class="n">SHR</span> <span class="n">S</span>  <span class="o">%</span><span class="n">CPU</span> <span class="o">%</span><span class="n">MEM</span>     <span class="n">TIME</span><span class="o">+</span> <span class="n">COMMAND</span>
+   <span class="mi">13</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>  <span class="mi">480680</span>  <span class="mi">22516</span>   <span class="mi">4384</span> <span class="n">S</span>   <span class="mf">2.0</span>  <span class="mf">0.2</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">39.28</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">jnt_tellstick</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">janitoo</span><span class="o">/</span><span class="n">janitoo_tellstick</span><span class="o">.</span><span class="n">conf</span> <span class="n">front</span>
+    <span class="mi">1</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">21740</span>   <span class="mi">1604</span>   <span class="mi">1328</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.03</span> <span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">bash</span> <span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">auto</span><span class="o">.</span><span class="n">sh</span>
+   <span class="mi">10</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">55508</span>  <span class="mi">10064</span>   <span class="mi">1336</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.1</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.05</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">supervisord</span> <span class="o">-</span><span class="n">c</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">supervisor</span><span class="o">/</span><span class="n">supervisord</span><span class="o">.</span><span class="n">conf</span>
+   <span class="mi">11</span> <span class="n">root</span>      <span class="mi">39</span>  <span class="mi">19</span>   <span class="mi">23500</span>   <span class="mi">1492</span>   <span class="mi">1200</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.09</span> <span class="n">top</span> <span class="o">-</span><span class="n">b</span>
+   <span class="mi">12</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">55176</span>   <span class="mi">3120</span>   <span class="mi">2444</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.02</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">sshd</span> <span class="o">-</span><span class="n">D</span>
+   <span class="mi">44</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">82716</span>   <span class="mi">3932</span>   <span class="mi">3076</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.06</span> <span class="n">sshd</span><span class="p">:</span> <span class="n">root</span><span class="nd">@pts</span><span class="o">/</span><span class="mi">0</span>
+   <span class="mi">46</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">20244</span>   <span class="mi">1904</span>   <span class="mi">1488</span> <span class="n">S</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.02</span> <span class="o">-</span><span class="n">bash</span>
+   <span class="mi">50</span> <span class="n">root</span>      <span class="mi">20</span>   <span class="mi">0</span>   <span class="mi">21940</span>   <span class="mi">1424</span>   <span class="mi">1048</span> <span class="n">R</span>   <span class="mf">0.0</span>  <span class="mf">0.0</span>   <span class="mi">0</span><span class="p">:</span><span class="mf">00.04</span> <span class="n">top</span>
 </pre></div>
 </div>
 </div>
@@ -262,7 +262,7 @@ KiB Swap: 19530748 total,   301772 used, 19228976 free.  4396544 cached Mem
     </p>
     <p>
         &copy; Copyright 2014,2015,2016 Sébastien GALLET aka bibi2100 &lt;bibi21000@gmail.com&gt;.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.<br/>
     </p>
   </div>
 </footer>

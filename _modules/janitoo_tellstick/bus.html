@@ -5,13 +5,11 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>janitoo_tellstick.bus &mdash; janitoo_tellstick 0.0.8 documentation</title>
+    <title>janitoo_tellstick.bus &#8212; janitoo_tellstick 0.0.8 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootswatch-3.3.4/united/bootstrap.min.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -19,7 +17,8 @@
         VERSION:     '0.0.8',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
@@ -30,17 +29,17 @@
     <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
     <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
-    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="janitoo_tellstick 0.0.8 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
 <meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
+  <body role="document">
 
   <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
     <div class="container">
@@ -124,7 +123,7 @@
     <div class="col-md-12 content">
       
   <h1>Source code for janitoo_tellstick.bus</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: utf-8 -*-</span>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;The Raspberry tellstick bus</span>
 <span class="sd">Warning : this bus can&#39;t be aggregate/ Need to run in its own thread.</span>
 <span class="sd">Not sure that this bus can be extended by aggregation (callbacks and constants : TELLSTICK_TEMPERATURE).</span>
@@ -132,54 +131,54 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
-<span class="s">    This file is part of Janitoo.</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    This file is part of Janitoo.</span>
 
-<span class="s">    Janitoo is free software: you can redistribute it and/or modify</span>
-<span class="s">    it under the terms of the GNU General Public License as published by</span>
-<span class="s">    the Free Software Foundation, either version 3 of the License, or</span>
-<span class="s">    (at your option) any later version.</span>
+<span class="s2">    Janitoo is free software: you can redistribute it and/or modify</span>
+<span class="s2">    it under the terms of the GNU General Public License as published by</span>
+<span class="s2">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="s2">    (at your option) any later version.</span>
 
-<span class="s">    Janitoo is distributed in the hope that it will be useful,</span>
-<span class="s">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
-<span class="s">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
-<span class="s">    GNU General Public License for more details.</span>
+<span class="s2">    Janitoo is distributed in the hope that it will be useful,</span>
+<span class="s2">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="s2">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="s2">    GNU General Public License for more details.</span>
 
-<span class="s">    You should have received a copy of the GNU General Public License</span>
-<span class="s">    along with Janitoo. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="s2">    You should have received a copy of the GNU General Public License</span>
+<span class="s2">    along with Janitoo. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
 
-<span class="s">&quot;&quot;&quot;</span>
-<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Sébastien GALLET aka bibi21000&#39;</span>
-<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;bibi21000@gmail.com&#39;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000&quot;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;Sébastien GALLET aka bibi21000&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s1">&#39;bibi21000@gmail.com&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000&quot;</span>
 
-<span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
+<span class="c1"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="kn">import</span> <span class="n">JNTBus</span>
-<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span>
+<span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="k">import</span> <span class="n">JNTBus</span>
+<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="k">import</span> <span class="n">HADD</span>
 
-<span class="c">##############################################################</span>
-<span class="c">#Check that we are in sync with the official command classes</span>
-<span class="c">#Must be implemented for non-regression</span>
-<span class="kn">from</span> <span class="nn">janitoo.classes</span> <span class="kn">import</span> <span class="n">COMMAND_DESC</span>
+<span class="c1">##############################################################</span>
+<span class="c1">#Check that we are in sync with the official command classes</span>
+<span class="c1">#Must be implemented for non-regression</span>
+<span class="kn">from</span> <span class="nn">janitoo.classes</span> <span class="k">import</span> <span class="n">COMMAND_DESC</span>
 
 <span class="n">COMMAND_SENSOR_CONFIGURATION</span> <span class="o">=</span> <span class="mh">0x009E</span>
 
-<span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_SENSOR_CONFIGURATION</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_SENSOR_CONFIGURATION&#39;</span><span class="p">)</span>
-<span class="c">##############################################################</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_SENSOR_CONFIGURATION</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;COMMAND_SENSOR_CONFIGURATION&#39;</span><span class="p">)</span>
+<span class="c1">##############################################################</span>
 
-<span class="kn">from</span> <span class="nn">janitoo_tellstick</span> <span class="kn">import</span> <span class="n">OID</span>
+<span class="kn">from</span> <span class="nn">janitoo_tellstick</span> <span class="k">import</span> <span class="n">OID</span>
 
 <div class="viewcode-block" id="TellstickBus"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus">[docs]</a><span class="k">class</span> <span class="nc">TellstickBus</span><span class="p">(</span><span class="n">JNTBus</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A pseudo-bus to handle the tellstick</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c"># Commands</span>
+    <span class="c1"># Commands</span>
     <span class="n">TELLSTICK_TURNON</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_TURNOFF</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_BELL</span> <span class="o">=</span> <span class="mi">4</span>
@@ -194,7 +193,7 @@
                        <span class="n">TELLSTICK_DIM</span> <span class="o">|</span> <span class="n">TELLSTICK_UP</span> <span class="o">|</span> <span class="n">TELLSTICK_DOWN</span> <span class="o">|</span> \
                        <span class="n">TELLSTICK_STOP</span>
 
-    <span class="c">#Sensors</span>
+    <span class="c1">#Sensors</span>
     <span class="n">TELLSTICK_TEMPERATURE</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_HUMIDITY</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_RAINRATE</span> <span class="o">=</span> <span class="mi">4</span>
@@ -203,7 +202,7 @@
     <span class="n">TELLSTICK_WINDAVERAGE</span> <span class="o">=</span> <span class="mi">32</span>
     <span class="n">TELLSTICK_WINDGUST</span> <span class="o">=</span> <span class="mi">64</span>
 
-    <span class="c"># Error codes</span>
+    <span class="c1"># Error codes</span>
     <span class="n">TELLSTICK_SUCCESS</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">TELLSTICK_ERROR_NOT_FOUND</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
     <span class="n">TELLSTICK_ERROR_PERMISSION_DENIED</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
@@ -218,23 +217,23 @@
     <span class="n">TELLSTICK_ERROR_CONFIG_SYNTAX</span> <span class="o">=</span> <span class="o">-</span><span class="mi">11</span>
     <span class="n">TELLSTICK_ERROR_UNKNOWN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">99</span>
 
-    <span class="c"># Controller typedef</span>
+    <span class="c1"># Controller typedef</span>
     <span class="n">TELLSTICK_CONTROLLER_TELLSTICK</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_CONTROLLER_TELLSTICK_DUO</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_CONTROLLER_TELLSTICK_NET</span> <span class="o">=</span> <span class="mi">3</span>
 
-    <span class="c"># Device typedef</span>
+    <span class="c1"># Device typedef</span>
     <span class="n">TELLSTICK_TYPE_DEVICE</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_TYPE_GROUP</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_TYPE_SCENE</span> <span class="o">=</span> <span class="mi">3</span>
 
-    <span class="c"># Device changes</span>
+    <span class="c1"># Device changes</span>
     <span class="n">TELLSTICK_DEVICE_ADDED</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_DEVICE_CHANGED</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_DEVICE_REMOVED</span> <span class="o">=</span> <span class="mi">3</span>
     <span class="n">TELLSTICK_DEVICE_STATE_CHANGED</span> <span class="o">=</span> <span class="mi">4</span>
 
-    <span class="c"># Change types</span>
+    <span class="c1"># Change types</span>
     <span class="n">TELLSTICK_CHANGE_NAME</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">TELLSTICK_CHANGE_PROTOCOL</span> <span class="o">=</span> <span class="mi">2</span>
     <span class="n">TELLSTICK_CHANGE_MODEL</span> <span class="o">=</span> <span class="mi">3</span>
@@ -247,7 +246,7 @@
 <span class="sd">        :param int bus_id: the SMBus id (see Raspberry Pi documentation)</span>
 <span class="sd">        :param kwargs: parameters transmitted to :py:class:`smbus.SMBus` initializer</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">JNTBus</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">JNTBus</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span> <span class="o">=</span> <span class="mf">0.25</span>
 
@@ -255,72 +254,72 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">cant_aggregate</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_acquire&#39;, self.tellstick_acquire)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_release&#39;, self.tellstick_release)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_locked&#39;, self.tellstick_locked)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_turnon&#39;, self.tellstick_turnon)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_turnoff&#39;, self.tellstick_turnoff)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_dim&#39;, self.tellstick_dim)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_bell&#39;, self.tellstick_bell)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_execute&#39;, self.tellstick_execute)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_up&#39;, self.tellstick_up)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_down&#39;, self.tellstick_down)</span>
-        <span class="c">#~ self.export_attrs(&#39;tellstick_stop&#39;, self.tellstick_stop)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_acquire&#39;, self.tellstick_acquire)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_release&#39;, self.tellstick_release)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_locked&#39;, self.tellstick_locked)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_turnon&#39;, self.tellstick_turnon)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_turnoff&#39;, self.tellstick_turnoff)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_dim&#39;, self.tellstick_dim)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_bell&#39;, self.tellstick_bell)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_execute&#39;, self.tellstick_execute)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_up&#39;, self.tellstick_up)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_down&#39;, self.tellstick_down)</span>
+        <span class="c1">#~ self.export_attrs(&#39;tellstick_stop&#39;, self.tellstick_stop)</span>
 
 <div class="viewcode-block" id="TellstickBus.tellstick_turnon"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_turnon">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_turnon</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Turn on a telldus device&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_turnoff"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_turnoff">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_turnoff</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Turn off a telldus device&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_dim"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_dim">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_dim</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Dim a telldus device. Level from 0 to 255.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_learn"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_learn">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_learn</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Learn a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_bell"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_bell">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_bell</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Bell a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_execute"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_execute">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_execute</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Execute a scene action.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_up"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_up">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_up</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Up a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_down"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_down">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_down</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Down a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_stop"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_stop">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_stop</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Stop a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
+        <span class="k">pass</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_resend"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_resend">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_resend</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Resend last command to a telldus device.&quot;&quot;&quot;</span>
-        <span class="k">pass</span>
-</div>
-<div class="viewcode-block" id="TellstickBus.tellstick_acquire"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_acquire">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="TellstickBus.tellstick_acquire"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_acquire">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blocking</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get a lock on the bus&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="n">blocking</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">return</span> <span class="bp">False</span>
-</div>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_release"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_release">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_release</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Release a lock on the bus&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-</div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span></div>
+
 <div class="viewcode-block" id="TellstickBus.tellstick_locked"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.TellstickBus.tellstick_locked">[docs]</a>    <span class="k">def</span> <span class="nf">tellstick_locked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get status of the lock&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">locked</span><span class="p">()</span>
-</div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tellstick_lock</span><span class="o">.</span><span class="n">locked</span><span class="p">()</span></div></div>
+
 <div class="viewcode-block" id="extend_duo"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.extend_duo">[docs]</a><span class="k">def</span> <span class="nf">extend_duo</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
     <span class="kn">import</span> <span class="nn">telldus</span>
     <span class="n">telldus</span><span class="o">.</span><span class="n">tdInit</span><span class="p">()</span>
@@ -332,11 +331,11 @@
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_discover_new_devices</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_discover</span> <span class="o">=</span> <span class="n">set_tellstickduo_discover</span>
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_discover&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_boolean&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_discover&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;action_boolean&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">cmd_class</span><span class="o">=</span><span class="n">COMMAND_SENSOR_CONFIGURATION</span><span class="p">,</span>
         <span class="n">genre</span><span class="o">=</span><span class="mh">0x05</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
@@ -350,11 +349,11 @@
         <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_update_device_component</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - set_tellstickduo_discover unknown data : </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_tellstickduo_updatetype</span> <span class="o">=</span> <span class="n">set_tellstickduo_updatetype</span>
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_updatetype&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_string&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_updatetype&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;action_string&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">genre</span><span class="o">=</span><span class="mh">0x05</span><span class="p">,</span>
         <span class="n">cmd_class</span><span class="o">=</span><span class="n">COMMAND_SENSOR_CONFIGURATION</span><span class="p">,</span>
@@ -392,91 +391,91 @@
     <span class="k">def</span> <span class="nf">event_device_change_callback</span><span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">change_event</span><span class="p">,</span> <span class="n">change_type</span><span class="p">,</span> <span class="n">callback_id</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive change </span><span class="si">%s</span><span class="s"> callback for </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span><span class="n">change_event</span> <span class="p">,</span> <span class="n">device_id</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - Receive change </span><span class="si">%s</span><span class="s2"> callback for </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">change_event</span> <span class="p">,</span> <span class="n">device_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_device_change_callback</span> <span class="o">=</span> <span class="n">event_device_change_callback</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterDeviceChangeEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device_change_callback</span><span class="p">)</span>
-    <span class="c">#~ self.export_attrs(&#39;event_change_device&#39;, self.event_change_device)</span>
+    <span class="c1">#~ self.export_attrs(&#39;event_change_device&#39;, self.event_change_device)</span>
 
     <span class="k">def</span> <span class="nf">event_device_callback</span><span class="p">(</span><span class="n">device_id</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">callback_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get an event for a well known device</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">uuid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hadd_from_tdev</span><span class="p">(</span><span class="n">device_id</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive callback from </span><span class="si">%s</span><span class="s"> for node </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">uuid</span><span class="p">)</span>
-        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;status&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="c">#It&#39;s a sensor</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - Receive callback from </span><span class="si">%s</span><span class="s2"> for node </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">uuid</span><span class="p">)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;status&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1">#It&#39;s a sensor</span>
             <span class="k">if</span> <span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
-                <span class="n">status</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
-                <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">return</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">:</span>
-                <span class="n">status</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
-                <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;dim&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                <span class="c">#It&#39;s a dimmer</span>
-                <span class="n">switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;switch&#39;</span><span class="p">)</span>
+            <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;dim&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="c1">#It&#39;s a dimmer</span>
+                <span class="n">switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;switch&#39;</span><span class="p">)</span>
                 <span class="n">dimval</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">*</span><span class="n">value</span><span class="o">/</span><span class="mf">2.55</span>
                 <span class="k">if</span> <span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
-                    <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">switch</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="bp">True</span>
+                    <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">:</span>
-                    <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="kc">False</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">switch</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="bp">True</span>
+                    <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">elif</span> <span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span><span class="p">:</span>
                     <span class="n">dim</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">dimval</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="bp">True</span>
+                    <span class="k">return</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">shutter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;shutter&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">shutter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                    <span class="c">#It&#39;s a shutter</span>
+                <span class="n">shutter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;shutter&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">shutter</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1">#It&#39;s a shutter</span>
                     <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span><span class="p">):</span>
-                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s">&#39;up&#39;</span>
+                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s1">&#39;up&#39;</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">shutter</span><span class="p">)</span>
-                        <span class="k">return</span> <span class="bp">True</span>
+                        <span class="k">return</span> <span class="kc">True</span>
                     <span class="k">elif</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span><span class="p">):</span>
-                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s">&#39;down&#39;</span>
+                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s1">&#39;down&#39;</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">shutter</span><span class="p">)</span>
-                        <span class="k">return</span> <span class="bp">True</span>
+                        <span class="k">return</span> <span class="kc">True</span>
                     <span class="k">elif</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span><span class="p">):</span>
-                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s">&#39;stop&#39;</span>
+                        <span class="n">shutter</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s1">&#39;stop&#39;</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">shutter</span><span class="p">)</span>
-                        <span class="k">return</span> <span class="bp">True</span>
+                        <span class="k">return</span> <span class="kc">True</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;button&#39;</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                        <span class="c">#It&#39;s a remote or a bell</span>
+                    <span class="n">button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;button&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">button</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="c1">#It&#39;s a remote or a bell</span>
                         <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">):</span>
-                            <span class="n">button</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+                            <span class="n">button</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;on&#39;</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="bp">True</span>
+                            <span class="k">return</span> <span class="kc">True</span>
                         <span class="k">elif</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">):</span>
-                            <span class="n">button</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s">&#39;off&#39;</span>
+                            <span class="n">button</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;off&#39;</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">button</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="bp">True</span>
+                            <span class="k">return</span> <span class="kc">True</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s">&#39;switch&#39;</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">switch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-                            <span class="c">#It&#39;s a switch</span>
+                        <span class="n">switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_value</span><span class="p">(</span><span class="n">uuid</span><span class="p">,</span> <span class="s1">&#39;switch&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">switch</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="c1">#It&#39;s a switch</span>
                             <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">):</span>
-                                <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+                                <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s1">&#39;on&#39;</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">switch</span><span class="p">)</span>
-                                <span class="k">return</span> <span class="bp">True</span>
+                                <span class="k">return</span> <span class="kc">True</span>
                             <span class="k">elif</span> <span class="p">(</span><span class="n">method</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">):</span>
-                                <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s">&#39;off&#39;</span>
+                                <span class="n">switch</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="s1">&#39;off&#39;</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">publish_value</span><span class="p">(</span><span class="n">switch</span><span class="p">)</span>
-                                <span class="k">return</span> <span class="bp">True</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive callback from </span><span class="si">%s</span><span class="s"> but node </span><span class="si">%s</span><span class="s"> didn&#39;t process message </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">False</span>
+                                <span class="k">return</span> <span class="kc">True</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - Receive callback from </span><span class="si">%s</span><span class="s2"> but node </span><span class="si">%s</span><span class="s2"> didn&#39;t process message </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">device_id</span><span class="p">,</span> <span class="n">uuid</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_device_callback</span> <span class="o">=</span> <span class="n">event_device_callback</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterDeviceEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device_callback</span><span class="p">)</span>
-    <span class="c">#~ self.export_attrs(&#39;event_device&#39;, self.event_device)</span>
+    <span class="c1">#~ self.export_attrs(&#39;event_device&#39;, self.event_device)</span>
 
 
     <span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -485,16 +484,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_temperature</span> <span class="o">=</span> <span class="n">get_temperature</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_temperature&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_temperature&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_temperature&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_temperature&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_temperature</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The temperature sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Temp&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The temperature sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Temp&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -504,16 +503,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_humidity</span> <span class="o">=</span> <span class="n">get_humidity</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_humidity&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_humidity&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_humidity&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_humidity&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_humidity</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The humidity sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Hum&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The humidity sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Hum&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -523,16 +522,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_rain_rate</span> <span class="o">=</span> <span class="n">get_rain_rate</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_rain_rate&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_rain_rate&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_rain_rate&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_rain_rate&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rain_rate</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The rain rate sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Rain rate&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The rain rate sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Rain rate&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -542,16 +541,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_rain_total</span> <span class="o">=</span> <span class="n">get_rain_total</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_rain_total&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_rain_total&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_rain_total&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_rain_total&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rain_total</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The rain total sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Rain total&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The rain total sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Rain total&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -561,16 +560,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_wind_direction</span> <span class="o">=</span> <span class="n">get_wind_direction</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_wind_direction&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_wind_direction&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_wind_direction&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_wind_direction&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_wind_direction</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The wind direction sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Wind dir&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The wind direction sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wind dir&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -580,16 +579,16 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_wind_average</span> <span class="o">=</span> <span class="n">get_wind_average</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_wind_average&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_wind_average&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_wind_average&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_wind_average&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_wind_average</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The wind average sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Wind avg&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The wind average sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wind avg&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
 
@@ -599,96 +598,96 @@
         <span class="k">return</span> <span class="mi">0</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">get_wind_gust</span> <span class="o">=</span> <span class="n">get_wind_gust</span>
 
-    <span class="n">uuid</span><span class="o">=</span><span class="s">&quot;{:s}_wind_gust&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_wind_gust&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+    <span class="n">uuid</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{:s}</span><span class="s2">_wind_gust&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">OID</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s1">&#39;sensor_wind_gust&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
         <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_wind_gust</span><span class="p">,</span>
-        <span class="n">help</span><span class="o">=</span><span class="s">&#39;The wind gust sensors.&#39;</span><span class="p">,</span>
-        <span class="n">label</span><span class="o">=</span><span class="s">&#39;Wind gust&#39;</span><span class="p">,</span>
+        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The wind gust sensors.&#39;</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Wind gust&#39;</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
-    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;The sensor ids&#39;</span><span class="p">)</span>
+    <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="mh">0x16</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The sensor ids&#39;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
 
     <span class="k">def</span> <span class="nf">event_sensor_callback</span><span class="p">(</span><span class="n">protocol</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">callback_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="s">&#39;fineoffset&#39;</span><span class="p">):</span>
-            <span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bus_value</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">_config&quot;</span><span class="o">%</span><span class="n">which</span><span class="p">)</span>
-            <span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;|&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s">&#39;&#39;</span> <span class="p">]</span>
-            <span class="k">print</span> <span class="s">&quot;sensors&quot;</span><span class="p">,</span> <span class="n">sensors</span>
-            <span class="k">if</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">sensor_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">:</span>
-                <span class="n">lsens</span> <span class="o">=</span> <span class="n">sensors</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">sensor_id</span><span class="p">]</span>
-                <span class="k">print</span> <span class="s">&quot;lsens&quot;</span><span class="p">,</span> <span class="n">lsens</span>
-                <span class="n">conf</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lsens</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lsens</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="k">else</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">lsens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">def</span> <span class="nf">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="s1">&#39;fineoffset&#39;</span><span class="p">):</span>
+            <span class="n">conf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_bus_value</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_config&quot;</span><span class="o">%</span><span class="n">which</span><span class="p">)</span>
+            <span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">conf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span> <span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;sensors&quot;</span><span class="p">,</span> <span class="n">sensors</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">sensor_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">:</span>
+                <span class="n">lsens</span> <span class="o">=</span> <span class="n">sensors</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">sensor_id</span><span class="p">]</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lsens&quot;</span><span class="p">,</span> <span class="n">lsens</span><span class="p">)</span>
+                <span class="n">conf</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lsens</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lsens</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">1</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">lsens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">protocol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="n">sensor_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">]:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;model&#39;</span><span class="p">:</span><span class="n">model</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;model&#39;</span><span class="p">:</span><span class="n">model</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TEMPERATURE</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_HUMIDITY</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;humidity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;humidity&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;humidity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;humidity&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_RAINRATE</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;rain_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;rain_rate&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;rain_rate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;rain_rate&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_RAINTOTAL</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;rain_total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;rain_total&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;rain_total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;rain_total&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_WINDDIRECTION</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;wind_direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;wind_direction&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;wind_direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;wind_direction&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_WINDAVERAGE</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;wind_average&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;wind_average&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;wind_average&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;wind_average&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">dtype</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_WINDGUST</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s">&#39;wind_gust&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
-            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s">&#39;wind_gust&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">protocol</span><span class="p">][</span><span class="n">sensor_id</span><span class="p">][</span><span class="s1">&#39;wind_gust&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">}</span>
+            <span class="n">update_config</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;wind_gust&#39;</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">protocol</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Receive unknown sensor event from </span><span class="si">%s</span><span class="s"> on protocol </span><span class="si">%s</span><span class="s"> of type </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Sensors </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">True</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - Receive unknown sensor event from </span><span class="si">%s</span><span class="s2"> on protocol </span><span class="si">%s</span><span class="s2"> of type </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">sensor_id</span><span class="p">,</span> <span class="n">protocol</span><span class="p">,</span> <span class="n">dtype</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - Sensors </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">True</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor_callback</span> <span class="o">=</span> <span class="n">event_sensor_callback</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdRegisterSensorEvent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_sensor_callback</span><span class="p">)</span>
-    <span class="c">#~ self.export_attrs(&#39;event_sensor&#39;, self.event_sensor)</span>
+    <span class="c1">#~ self.export_attrs(&#39;event_sensor&#39;, self.event_sensor)</span>
 
 
-    <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_del__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__del__</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_del__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__del__</span>
     <span class="k">def</span> <span class="nf">__del__</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;stop the bus&quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - __del__ the bus </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span> <span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] - __del__ the bus </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span> <span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdUnregisterCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="c">#~ self.export_attrs(&#39;event_sensor&#39;, self.event_sensor)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_sensor</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1">#~ self.export_attrs(&#39;event_sensor&#39;, self.event_sensor)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdUnregisterCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="c">#~ self.export_attrs(&#39;event_change_device&#39;, self.event_change_device)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_change_device</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1">#~ self.export_attrs(&#39;event_change_device&#39;, self.event_change_device)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdUnregisterCallback</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_device</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="bp">None</span>
-                <span class="c">#~ self.export_attrs(&#39;event_device&#39;, self.event_device)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">event_device</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="c1">#~ self.export_attrs(&#39;event_device&#39;, self.event_device)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">telldus</span><span class="o">.</span><span class="n">tdClose</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when __del__ bus </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">oid</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telldusduo_del__</span><span class="p">()</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">__del__</span> <span class="o">=</span> <span class="n">__del__</span>
+    <span class="bp">self</span><span class="o">.</span><span class="fm">__del__</span> <span class="o">=</span> <span class="fm">__del__</span>
 
     <span class="k">def</span> <span class="nf">tellstick_turnon</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Turn on a telldus device&quot;&quot;&quot;</span>
@@ -699,7 +698,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOn</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_turnon&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_turnon&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_turnon</span> <span class="o">=</span> <span class="n">tellstick_turnon</span>
@@ -713,7 +712,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_turnoff&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_turnoff&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_turnoff</span> <span class="o">=</span> <span class="n">tellstick_turnoff</span>
@@ -727,7 +726,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdDim</span><span class="p">(</span><span class="n">tdev</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="o">*</span><span class="mf">2.55</span><span class="p">))</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_dim&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_dim&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_dim</span> <span class="o">=</span> <span class="n">tellstick_dim</span>
@@ -741,7 +740,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdExecute</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_execute&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_execute&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_execute</span> <span class="o">=</span> <span class="n">tellstick_execute</span>
@@ -757,7 +756,7 @@
             <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Unknown resend method </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Unknown resend method </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">methods</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_resend</span> <span class="o">=</span> <span class="n">tellstick_resend</span>
 
     <span class="k">def</span> <span class="nf">tellstick_up</span><span class="p">(</span><span class="n">tdev</span><span class="p">):</span>
@@ -769,11 +768,11 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdUp</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
-                <span class="c">#Emulate up by turnon</span>
+                <span class="c1">#Emulate up by turnon</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOn</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_up&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_up&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_up</span> <span class="o">=</span> <span class="n">tellstick_up</span>
@@ -787,11 +786,11 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdDown</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">:</span>
-                <span class="c">#Emulate down by turnoff</span>
+                <span class="c1">#Emulate down by turnoff</span>
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdTurnOff</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_down&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_down&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_down</span> <span class="o">=</span> <span class="n">tellstick_down</span>
@@ -805,11 +804,11 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdStop</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span> <span class="ow">or</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">:</span>
-                <span class="c">#Emulate stop by resending</span>
+                <span class="c1">#Emulate stop by resending</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_resend</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_stop&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_stop&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_stop</span> <span class="o">=</span> <span class="n">tellstick_stop</span>
@@ -823,7 +822,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdBell</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_bell&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_bell&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_bell</span> <span class="o">=</span> <span class="n">tellstick_bell</span>
@@ -837,7 +836,7 @@
                 <span class="n">telldus</span><span class="o">.</span><span class="n">tdLearn</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lock_delay</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_learn&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_learn&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_release</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_learn</span> <span class="o">=</span> <span class="n">tellstick_learn</span>
@@ -847,47 +846,47 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdGetName</span><span class="p">(</span><span class="n">tdev</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Exception when tellstick_get_name&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Exception when tellstick_get_name&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_get_name</span> <span class="o">=</span> <span class="n">tellstick_get_name</span>
 
     <span class="k">def</span> <span class="nf">tellstick_discover_new_devices</span><span class="p">():</span>
         <span class="sd">&quot;&quot;&quot;Discover new devices.&quot;&quot;&quot;</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdGetNumberOfDevices</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found </span><span class="si">%s</span><span class="s"> devices in telldus-core&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">devices</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Found </span><span class="si">%s</span><span class="s1"> devices in telldus-core&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">devices</span><span class="p">)</span>
         <span class="n">add_ctrl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">get_add_ctrl</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">devices</span><span class="p">):</span>
             <span class="n">deviceid</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdGetDeviceId</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">deviceid</span><span class="p">:</span>
                 <span class="n">name</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdGetName</span><span class="p">(</span><span class="n">deviceid</span><span class="p">)</span>
                 <span class="n">methods</span> <span class="o">=</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdMethods</span><span class="p">(</span><span class="n">deviceid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ALL_METHODS</span><span class="p">)</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found device id </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">) of type </span><span class="si">%s</span><span class="s"> with methods : (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">) (</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">)&#39;</span><span class="p">,</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Found device id </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%s</span><span class="s1">) of type </span><span class="si">%s</span><span class="s1"> with methods : (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">) (</span><span class="si">%s</span><span class="s1"> : </span><span class="si">%s</span><span class="s1">)&#39;</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
                     <span class="n">deviceid</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">telldus</span><span class="o">.</span><span class="n">tdGetDeviceType</span><span class="p">(</span><span class="n">deviceid</span><span class="p">),</span>
-                    <span class="s">&#39;TELLSTICK_TURNON&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_TURNOFF&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_DIM&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_BELL&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_BELL</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_EXECUTE&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_EXECUTE</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_UP&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_DOWN&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span><span class="p">,</span>
-                    <span class="s">&#39;TELLSTICK_STOP&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_TURNON&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNON</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_TURNOFF&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_TURNOFF</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_DIM&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_BELL&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_BELL</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_EXECUTE&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_EXECUTE</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_UP&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_DOWN&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DOWN</span><span class="p">,</span>
+                    <span class="s1">&#39;TELLSTICK_STOP&#39;</span><span class="p">,</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_STOP</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="n">add_comp</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">__</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hadd_from_tdev</span><span class="p">(</span><span class="n">deviceid</span><span class="p">))</span>
-                <span class="c">#~ logger.debug(&#39;[%s] - Check node %s in %s&#39;, self.__class__.__name__, add_comp, self.nodeman.nodes)</span>
+                <span class="n">add_comp</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">__</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hadd_from_tdev</span><span class="p">(</span><span class="n">deviceid</span><span class="p">))</span>
+                <span class="c1">#~ logger.debug(&#39;[%s] - Check node %s in %s&#39;, self.__class__.__name__, add_comp, self.nodeman.nodes)</span>
                 <span class="k">if</span> <span class="n">add_comp</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span><span class="p">:</span>
-                    <span class="c">#add_comp = key</span>
+                    <span class="c1">#add_comp = key</span>
                     <span class="n">hadd</span> <span class="o">=</span> <span class="n">HADD</span><span class="o">%</span><span class="p">(</span><span class="n">add_ctrl</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hadd_from_tdev</span><span class="p">(</span><span class="n">deviceid</span><span class="p">))</span>
-                    <span class="n">compo_oid</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.device&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
+                    <span class="n">compo_oid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.device&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
                     <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_DIM</span><span class="p">:</span>
-                        <span class="n">compo_oid</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.dimmer&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
+                        <span class="n">compo_oid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.dimmer&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
                     <span class="k">if</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span> <span class="ow">and</span> <span class="n">methods</span> <span class="o">&amp;</span> <span class="bp">self</span><span class="o">.</span><span class="n">TELLSTICK_UP</span><span class="p">:</span>
-                        <span class="n">compo_oid</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.shutter&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
+                        <span class="n">compo_oid</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.shutter&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">oid</span>
                     <span class="n">compo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">compo_oid</span><span class="p">,</span> <span class="n">add_comp</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
                     <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="n">add_comp</span><span class="p">,</span> <span class="n">hadd</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
                     <span class="n">node</span><span class="o">.</span><span class="n">create_options</span><span class="p">(</span><span class="n">compo_oid</span><span class="p">)</span>
                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">slow_start</span><span class="p">)</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Discover new component </span><span class="si">%s</span><span class="s"> / node </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">compo</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found components </span><span class="si">%s</span><span class="s"> after discover&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Discover new component </span><span class="si">%s</span><span class="s1"> / node </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">compo</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Found components </span><span class="si">%s</span><span class="s1"> after discover&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_discover_new_devices</span> <span class="o">=</span> <span class="n">tellstick_discover_new_devices</span>
 
     <span class="k">def</span> <span class="nf">tellstick_update_device_component</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">,</span> <span class="n">component_uuid</span><span class="p">):</span>
@@ -895,19 +894,19 @@
 <span class="sd">        So we need to update it after discovering.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">find_node</span><span class="p">(</span><span class="n">node_uuid</span><span class="p">)</span>
-        <span class="c">#~ node = self.nodeman.find_node_by_hadd(node_hadd)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Found node </span><span class="si">%s</span><span class="s"> with uid </span><span class="si">%s</span><span class="s"> in </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span> <span class="p">)</span>
+        <span class="c1">#~ node = self.nodeman.find_node_by_hadd(node_hadd)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Found node </span><span class="si">%s</span><span class="s1"> with uid </span><span class="si">%s</span><span class="s1"> in </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span> <span class="p">)</span>
         <span class="n">add_ctrl</span><span class="p">,</span> <span class="n">add_node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">split_hadd</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">mqtt_heartbeat</span><span class="o">.</span><span class="n">publish_heartbeat</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">add_ctrl</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">add_node</span><span class="p">),</span> <span class="s">&#39;OFFLINE&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">mqtt_heartbeat</span><span class="o">.</span><span class="n">publish_heartbeat</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">add_ctrl</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">add_node</span><span class="p">),</span> <span class="s1">&#39;OFFLINE&#39;</span><span class="p">)</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span>
         <span class="n">compo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_component</span><span class="p">(</span><span class="n">component_uuid</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
         <span class="n">node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nodeman</span><span class="o">.</span><span class="n">create_node</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">hadd</span><span class="p">)</span>
         <span class="n">node</span><span class="o">.</span><span class="n">update_bus_options</span><span class="p">(</span><span class="n">component_uuid</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[</span><span class="si">%s</span><span class="s">] - Update component for node </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">component_uuid</span> <span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_update_device_component</span> <span class="o">=</span> <span class="n">tellstick_update_device_component</span>
-</div>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%s</span><span class="s1">] - Update component for node </span><span class="si">%s</span><span class="s1"> to </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">component_uuid</span> <span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">tellstick_update_device_component</span> <span class="o">=</span> <span class="n">tellstick_update_device_component</span></div>
+
 <div class="viewcode-block" id="extend_net"><a class="viewcode-back" href="../../api/index.html#janitoo_tellstick.bus.extend_net">[docs]</a><span class="k">def</span> <span class="nf">extend_net</span><span class="p">(</span> <span class="bp">self</span> <span class="p">):</span>
     <span class="k">pass</span></div>
 </pre></div>
@@ -924,7 +923,7 @@
     </p>
     <p>
         &copy; Copyright 2014,2015,2016 Sébastien GALLET aka bibi2100 &lt;bibi21000@gmail.com&gt;.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.<br/>
     </p>
   </div>
 </footer>
